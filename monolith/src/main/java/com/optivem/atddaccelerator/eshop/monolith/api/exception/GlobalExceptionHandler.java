@@ -2,6 +2,7 @@ package com.optivem.atddaccelerator.eshop.monolith.api.exception;
 
 import com.optivem.atddaccelerator.eshop.monolith.core.exceptions.NotExistValidationException;
 import com.optivem.atddaccelerator.eshop.monolith.core.exceptions.ValidationException;
+import com.optivem.atddaccelerator.eshop.monolith.core.validation.TypeValidationMessageExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Pattern CLASS_NAME_PATTERN = Pattern.compile("\\[\"(com\\.optivem\\.atddaccelerator\\.eshop\\.monolith\\.core\\.dtos\\.[^\"]+)\"\\]");
+    private static final String DTOS_PACKAGE = "com.optivem.atddaccelerator.eshop.monolith.core.dtos";
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
@@ -46,50 +51,61 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        String message = ex.getMessage();
-        log.debug("HttpMessageNotReadableException: {}", message);
+        log.debug("HttpMessageNotReadableException: {}", ex.getMessage());
 
-        // Check if it's related to the productId or quantity field
-        // The exception message might contain field name in various forms
-        if (message != null) {
-            String lowerMessage = message.toLowerCase();
+        ResponseEntity<ErrorResponse> response = tryParseFieldError(ex.getMessage());
+        if (response != null) {
+            return response;
+        }
 
-            // Check for productId field error
-            if (lowerMessage.contains("productid") ||
-                lowerMessage.contains("product_id")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new ErrorResponse("Product ID must be an integer"));
-            }
-
-            // Check for various patterns that might indicate quantity field error
-            if (lowerMessage.contains("quantity") ||
-                lowerMessage.contains("com.optivem.atddaccelerator.eshop.monolith.core.dtos.placeorderrequest")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new ErrorResponse("Quantity must be an integer"));
+        if (ex.getCause() != null) {
+            log.debug("Root cause: {}", ex.getCause().getMessage());
+            response = tryParseFieldError(ex.getCause().getMessage());
+            if (response != null) {
+                return response;
             }
         }
 
-        // Also check the root cause
-        Throwable cause = ex.getCause();
-        if (cause != null) {
-            String causeMessage = cause.getMessage();
-            log.debug("Root cause: {}", causeMessage);
-            if (causeMessage != null) {
-                String lowerCause = causeMessage.toLowerCase();
-                if (lowerCause.contains("productid")) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(new ErrorResponse("Product ID must be an integer"));
-                }
-                if (lowerCause.contains("quantity")) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(new ErrorResponse("Quantity must be an integer"));
-                }
-            }
-        }
-
-        // Generic parsing error
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("Invalid request format"));
+    }
+
+    private ResponseEntity<ErrorResponse> tryParseFieldError(String message) {
+        if (message == null) {
+            return null;
+        }
+
+        // Try to extract the DTO class name from the exception message
+        Class<?> dtoClass = extractDtoClass(message);
+        if (dtoClass == null) {
+            return null;
+        }
+
+        // Extract field validation messages from the DTO class annotations
+        Map<String, String> fieldErrorPatterns = TypeValidationMessageExtractor.extractFieldMessages(dtoClass);
+
+        String lowerMessage = message.toLowerCase();
+
+        return fieldErrorPatterns.entrySet().stream()
+                .filter(entry -> lowerMessage.contains(entry.getKey()))
+                .findFirst()
+                .map(entry -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ErrorResponse(entry.getValue())))
+                .orElse(null);
+    }
+
+    private Class<?> extractDtoClass(String message) {
+        // Try to find the DTO class name in the exception message
+        Matcher matcher = CLASS_NAME_PATTERN.matcher(message);
+        if (matcher.find()) {
+            String className = matcher.group(1);
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                log.debug("Could not load class: {}", className);
+            }
+        }
+        return null;
     }
 }
 
