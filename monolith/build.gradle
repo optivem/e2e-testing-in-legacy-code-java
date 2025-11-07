@@ -4,9 +4,9 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.optivem.atddaccelerator.eshop.monolith'
+group = 'com.optivem.eshop.monolith'
 version = '0.0.1-SNAPSHOT'
-description = 'ATDD Accelerator eShop - Monolith'
+description = 'Optivem eShop - Monolith'
 
 java {
 	toolchain {
@@ -32,5 +32,5 @@ tasks.named('test') {
 }
 
 springBoot {
-	mainClass = 'com.optivem.atddaccelerator.eshop.monolith.EshopApplication'
+	mainClass = 'com.optivem.eshop.monolith.EshopApplication'
 }

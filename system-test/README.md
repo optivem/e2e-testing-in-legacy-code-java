@@ -29,7 +29,7 @@ Run All Tests
 Run Smoke Tests Only
 
 ```shell
-./gradlew test --tests com.optivem.atddaccelerator.eshop.systemtest.smoketests.*
+./gradlew test --tests com.optivem.eshop.systemtest.smoketests.*
 ```
 
 Stop Docker Containers
