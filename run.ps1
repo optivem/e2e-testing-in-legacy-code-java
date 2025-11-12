@@ -13,7 +13,7 @@ $ComposeFile = if ($Mode -eq "pipeline") { "docker-compose.pipeline.yml" } else 
 function Start-System {
     if ($Mode -eq "local") {
         Write-Host "Building monolith application..." -ForegroundColor Cyan
-        Set-Location ..\monolith
+        Set-Location monolith
 
         & .\build.ps1
 
@@ -23,7 +23,7 @@ function Start-System {
         }
 
         Write-Host ""
-        Set-Location ..\system-test
+        Set-Location ..
     }
 
     Write-Host "Cleaning up any existing containers..." -ForegroundColor Cyan
@@ -60,18 +60,21 @@ function Start-System {
 function Test-System {
     Write-Host "Running tests..." -ForegroundColor Cyan
 
+    Set-Location system-test
     & .\gradlew.bat test
+    $testResult = $LASTEXITCODE
+    Set-Location ..
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($testResult -ne 0) {
         Write-Host ""
         Write-Host "Tests failed!" -ForegroundColor Red
-        exit $LASTEXITCODE
+        exit $testResult
     }
 
     Write-Host ""
     Write-Host "All tests passed!" -ForegroundColor Green
     Write-Host "Test report: " -NoNewline
-    Write-Host "build\reports\tests\test\index.html" -ForegroundColor Yellow
+    Write-Host "system-test\build\reports\tests\test\index.html" -ForegroundColor Yellow
 }
 
 function Stop-System {

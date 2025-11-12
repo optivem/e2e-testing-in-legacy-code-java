@@ -1,0 +1,29 @@
+# Default docker-compose file for developer convenience
+# This uses the local build configuration
+#
+# For CI/CD pipelines, use: docker compose -f docker-compose.pipeline.yml up
+# Or use the run.ps1 script: .\run.ps1 start pipeline
+
+include:
+  - docker-compose.local.yml
+services:
+
+  erp-api:
+    image: williamyeh/json-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./erp-api-db.json:/data/db.json
+    command: --watch /data/db.json --host 0.0.0.0
+
+  monolith:
+    build:
+      context: ./monolith
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=e2e
+    depends_on:
+      - erp-api
+
