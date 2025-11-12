@@ -10,7 +10,7 @@ spring:
     activate:
       on-profile: e2e
 erp:
-  url: http://json-server:3000
+  url: http://erp-api:3000
 
 ---
 spring:
@@ -18,7 +18,7 @@ spring:
     activate:
       on-profile: qa
 erp:
-  url: http://json-server:3000
+  url: http://erp-api:3000
 
 ---
 spring:
@@ -26,4 +26,4 @@ spring:
     activate:
       on-profile: prod
 erp:
-  url: http://json-server:3000
+  url: http://erp-api:3000

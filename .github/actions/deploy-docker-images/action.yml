@@ -41,7 +41,7 @@ runs:
         echo "   - Other cloud providers (DigitalOcean, Linode, etc.)"
         echo ""
         echo "🐳 Starting Docker Compose for simulated deployment..."
-        docker compose up -d
+        docker compose -f docker-compose.pipeline.yml up -d
       shell: bash
       working-directory: system-test
 

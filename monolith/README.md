@@ -2,13 +2,7 @@
 
 This is a sample monolithic application written in Java.
 
-## Instructions
-
-Open up the 'monolith' folder
-
-```shell
-cd monolith
-```
+## PRerequisites
 
 Check that you have Powershell 7
 
@@ -34,24 +28,16 @@ Ensure you have Gradle 8.14 installed
 ./gradlew --version
 ```
 
-Build the application using Gradle
+## Instructions
+
+Open up the 'monolith' folder
 
 ```shell
-./gradlew build
+cd monolith
 ```
 
-Run the application
+Build the application
 
 ```shell
-./gradlew bootRun
+.\build.ps1
 ```
-
-Rebuild and restart the application
-
-```shell
-./gradlew build && ./gradlew bootRun
-```
-
-App should now be running on:
-http://localhost:8080/
-
