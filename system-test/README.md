@@ -1,89 +1,72 @@
-# System Test (Java)
+# System Test
 
-## Architecture
+This directory contains system-level acceptance tests for the e-shop application.
 
-The system test environment uses Docker Compose to run:
-- **monolith**: The main e-shop application
-- **erp-api**: A mock ERP API server that provides product pricing data
+> **Note**: For system orchestration commands (`start`, `stop`, `logs`), see the [root README](../README.md). The `run.ps1` script has been moved to the project root.
 
-The ERP API provides product information for the test products (IDs: 10, 11, 12) via the `/products/{id}` endpoint.
+## Test Structure
 
-### Docker Compose Files
+The test suite includes:
 
-Three versions are available:
+### Smoke Tests
+- **ApiSmokeTest**: Verifies basic API connectivity
+- **UiSmokeTest**: Verifies home page loads
 
-- **docker-compose.yml** - Default file that includes `docker-compose.local.yml` (for developer convenience)
-- **docker-compose.local.yml** - Builds the monolith image locally (for development)
-- **docker-compose.ci.yml** - Uses pre-built monolith image from container registry (for CI/CD)
+### E2E Tests (API)
+- **ApiE2eTest**: Tests order management via REST API
+  - Place order
+  - Get order details
+  - Cancel order
+  - Validation (negative quantity, non-integer SKU, non-integer quantity)
 
-Developers can simply run `docker compose up` which will use the default local build configuration.
+### E2E Tests (UI)
+- **UiE2eTest**: Tests order management via web interface (Playwright)
+  - Calculate total order price
+  - Retrieve order history
+  - Cancel order
+  - Validation (negative quantity, non-integer SKU, non-integer quantity)
 
-## Prerequisites
+## Test Data
 
-Check that you have Powershell 7
+Tests use the following product SKUs (defined in `json-server-db.erp-api.json` at root):
+- **SKU 10**: HP Pavilion Laptop - $109.95
+- **SKU 11**: Samsung Galaxy Book - $499.99
+- **SKU 12**: Huawei P30 - $679.99
 
-```shell
-$PSVersionTable.PSVersion
-```
+## Running Tests Locally
 
-## Instructions
+From the **project root**:
 
-Open up the 'system-test' folder
-
-```shell
-cd system-test
-```
-
-Start System
-
-### Local Mode (builds image locally - default)
-
-```shell
-.\run.ps1 start
-# or explicitly
-.\run.ps1 start local
-```
-
-### Pipeline Mode (uses pre-built image from registry)
-
-```shell
-.\run.ps1 start pipeline
-```
-
-Run Tests
-
-```shell
+```powershell
+# Run all tests
 .\run.ps1 test
+
+# Or run everything (build, start services, test, show logs)
+.\run.ps1 all
 ```
 
-Stop System
+From the **system-test directory** (direct Gradle):
 
-```shell
-.\run.ps1 stop
-# or for pipeline mode
-.\run.ps1 stop pipeline
+```powershell
+.\gradlew test
 ```
 
-View Logs
+## Test Reports
 
-```shell
-# View logs for all services
-.\run.ps1 logs
-# or for pipeline mode
-.\run.ps1 logs pipeline
+After running tests, view the HTML report:
+```
+system-test/build/reports/tests/test/index.html
 ```
 
-## PowerShell Script
+## Configuration
 
-The `run.ps1` script provides the following commands:
+Test configuration is in `src/test/resources/application.yml`:
 
-- **.\run.ps1 all [mode]** - Runs everything: builds (local only), starts services, runs tests, then shows logs
-- **.\run.ps1 start [mode]** - Starts all Docker services (mode: local or pipeline, default: local)
-- **.\run.ps1 test** - Runs all tests
-- **.\run.ps1 stop [mode]** - Stops all Docker services
-- **.\run.ps1 logs [mode]** - Views container logs for all services
-
-**Modes:**
-- `local` (default) - Builds monolith image locally
-- `pipeline` - Uses pre-built monolith image from container registry
+```yaml
+test:
+  eshop:
+    baseUrl: http://localhost:8080  # Monolith URL
+  wait:
+    seconds: 10  # Timeout for UI waits
+```
 

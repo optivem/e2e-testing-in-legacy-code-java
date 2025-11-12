@@ -1,43 +1,60 @@
-# Monolith (Java)
+# Monolith
 
-This is a sample monolithic application written in Java.
+This is the main e-shop application built with Spring Boot.
 
-## PRerequisites
+> **Note**: For building and running the system, see the [root README](../README.md). Use the `run.ps1` script at the project root.
 
-Check that you have Powershell 7
+## Prerequisites
 
-```shell
-$PSVersionTable.PSVersion
-```
+- Java 21 (JDK)
+- Gradle 8.14 (wrapper included)
 
-Ensure you have JDK 21 installed
+### Verify Prerequisites
 
+Check Java version:
 ```shell
 java -version
 ```
 
-Check that JAVA_HOME is set correctly & points to your JDK 21 installation
-
+Check JAVA_HOME is set correctly:
 ```shell
 echo $env:JAVA_HOME
 ```
 
-Ensure you have Gradle 8.14 installed
-
+Check Gradle version:
 ```shell
-./gradlew --version
+.\gradlew --version
 ```
 
-## Instructions
+## Building
 
-Open up the 'monolith' folder
-
-```shell
-cd monolith
+### Using root orchestration script (recommended)
+From the **project root**:
+```powershell
+.\run.ps1 start  # Builds and starts everything
 ```
 
-Build the application
-
+### Direct Gradle build
+From the **monolith directory**:
 ```shell
-.\build.ps1
+.\gradlew clean build
 ```
+
+The JAR file will be created in `build/libs/`
+
+## Running Locally
+
+From the **monolith directory**:
+```shell
+.\gradlew bootRun
+```
+
+The application will start on `http://localhost:8080`
+
+## Configuration
+
+Configuration is in `src/main/resources/application.yml`:
+
+- **e2e profile** (default): Uses `http://erp-api:3000` for ERP API (for Docker)
+- **qa profile**: Uses `http://erp-api:3000` for ERP API
+- **prod profile**: Uses `http://erp-api:3000` for ERP API

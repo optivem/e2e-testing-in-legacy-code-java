@@ -22,6 +22,30 @@ E-Shop system with acceptance testing for legacy code scenarios.
 - Docker Desktop
 - PowerShell 7+
 
+Ensure you have JDK 21 installed
+
+```shell
+java -version
+```
+
+Check that JAVA_HOME is set correctly & points to your JDK 21 installation
+
+```shell
+echo $env:JAVA_HOME
+```
+
+Ensure you have Gradle 8.14 installed
+
+```shell
+./gradlew --version
+```
+
+Check that you have Powershell 7
+
+```shell
+$PSVersionTable.PSVersion
+```
+
 ### Run Everything
 
 ```powershell
@@ -71,9 +95,70 @@ This will:
 ## Testing
 
 The system includes:
-- **Smoke Tests**: Basic connectivity and health checks
-- **E2E Tests (API)**: Order management via REST API
-- **E2E Tests (UI)**: Order management via web interface
+
+### Smoke Tests
+- **ApiSmokeTest**: Verifies basic API connectivity
+- **UiSmokeTest**: Verifies home page loads
+
+### E2E Tests (API)
+- **ApiE2eTest**: Tests order management via REST API
+  - Place order
+  - Get order details
+  - Cancel order
+  - Validation (negative quantity, non-integer SKU, non-integer quantity)
+
+### E2E Tests (UI)
+- **UiE2eTest**: Tests order management via web interface (Playwright)
+  - Calculate total order price
+  - Retrieve order history
+  - Cancel order
+  - Validation (negative quantity, non-integer SKU, non-integer quantity)
+
+### Test Data
+
+Tests use the following product SKUs (defined in `json-server-db.erp-api.json`):
+- **SKU 10**: HP Pavilion Laptop - $109.95
+- **SKU 11**: Samsung Galaxy Book - $499.99
+- **SKU 12**: Huawei P30 - $679.99
+
+### Test Configuration
+
+Test configuration is in `system-test/src/test/resources/application.yml`:
+- `test.eshop.baseUrl`: Target URL for tests (default: `http://localhost:8080`)
+- `test.wait.seconds`: Timeout for UI waits (default: 10 seconds)
+
+### Working on Monolith
+
+**Build directly:**
+```powershell
+cd monolith
+.\gradlew clean build
+```
+
+**Run locally (without Docker):**
+```powershell
+cd monolith
+.\gradlew bootRun
+```
+Application runs on `http://localhost:8080`
+
+**Configuration profiles** (`monolith/src/main/resources/application.yml`):
+- `e2e` (default): Uses `http://erp-api:3000` - for Docker environments
+- `qa`: Uses `http://erp-api:3000` - for QA environments
+- `prod`: Uses `http://erp-api:3000` - for production
+
+### Working on Tests
+
+**Run tests directly:**
+```powershell
+cd system-test
+.\gradlew test
+```
+
+**View test report:**
+```
+system-test/build/reports/tests/test/index.html
+```
 
 Test reports are generated at: `system-test/build/reports/tests/test/index.html`
 
