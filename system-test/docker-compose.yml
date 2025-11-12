@@ -1,6 +1,6 @@
 services:
 
   monolith:
-    image: ghcr.io/optivem/e2e-testing-in-legacy-code-java/monolith:latest
+    image: ghcr.io/optivem/acceptance-testing-in-legacy-code-java/monolith:latest
     ports:
       - "8080:8080"
