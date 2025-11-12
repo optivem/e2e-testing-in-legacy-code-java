@@ -32,20 +32,20 @@ public class OrderService {
     }
 
     public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
-        var productId = request.getProductId();
+        var sku = request.getSku();
         var quantity = request.getQuantity();
         
-        if (productId <= 0) {
-            throw new ValidationException("Product ID must be greater than 0, received: " + productId);
+        if (sku <= 0) {
+            throw new ValidationException("SKU must be greater than 0, received: " + sku);
         }
         if (quantity <= 0) {
             throw new ValidationException("Quantity must be greater than 0, received: " + quantity);
         }
         
         var orderNumber = orderRepository.nextOrderNumber();
-        var unitPrice = erpGateway.getUnitPrice(productId);
+        var unitPrice = erpGateway.getUnitPrice(sku);
         var totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
-        var order = new Order(orderNumber, productId, quantity, unitPrice, totalPrice, OrderStatus.PLACED);
+        var order = new Order(orderNumber, sku, quantity, unitPrice, totalPrice, OrderStatus.PLACED);
 
         orderRepository.addOrder(order);
 
@@ -65,7 +65,7 @@ public class OrderService {
 
         var response = new GetOrderResponse();
         response.setOrderNumber(orderNumber);
-        response.setProductId(order.getProductId());
+        response.setSku(order.getSku());
         response.setQuantity(order.getQuantity());
         response.setUnitPrice(order.getUnitPrice());
         response.setTotalPrice(order.getTotalPrice());

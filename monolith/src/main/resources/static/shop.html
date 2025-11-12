@@ -23,7 +23,7 @@
     
     <form id="orderForm" method="post" action="/shop">
         <div>
-            <label for="productId">Product ID:</label>
+            <label for="productId">SKU:</label>
             <input type="text" id="productId" name="productId" aria-label="Product ID" inputmode="numeric" required />
         </div>
         <div>
@@ -49,10 +49,10 @@
                 resultDiv.textContent = '';
                 resultDiv.classList.remove('show');
 
-                // Validate that product ID is an integer
+                // Validate that sku is an integer
                 const productIdNum = parseFloat(productIdValue);
                 if (isNaN(productIdNum) || !Number.isInteger(productIdNum)) {
-                    resultDiv.textContent = 'Product ID must be an integer';
+                    resultDiv.textContent = 'SKU must be an integer';
                     resultDiv.classList.add('show');
                     return;
                 }
@@ -81,7 +81,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        productId: productId,
+                        sku: productId,
                         quantity: quantity
                     })
                 });

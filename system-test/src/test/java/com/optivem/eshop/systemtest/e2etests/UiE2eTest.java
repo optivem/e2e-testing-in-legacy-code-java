@@ -125,7 +125,7 @@ class UiE2eTest {
         var displayTotalPrice = page.locator("[aria-label='Display Total Price']");
 
         assertTrue(displayOrderNumber.inputValue().equals(orderNumber), "Should display the order number: " + orderNumber);
-        assertTrue(displayProductId.inputValue().equals("11"), "Should display product ID 11");
+        assertTrue(displayProductId.inputValue().equals("11"), "Should display SKU 11");
         assertTrue(displayQuantity.inputValue().equals("3"), "Should display quantity 3");
         assertTrue(displayUnitPrice.inputValue().startsWith("$"), "Should display unit price with $ symbol");
         assertTrue(displayTotalPrice.inputValue().startsWith("$"), "Should display total price with $ symbol");
@@ -250,7 +250,7 @@ class UiE2eTest {
                 "Error message should be 'Quantity must be an integer' for quantity: " + quantityValue + ". Actual: " + errorMessageText);
     }
 
-    private static Stream<Arguments> provideInvalidProductIdValues() {
+    private static Stream<Arguments> provideInvalidSkuValues() {
         return Stream.of(
                 Arguments.of("10.5"),  // Decimal value
                 Arguments.of("xyz")    // String value
@@ -258,13 +258,13 @@ class UiE2eTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInvalidProductIdValues")
-    void shouldRejectOrderWithNonIntegerProductId(String productIdValue) {
+    @MethodSource("provideInvalidSkuValues")
+    void shouldRejectOrderWithNonIntegerSku(String skuValue) {
         // Act
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill(productIdValue);
+        productIdInput.fill(skuValue);
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill("5");
@@ -279,7 +279,7 @@ class UiE2eTest {
         var errorMessageText = errorMessage.textContent();
 
         // Assert
-        assertTrue(errorMessageText.contains("Product ID must be an integer"),
-                "Error message should be 'Product ID must be an integer' for productId: " + productIdValue + ". Actual: " + errorMessageText);
+        assertTrue(errorMessageText.contains("SKU must be an integer"),
+                "Error message should be 'SKU must be an integer' for sku: " + skuValue + ". Actual: " + errorMessageText);
     }
 }

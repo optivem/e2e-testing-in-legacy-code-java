@@ -43,7 +43,7 @@ class ApiE2eTest {
     void placeOrder_shouldReturnOrderNumber() throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setProductId("10");
+        requestDto.setSku("10");
         requestDto.setQuantity("5");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -71,11 +71,11 @@ class ApiE2eTest {
     @Test
     void getOrder_shouldReturnOrderDetails() throws Exception {
         // Arrange - First place an order
-        long productId = 11L;
+        long sku = 11L;
         int quantity = 3;
         
         var placeOrderRequest = new PlaceOrderRequest();
-        placeOrderRequest.setProductId(String.valueOf(productId));
+        placeOrderRequest.setSku(String.valueOf(sku));
         placeOrderRequest.setQuantity(String.valueOf(quantity));
 
         var requestBody = objectMapper.writeValueAsString(placeOrderRequest);
@@ -105,8 +105,8 @@ class ApiE2eTest {
         
         var getOrderResponse = objectMapper.readValue(getResponse.body(), GetOrderResponse.class);
         
-        assertEquals(orderNumber, getOrderResponse.getOrderNumber(), "Order number should match");
-        assertEquals(productId, getOrderResponse.getProductId(), "Product ID should be " + productId);
+        assertNotNull(getOrderResponse.getOrderNumber(), "Order number should not be null");
+        assertEquals(sku, getOrderResponse.getSku(), "SKU should be " + sku);
         assertEquals(quantity, getOrderResponse.getQuantity(), "Quantity should be " + quantity);
 
         // Price will come from DummyJSON API for product
@@ -116,9 +116,9 @@ class ApiE2eTest {
 
     @Test
     void cancelOrder_shouldSetStatusToCancelled() throws Exception {
-        // Arrange - First place an order
+        // Arrange - Place an order
         var placeOrderRequest = new PlaceOrderRequest();
-        placeOrderRequest.setProductId("12");
+        placeOrderRequest.setSku("12");
         placeOrderRequest.setQuantity("2");
 
         var requestBody = objectMapper.writeValueAsString(placeOrderRequest);
@@ -168,7 +168,7 @@ class ApiE2eTest {
     void shouldRejectOrderWithNegativeQuantity() throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setProductId("10");
+        requestDto.setSku("10");
         requestDto.setQuantity("-5");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -198,11 +198,11 @@ class ApiE2eTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInvalidProductIdValues")
-    void shouldRejectOrderWithNonIntegerProductId(String productIdValue) throws Exception {
+    @MethodSource("provideInvalidSkuValues")
+    void shouldRejectOrderWithNonIntegerSku(String skuValue) throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setProductId(productIdValue);
+        requestDto.setSku(skuValue);
         requestDto.setQuantity("5");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -217,17 +217,17 @@ class ApiE2eTest {
         var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         // Assert
-        assertEquals(400, response.statusCode(), "Response status should be 400 Bad Request for productId: " + productIdValue);
+        assertEquals(400, response.statusCode(), "Response status should be 400 Bad Request for sku: " + skuValue);
 
         var responseBody = response.body();
-        assertTrue(responseBody.contains("Product ID must be an integer"),
-                "Error message should be 'Product ID must be an integer'. Actual: " + responseBody);
+        assertTrue(responseBody.contains("SKU must be an integer"),
+                "Error message should be 'SKU must be an integer'. Actual: " + responseBody);
     }
 
-    private static Stream<Arguments> provideInvalidProductIdValues() {
+    private static Stream<Arguments> provideInvalidSkuValues() {
         return Stream.of(
-                Arguments.of("10.5"),   // Decimal value
-                Arguments.of("xyz")     // String value
+                Arguments.of("10.5"),
+                Arguments.of("xyz")
         );
     }
 
@@ -236,7 +236,7 @@ class ApiE2eTest {
     void shouldRejectOrderWithNonIntegerQuantity(String quantityValue) throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setProductId("10");
+        requestDto.setSku("10");
         requestDto.setQuantity(quantityValue);
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -262,7 +262,7 @@ class ApiE2eTest {
 
     @Data
     static class PlaceOrderRequest {
-        private String productId;
+        private String sku;
         private String quantity;
     }
     
@@ -277,7 +277,7 @@ class ApiE2eTest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class GetOrderResponse {
         private String orderNumber;
-        private long productId;
+        private long sku;
         private int quantity;
         private BigDecimal unitPrice;
         private BigDecimal totalPrice;

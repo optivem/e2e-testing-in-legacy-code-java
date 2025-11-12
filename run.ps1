@@ -85,9 +85,28 @@ function Start-System {
     }
 
     Write-Host "Cleaning up any existing containers..." -ForegroundColor Cyan
+
+    # Stop all compose configurations
     docker compose -f docker-compose.yml down 2>$null
     docker compose -f docker-compose.local.yml down 2>$null
     docker compose -f docker-compose.pipeline.yml down 2>$null
+
+    # Force stop any containers that might be using our ports
+    Write-Host "Checking for port conflicts..." -ForegroundColor Cyan
+    $containersOnPort3000 = docker ps -q --filter "publish=3000" 2>$null
+    $containersOnPort8080 = docker ps -q --filter "publish=8080" 2>$null
+
+    if ($containersOnPort3000) {
+        Write-Host "  Stopping containers using port 3000..." -ForegroundColor Yellow
+        docker stop $containersOnPort3000 2>$null
+        docker rm $containersOnPort3000 2>$null
+    }
+
+    if ($containersOnPort8080) {
+        Write-Host "  Stopping containers using port 8080..." -ForegroundColor Yellow
+        docker stop $containersOnPort8080 2>$null
+        docker rm $containersOnPort8080 2>$null
+    }
 
     # Wait to ensure containers are fully stopped and ports are released
     Start-Sleep -Seconds 2
@@ -110,13 +129,13 @@ function Start-System {
     Write-Host "http://localhost:8080" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "To view logs: " -NoNewline
-    $servicesReady = Wait-ForServices
+    Write-Host ".\run.ps1 logs $Mode" -ForegroundColor Cyan
     Write-Host "To stop: " -NoNewline
-    if (-not $servicesReady) {
+    Write-Host ".\run.ps1 stop $Mode" -ForegroundColor Cyan
 }
 
 function Test-System {
-        exit 1
+    Write-Host "Running tests..." -ForegroundColor Cyan
 
     Set-Location system-test
     & .\gradlew.bat test
@@ -168,13 +187,13 @@ function Run-All {
     }
 
     Write-Host ""
-    & .\wait-for-services.ps1
+    $servicesReady = Wait-ForServices
 
-    if ($LASTEXITCODE -ne 0) {
+    if (-not $servicesReady) {
         Write-Host ""
         Write-Host "Services failed to become ready! Aborting..." -ForegroundColor Red
         Stop-System
-        exit $LASTEXITCODE
+        exit 1
     }
 
     Test-System
