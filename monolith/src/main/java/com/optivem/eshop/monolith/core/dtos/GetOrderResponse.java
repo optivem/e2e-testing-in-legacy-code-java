@@ -13,4 +13,5 @@ public class GetOrderResponse {
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
     private OrderStatus status;
+    private String country;
 }

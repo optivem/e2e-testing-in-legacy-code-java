@@ -30,6 +30,10 @@
             <label for="quantity">Quantity:</label>
             <input type="text" id="quantity" name="quantity" aria-label="Quantity" inputmode="numeric" />
         </div>
+        <div>
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" aria-label="Country" value="US" maxlength="2" />
+        </div>
         <button type="submit" aria-label="Place Order">Place Order</button>
     </form>
     
@@ -44,6 +48,7 @@
             try {
                 const productIdValue = document.getElementById('productId').value;
                 const quantityValue = document.getElementById('quantity').value;
+                const countryValue = document.getElementById('country').value;
 
                 // Clear previous messages and hide
                 resultDiv.textContent = '';
@@ -59,6 +64,7 @@
 
                 const sku = productIdValue.trim();
                 const quantity = parseInt(quantityValue);
+                const country = countryValue.trim();
 
                 // Validate that SKU is not empty
                 if (!sku) {
@@ -74,6 +80,13 @@
                     return;
                 }
 
+                // Validate that country is not empty
+                if (!country) {
+                    resultDiv.textContent = 'Country must not be empty';
+                    resultDiv.classList.add('show');
+                    return;
+                }
+
                 const response = await fetch('/api/orders', {
                     method: 'POST',
                     headers: {
@@ -81,7 +94,8 @@
                     },
                     body: JSON.stringify({
                         sku: sku,
-                        quantity: quantity
+                        quantity: quantity,
+                        country: country
                     })
                 });
 

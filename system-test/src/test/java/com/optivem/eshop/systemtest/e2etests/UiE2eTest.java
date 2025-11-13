@@ -322,4 +322,42 @@ class UiE2eTest {
         assertTrue(errorMessageText.contains("Quantity must be an integer"),
                 "Error message should be 'Quantity must be an integer' for quantity: " + quantityValue + ". Actual: " + errorMessageText);
     }
+
+    private static Stream<Arguments> provideEmptyCountryValues() {
+        return Stream.of(
+                Arguments.of(""),      // Empty string
+                Arguments.of("   ")    // Whitespace string
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideEmptyCountryValues")
+    void shouldRejectOrderWithEmptyCountry(String countryValue) {
+        // Act
+        page.navigate(baseUrl + "/shop.html");
+
+        var productIdInput = page.locator("[aria-label='Product ID']");
+        productIdInput.fill("HP-15");
+
+        var quantityInput = page.locator("[aria-label='Quantity']");
+        quantityInput.fill("5");
+
+        var countryInput = page.locator("[aria-label='Country']");
+        countryInput.fill(countryValue);
+
+        var placeOrderButton = page.locator("[aria-label='Place Order']");
+        placeOrderButton.click();
+
+        // Wait for error message to appear and become visible
+        var errorMessage = page.locator("[role='alert']");
+        errorMessage.waitFor(new Locator.WaitForOptions()
+                .setTimeout(TestConfiguration.getWaitSeconds() * 1000)
+                .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
+
+        var errorMessageText = errorMessage.textContent();
+
+        // Assert
+        assertTrue(errorMessageText.contains("Country must not be empty"),
+                "Error message should be 'Country must not be empty' for country: '" + countryValue + "'. Actual: " + errorMessageText);
+    }
 }

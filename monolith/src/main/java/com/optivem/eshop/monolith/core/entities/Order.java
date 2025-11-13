@@ -11,8 +11,9 @@ public class Order {
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
     private OrderStatus status;
+    private String country;
 
-    public Order(String orderNumber, String sku, int quantity, BigDecimal unitPrice, BigDecimal totalPrice, OrderStatus status) {
+    public Order(String orderNumber, String sku, int quantity, BigDecimal unitPrice, BigDecimal totalPrice, OrderStatus status, String country) {
         if (orderNumber == null) {
             throw new IllegalArgumentException("orderNumber cannot be null");
         }
@@ -32,5 +33,6 @@ public class Order {
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
         this.status = status;
+        this.country = country;
     }
 }

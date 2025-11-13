@@ -45,6 +45,7 @@ class ApiE2eTest {
         var requestDto = new PlaceOrderRequest();
         requestDto.setSku("HP-15");
         requestDto.setQuantity("5");
+        requestDto.setCountry("US");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
         
@@ -73,10 +74,12 @@ class ApiE2eTest {
         // Arrange - First place an order
         String sku = "SAM-2020";
         int quantity = 3;
-        
+        String country = "DE";
+
         var placeOrderRequest = new PlaceOrderRequest();
         placeOrderRequest.setSku(sku);
         placeOrderRequest.setQuantity(String.valueOf(quantity));
+        placeOrderRequest.setCountry(country);
 
         var requestBody = objectMapper.writeValueAsString(placeOrderRequest);
         
@@ -108,6 +111,7 @@ class ApiE2eTest {
         assertNotNull(getOrderResponse.getOrderNumber(), "Order number should not be null");
         assertEquals(sku, getOrderResponse.getSku(), "SKU should be " + sku);
         assertEquals(quantity, getOrderResponse.getQuantity(), "Quantity should be " + quantity);
+        assertEquals(country, getOrderResponse.getCountry(), "Country should be " + country);
 
         // Price will come from DummyJSON API for product
         assertNotNull(getOrderResponse.getUnitPrice(), "Unit price should not be null");
@@ -120,6 +124,7 @@ class ApiE2eTest {
         var placeOrderRequest = new PlaceOrderRequest();
         placeOrderRequest.setSku("HUA-P30");
         placeOrderRequest.setQuantity("2");
+        placeOrderRequest.setCountry("UK");
 
         var requestBody = objectMapper.writeValueAsString(placeOrderRequest);
         
@@ -170,6 +175,7 @@ class ApiE2eTest {
         var requestDto = new PlaceOrderRequest();
         requestDto.setSku("HP-15");
         requestDto.setQuantity("-5");
+        requestDto.setCountry("US");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -205,6 +211,7 @@ class ApiE2eTest {
         var requestDto = new PlaceOrderRequest();
         requestDto.setSku(skuValue);
         requestDto.setQuantity("5");
+        requestDto.setCountry("US");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -240,6 +247,7 @@ class ApiE2eTest {
         var requestDto = new PlaceOrderRequest();
         requestDto.setSku("HP-15");
         requestDto.setQuantity(quantityValue);
+        requestDto.setCountry("US");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -276,6 +284,7 @@ class ApiE2eTest {
         var requestDto = new PlaceOrderRequest();
         requestDto.setSku("HP-15");
         requestDto.setQuantity(quantityValue);
+        requestDto.setCountry("US");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -296,12 +305,48 @@ class ApiE2eTest {
                 "Error message should be 'Quantity must be an integer'. Actual: " + responseBody);
     }
 
+    private static Stream<Arguments> provideEmptyCountryValues() {
+        return Stream.of(
+                Arguments.of((String) null),  // Null value
+                Arguments.of(""),             // Empty string
+                Arguments.of("   ")           // Whitespace string
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideEmptyCountryValues")
+    void shouldRejectOrderWithEmptyCountry(String countryValue) throws Exception {
+        // Arrange
+        var requestDto = new PlaceOrderRequest();
+        requestDto.setSku("HP-15");
+        requestDto.setQuantity("5");
+        requestDto.setCountry(countryValue);
+
+        var requestBody = objectMapper.writeValueAsString(requestDto);
+
+        var request = HttpRequest.newBuilder()
+                .uri(new URI(BASE_URL + "/api/orders"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        // Act
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(422, response.statusCode(), "Response status should be 422 Unprocessable Entity for Country: " + countryValue);
+
+        var responseBody = response.body();
+        assertTrue(responseBody.contains("Country must not be empty"),
+                "Error message should be 'Country must not be empty'. Actual: " + responseBody);
+    }
 
 
     @Data
     static class PlaceOrderRequest {
         private String sku;
         private String quantity;
+        private String country;
     }
     
     @Data
@@ -320,5 +365,6 @@ class ApiE2eTest {
         private BigDecimal unitPrice;
         private BigDecimal totalPrice;
         private String status;
+        private String country;
     }
 }

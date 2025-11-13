@@ -34,8 +34,8 @@ public class OrderService {
     public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
         var sku = request.getSku();
         var quantity = request.getQuantity();
+        var country = request.getCountry();
 
-        // Validate product exists in ERP and get its price
         var productDetails = erpGateway.getProductDetails(sku);
         if (productDetails.isEmpty()) {
             throw new ValidationException("Product does not exist for SKU: " + sku);
@@ -44,7 +44,7 @@ public class OrderService {
         var orderNumber = orderRepository.nextOrderNumber();
         var unitPrice = productDetails.get().getPrice();
         var totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
-        var order = new Order(orderNumber, sku, quantity, unitPrice, totalPrice, OrderStatus.PLACED);
+        var order = new Order(orderNumber, sku, quantity, unitPrice, totalPrice, OrderStatus.PLACED, country);
 
         orderRepository.addOrder(order);
 
@@ -69,6 +69,7 @@ public class OrderService {
         response.setUnitPrice(order.getUnitPrice());
         response.setTotalPrice(order.getTotalPrice());
         response.setStatus(order.getStatus());
+        response.setCountry(order.getCountry());
 
         return response;
     }
