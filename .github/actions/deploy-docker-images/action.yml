@@ -43,7 +43,6 @@ runs:
         echo "🐳 Starting Docker Compose for simulated deployment..."
         docker compose -f docker-compose.pipeline.yml up -d
       shell: bash
-      working-directory: system-test
 
     - name: Wait for Application to be Ready
       uses: optivem/wait-for-docker-compose-action@v1
@@ -51,8 +50,7 @@ runs:
         url: 'http://localhost:8080/'
         max-attempts: '30'
         wait-seconds: '10'
-        working-directory: system-test
-      
+
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
