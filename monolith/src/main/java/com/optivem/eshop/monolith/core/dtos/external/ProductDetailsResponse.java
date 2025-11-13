@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDetailsResponse {
-    private long id;
+    private String id;
     private BigDecimal price;
 }

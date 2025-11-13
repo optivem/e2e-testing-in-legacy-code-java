@@ -44,12 +44,12 @@ public class OrderService {
         
         // Validate product exists in ERP and get its price
         var productDetails = erpGateway.getProductDetails(sku);
-        if (productDetails == null) {
+        if (productDetails.isEmpty()) {
             throw new ValidationException("Product does not exist for SKU: " + sku);
         }
 
         var orderNumber = orderRepository.nextOrderNumber();
-        var unitPrice = productDetails.getPrice();
+        var unitPrice = productDetails.get().getPrice();
         var totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
         var order = new Order(orderNumber, sku, quantity, unitPrice, totalPrice, OrderStatus.PLACED);
 

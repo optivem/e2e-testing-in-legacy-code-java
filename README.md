@@ -1,4 +1,10 @@
-# Acceptance Testing in Legacy Code - Java
+# Acceptance Testing in Legacy Code (Java)
+
+[![commit-stage-monolith](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/commit-stage-monolith.yml/badge.svg)](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/commit-stage-monolith.yml)
+[![acceptance-stage](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/acceptance-stage.yml/badge.svg)](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/acceptance-stage.yml)
+[![qa-stage](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/qa-stage.yml/badge.svg)](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/qa-stage.yml)
+[![qa-signoff](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/qa-signoff.yml/badge.svg)](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/qa-signoff.yml)
+[![prod-stage](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/prod-stage.yml/badge.svg)](https://github.com/optivem/e2e-testing-in-legacy-code-java/actions/workflows/prod-stage.yml)
 
 E-Shop system with acceptance testing for legacy code scenarios.
 
@@ -117,9 +123,9 @@ The system includes:
 ### Test Data
 
 Tests use the following SKUs (string identifiers defined in `json-server-db.erp-api.json`):
-- **SKU "10"**: HP Pavilion Laptop - $109.95
-- **SKU "11"**: Samsung Galaxy Book - $499.99
-- **SKU "12"**: Huawei P30 - $679.99
+- **SKU "HP-15"**: HP Pavilion Laptop - $109.95
+- **SKU "SAM-2020"**: Samsung Galaxy Book - $499.99
+- **SKU "HUA-P30"**: Huawei P30 - $679.99
 
 ### Test Configuration
 
@@ -209,3 +215,13 @@ netstat -ano | findstr :8080
 netstat -ano | findstr :3000
 ```
 
+## License
+
+[![MIT License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
+
+This project is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+## Contributors
+
+- [Valentina Jemuović](https://github.com/valentinajemuovic)
+- [Jelena Cupać](https://github.com/jcupac)

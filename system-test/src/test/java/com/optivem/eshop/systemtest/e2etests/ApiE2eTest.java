@@ -43,7 +43,7 @@ class ApiE2eTest {
     void placeOrder_shouldReturnOrderNumber() throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setSku("10");
+        requestDto.setSku("HP-15");
         requestDto.setQuantity("5");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -71,7 +71,7 @@ class ApiE2eTest {
     @Test
     void getOrder_shouldReturnOrderDetails() throws Exception {
         // Arrange - First place an order
-        String sku = "11";
+        String sku = "SAM-2020";
         int quantity = 3;
         
         var placeOrderRequest = new PlaceOrderRequest();
@@ -118,7 +118,7 @@ class ApiE2eTest {
     void cancelOrder_shouldSetStatusToCancelled() throws Exception {
         // Arrange - Place an order
         var placeOrderRequest = new PlaceOrderRequest();
-        placeOrderRequest.setSku("12");
+        placeOrderRequest.setSku("HUA-P30");
         placeOrderRequest.setQuantity("2");
 
         var requestBody = objectMapper.writeValueAsString(placeOrderRequest);
@@ -168,7 +168,7 @@ class ApiE2eTest {
     void shouldRejectOrderWithNegativeQuantity() throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setSku("10");
+        requestDto.setSku("HP-15");
         requestDto.setQuantity("-5");
 
         var requestBody = objectMapper.writeValueAsString(requestDto);
@@ -203,7 +203,7 @@ class ApiE2eTest {
     void shouldRejectOrderWithNonIntegerQuantity(String quantityValue) throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();
-        requestDto.setSku("10");
+        requestDto.setSku("HP-15");
         requestDto.setQuantity(quantityValue);
 
         var requestBody = objectMapper.writeValueAsString(requestDto);

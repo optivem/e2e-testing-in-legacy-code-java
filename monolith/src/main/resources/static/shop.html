@@ -49,14 +49,6 @@
                 resultDiv.textContent = '';
                 resultDiv.classList.remove('show');
 
-                // Validate that sku is an integer
-                const productIdNum = parseFloat(productIdValue);
-                if (isNaN(productIdNum) || !Number.isInteger(productIdNum)) {
-                    resultDiv.textContent = 'SKU must be an integer';
-                    resultDiv.classList.add('show');
-                    return;
-                }
-
                 // Validate that quantity is an integer
                 const quantityNum = parseFloat(quantityValue);
                 if (isNaN(quantityNum) || !Number.isInteger(quantityNum)) {
@@ -65,8 +57,15 @@
                     return;
                 }
 
-                const productId = parseInt(productIdValue);
+                const sku = productIdValue.trim();
                 const quantity = parseInt(quantityValue);
+
+                // Validate that SKU is not empty
+                if (!sku) {
+                    resultDiv.textContent = 'SKU must not be empty';
+                    resultDiv.classList.add('show');
+                    return;
+                }
 
                 // Validate that quantity is positive
                 if (quantity <= 0) {
@@ -81,7 +80,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        sku: productId,
+                        sku: sku,
                         quantity: quantity
                     })
                 });
@@ -94,9 +93,6 @@
                     if (orderDetailsResponse.ok) {
                         const orderDetails = await orderDetailsResponse.json();
                         resultDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber + ' and Total Price $' + orderDetails.totalPrice.toFixed(2);
-                        resultDiv.classList.add('show');
-                    } else {
-                        resultDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber;
                         resultDiv.classList.add('show');
                     }
                 } else if (response.status === 400 || response.status === 422) {

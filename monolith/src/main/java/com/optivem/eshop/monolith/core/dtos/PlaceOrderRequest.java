@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class PlaceOrderRequest {
-    @TypeValidationMessage("SKU must be an integer")
     private String sku;
 
     @TypeValidationMessage("Quantity must be an integer")

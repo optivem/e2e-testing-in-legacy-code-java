@@ -3,16 +3,17 @@ package com.optivem.eshop.systemtest.e2etests;
 import com.microsoft.playwright.*;
 import com.optivem.eshop.systemtest.TestConfiguration;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UiE2eTest {
     
@@ -48,7 +49,7 @@ class UiE2eTest {
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill("10");
+        productIdInput.fill("HP-15");
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill("5");
@@ -78,7 +79,7 @@ class UiE2eTest {
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill("11");
+        productIdInput.fill("SAM-2020");
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill("3");
@@ -125,7 +126,7 @@ class UiE2eTest {
         var displayTotalPrice = page.locator("[aria-label='Display Total Price']");
 
         assertTrue(displayOrderNumber.inputValue().equals(orderNumber), "Should display the order number: " + orderNumber);
-        assertTrue(displayProductId.inputValue().equals("11"), "Should display SKU 11");
+        assertTrue(displayProductId.inputValue().equals("SAM-2020"), "Should display SKU 11");
         assertTrue(displayQuantity.inputValue().equals("3"), "Should display quantity 3");
         assertTrue(displayUnitPrice.inputValue().startsWith("$"), "Should display unit price with $ symbol");
         assertTrue(displayTotalPrice.inputValue().startsWith("$"), "Should display total price with $ symbol");
@@ -137,7 +138,7 @@ class UiE2eTest {
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill("12");
+        productIdInput.fill("HUA-P30");
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill("2");
@@ -150,10 +151,13 @@ class UiE2eTest {
         confirmationMessage.waitFor(new Locator.WaitForOptions().setTimeout(TestConfiguration.getWaitSeconds() * 1000));
 
         var confirmationMessageText = confirmationMessage.textContent();
+        assertNotNull(confirmationMessageText);
+        assertTrue(confirmationMessageText.startsWith("Success! Order has been created with Order Number"));
         var pattern = Pattern.compile("Success! Order has been created with Order Number ([\\w-]+)");
         var matcher = pattern.matcher(confirmationMessageText);
         assertTrue(matcher.find(), "Should extract order number from confirmation message");
         var orderNumber = matcher.group(1);
+        assertNotNull(orderNumber);
 
         // Act - Navigate to Order History and search for the order
         page.navigate(baseUrl + "/");
@@ -198,7 +202,7 @@ class UiE2eTest {
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill("10");
+        productIdInput.fill("HP-15");
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill("-5");
@@ -231,7 +235,7 @@ class UiE2eTest {
         page.navigate(baseUrl + "/shop.html");
 
         var productIdInput = page.locator("[aria-label='Product ID']");
-        productIdInput.fill("10");
+        productIdInput.fill("HP-15");
 
         var quantityInput = page.locator("[aria-label='Quantity']");
         quantityInput.fill(quantityValue);

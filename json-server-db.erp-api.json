@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 10,
+      "id": "HP-15",
       "title": "HP Pavilion 15-DK1056WM",
       "description": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10",
       "price": 109.95,
@@ -9,7 +9,7 @@
       "brand": "HP Pavilion"
     },
     {
-      "id": 11,
+      "id": "SAM-2020",
       "title": "Samsung Galaxy Book",
       "description": "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
       "price": 499.99,
@@ -17,7 +17,7 @@
       "brand": "Samsung"
     },
     {
-      "id": 12,
+      "id": "HUA-P30",
       "title": "Huawei P30",
       "description": "Huawei's re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
       "price": 679.99,
@@ -26,4 +26,3 @@
     }
   ]
 }
-
