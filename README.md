@@ -24,12 +24,6 @@ Check that JAVA_HOME is set correctly & points to your JDK 21 installation
 echo $env:JAVA_HOME
 ```
 
-Ensure you have Gradle 8.14 installed
-
-```shell
-./gradlew --version
-```
-
 Check that you have Powershell 7
 
 ```shell
