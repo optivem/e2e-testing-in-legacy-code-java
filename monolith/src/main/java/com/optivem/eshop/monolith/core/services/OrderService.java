@@ -109,6 +109,12 @@ public class OrderService {
         response.setSku(order.getSku());
         response.setQuantity(order.getQuantity());
         response.setUnitPrice(order.getUnitPrice());
+        response.setOriginalPrice(order.getOriginalPrice());
+        response.setDiscountRate(order.getDiscountRate());
+        response.setDiscountAmount(order.getDiscountAmount());
+        response.setSubtotalPrice(order.getSubtotalPrice());
+        response.setTaxRate(order.getTaxRate());
+        response.setTaxAmount(order.getTaxAmount());
         response.setTotalPrice(order.getTotalPrice());
         response.setStatus(order.getStatus());
         response.setCountry(order.getCountry());

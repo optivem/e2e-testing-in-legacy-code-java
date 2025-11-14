@@ -87,6 +87,8 @@
                     return;
                 }
 
+                console.log('Creating order with:', { sku, quantity, country });
+
                 const response = await fetch('/api/orders', {
                     method: 'POST',
                     headers: {
@@ -99,14 +101,31 @@
                     })
                 });
 
+                console.log('Order creation response status:', response.status, response.statusText);
+
                 if (response.ok) {
                     const order = await response.json();
-                    
-                    // Fetch order details to get the total price
+                    console.log('Order created successfully:', order);
+
+                    // Fetch order details to get the original price
                     const orderDetailsResponse = await fetch('/api/orders/' + order.orderNumber);
+                    console.log('Order details response status:', orderDetailsResponse.status);
+
                     if (orderDetailsResponse.ok) {
                         const orderDetails = await orderDetailsResponse.json();
-                        resultDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber + ' and Total Price $' + orderDetails.totalPrice.toFixed(2);
+                        console.log('Order details:', orderDetails);
+                        console.log('Total price value:', orderDetails.totalPrice);
+
+                        if (orderDetails.totalPrice !== undefined && orderDetails.totalPrice !== null) {
+                            resultDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber + ' and Original Price $' + orderDetails.totalPrice.toFixed(2);
+                        } else {
+                            resultDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber;
+                            console.warn('Total price is missing from order details');
+                        }
+                        resultDiv.classList.add('show');
+                    } else {
+                        console.error('Failed to fetch order details, status:', orderDetailsResponse.status);
+                        resultDiv.textContent = 'Order created but failed to fetch details. Order Number: ' + order.orderNumber;
                         resultDiv.classList.add('show');
                     }
                 } else if (response.status === 400 || response.status === 422) {
@@ -127,13 +146,25 @@
                         resultDiv.classList.add('show');
                     }
                 } else {
-                    resultDiv.textContent = 'Error placing order. Please try again.';
+                    console.error('Order creation failed with status:', response.status);
+                    console.error('Response status text:', response.statusText);
+
+                    // Try to get response body for more details
+                    response.text().then(body => {
+                        console.error('Response body:', body);
+                    }).catch(e => {
+                        console.error('Could not read response body:', e);
+                    });
+
+                    resultDiv.textContent = 'Error placing order. Please try again. (Status: ' + response.status + ')';
                     resultDiv.classList.add('show');
                 }
             } catch (error) {
-                resultDiv.textContent = 'Error placing order. Please try again.';
+                console.error('Exception during order creation:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
+                resultDiv.textContent = 'Error placing order. Please try again. (Exception: ' + error.message + ')';
                 resultDiv.classList.add('show');
-                console.error('Error:', error);
             }
         });
     </script>

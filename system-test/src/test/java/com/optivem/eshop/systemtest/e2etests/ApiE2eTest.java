@@ -115,7 +115,7 @@ class ApiE2eTest {
 
         // Price will come from DummyJSON API for product
         assertNotNull(getOrderResponse.getUnitPrice(), "Unit price should not be null");
-        assertNotNull(getOrderResponse.getTotalPrice(), "Total price should not be null");
+        assertNotNull(getOrderResponse.getOriginalPrice(), "Total price should not be null");
     }
 
     @Test
@@ -353,7 +353,6 @@ class ApiE2eTest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class PlaceOrderResponse {
         private String orderNumber;
-        private BigDecimal totalPrice;
     }
     
     @Data
@@ -363,7 +362,7 @@ class ApiE2eTest {
         private String sku;
         private int quantity;
         private BigDecimal unitPrice;
-        private BigDecimal totalPrice;
+        private BigDecimal originalPrice;
         private String status;
         private String country;
     }

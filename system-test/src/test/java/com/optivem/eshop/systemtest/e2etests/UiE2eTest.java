@@ -62,14 +62,14 @@ class UiE2eTest {
 
         var confirmationMessageText = confirmationMessage.textContent();
 
-        var pattern = Pattern.compile("Success! Order has been created with Order Number ([\\w-]+) and Total Price \\$(\\d+(?:\\.\\d{2})?)");
+        var pattern = Pattern.compile("Success! Order has been created with Order Number ([\\w-]+) and Original Price \\$(\\d+(?:\\.\\d{2})?)");
         var matcher = pattern.matcher(confirmationMessageText);
 
         assertTrue(matcher.find(), "Confirmation message should match expected pattern. Actual: " + confirmationMessageText);
 
-        var totalPriceString = matcher.group(2);
-        var totalPrice = Double.parseDouble(totalPriceString);
-        assertTrue(totalPrice > 0, "Total price should be positive. Actual: " + totalPrice);
+        var originalPriceString = matcher.group(2);
+        var originalPrice = Double.parseDouble(originalPriceString);
+        assertTrue(originalPrice > 0, "Original price should be positive. Actual: " + originalPrice);
     }
 
     @Test
@@ -122,13 +122,13 @@ class UiE2eTest {
         var displayProductId = page.locator("[aria-label='Display Product ID']");
         var displayQuantity = page.locator("[aria-label='Display Quantity']");
         var displayUnitPrice = page.locator("[aria-label='Display Unit Price']");
-        var displayTotalPrice = page.locator("[aria-label='Display Total Price']");
+        var displayOriginalPrice = page.locator("[aria-label='Display Original Price']");
 
         assertTrue(displayOrderNumber.inputValue().equals(orderNumber), "Should display the order number: " + orderNumber);
         assertTrue(displayProductId.inputValue().equals("SAM-2020"), "Should display SKU 11");
         assertTrue(displayQuantity.inputValue().equals("3"), "Should display quantity 3");
         assertTrue(displayUnitPrice.inputValue().startsWith("$"), "Should display unit price with $ symbol");
-        assertTrue(displayTotalPrice.inputValue().startsWith("$"), "Should display total price with $ symbol");
+        assertTrue(displayOriginalPrice.inputValue().startsWith("$"), "Should display original price with $ symbol");
     }
 
     @Test
