@@ -8,6 +8,14 @@ services:
       - ./json-server-db.erp-api.json:/data/db.json
     command: --watch /data/db.json --host 0.0.0.0
 
+  tax-api:
+    image: williamyeh/json-server
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./json-server-db.tax-api.json:/data/db.json
+    command: --watch /data/db.json --host 0.0.0.0 --port 3001
+
   monolith:
     build:
       context: ./monolith
@@ -18,4 +26,5 @@ services:
       - SPRING_PROFILES_ACTIVE=e2e
     depends_on:
       - erp-api
+      - tax-api
 

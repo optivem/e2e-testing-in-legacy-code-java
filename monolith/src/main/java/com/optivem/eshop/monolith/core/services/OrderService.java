@@ -9,9 +9,11 @@ import com.optivem.eshop.monolith.core.services.external.ErpGateway;
 import com.optivem.eshop.monolith.core.dtos.GetOrderResponse;
 import com.optivem.eshop.monolith.core.dtos.PlaceOrderRequest;
 import com.optivem.eshop.monolith.core.dtos.PlaceOrderResponse;
+import com.optivem.eshop.monolith.core.services.external.TaxGateway;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.MonthDay;
@@ -23,12 +25,16 @@ public class OrderService {
     private static final LocalTime CANCELLATION_BLOCK_START = LocalTime.of(22, 0);
     private static final LocalTime CANCELLATION_BLOCK_END = LocalTime.of(23, 0);
 
+    private static final LocalTime ORDER_PLACEMENT_CUTOFF_TIME = LocalTime.of(17, 0);
+
     private final OrderRepository orderRepository;
     private final ErpGateway erpGateway;
+    private final TaxGateway taxGateway;
 
-    public OrderService(OrderRepository orderRepository, ErpGateway erpGateway) {
+    public OrderService(OrderRepository orderRepository, ErpGateway erpGateway, TaxGateway taxGateway) {
         this.orderRepository = orderRepository;
         this.erpGateway = erpGateway;
+        this.taxGateway = taxGateway;
     }
 
     public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
@@ -36,21 +42,57 @@ public class OrderService {
         var quantity = request.getQuantity();
         var country = request.getCountry();
 
-        var productDetails = erpGateway.getProductDetails(sku);
-        if (productDetails.isEmpty()) {
-            throw new ValidationException("Product does not exist for SKU: " + sku);
-        }
-
         var orderNumber = orderRepository.nextOrderNumber();
-        var unitPrice = productDetails.get().getPrice();
-        var totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
-        var order = new Order(orderNumber, sku, quantity, unitPrice, totalPrice, OrderStatus.PLACED, country);
+        var orderTimestamp = Instant.now();
+        var unitPrice = getUnitPrice(sku);
+        var discountRate = getDiscountRate();
+        var taxRate = getTaxRate(country);
+
+        var originalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        var discountAmount = originalPrice.multiply(discountRate);
+        var subtotalPrice = originalPrice.subtract(discountAmount);
+        var taxAmount = subtotalPrice.multiply(taxRate);
+        var totalPrice = subtotalPrice.add(taxAmount);
+
+        var order = new Order(orderNumber, orderTimestamp, country,
+                sku, quantity, unitPrice, originalPrice,
+                discountRate, discountAmount, subtotalPrice,
+                taxRate, taxAmount, totalPrice, OrderStatus.PLACED);
 
         orderRepository.addOrder(order);
 
         var response = new PlaceOrderResponse();
         response.setOrderNumber(orderNumber);
         return response;
+    }
+
+    private BigDecimal getUnitPrice(String sku) {
+        var productDetails = erpGateway.getProductDetails(sku);
+        if (productDetails.isEmpty()) {
+            throw new ValidationException("Product does not exist for SKU: " + sku);
+        }
+
+        return productDetails.get().getPrice();
+    }
+
+    private BigDecimal getDiscountRate() {
+        var now = LocalDateTime.now();
+        var currentTime = now.toLocalTime();
+
+        if(currentTime.isBefore(ORDER_PLACEMENT_CUTOFF_TIME) || currentTime.equals(ORDER_PLACEMENT_CUTOFF_TIME)) {
+            return BigDecimal.ZERO;
+        }
+
+        return BigDecimal.valueOf(0.15);
+    }
+
+    private BigDecimal getTaxRate(String country) {
+        var countryDetails = taxGateway.getTaxDetails(country);
+        if (countryDetails.isEmpty()) {
+            throw new ValidationException("Country does not exist: " + country);
+        }
+
+        return countryDetails.get().getTaxRate();
     }
 
     public GetOrderResponse getOrder(String orderNumber) {
