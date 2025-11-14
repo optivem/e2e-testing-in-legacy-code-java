@@ -170,6 +170,33 @@ class ApiE2eTest {
 
 
     @Test
+    void shouldRejectOrderWithNonExistentSku() throws Exception {
+        // Arrange
+        var requestDto = new PlaceOrderRequest();
+        requestDto.setSku("NON-EXISTENT-SKU-12345");
+        requestDto.setQuantity("5");
+        requestDto.setCountry("US");
+
+        var requestBody = objectMapper.writeValueAsString(requestDto);
+
+        var request = HttpRequest.newBuilder()
+                .uri(new URI(BASE_URL + "/api/orders"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        // Act
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(422, response.statusCode(), "Response status should be 422 Unprocessable Entity");
+
+        var responseBody = response.body();
+        assertTrue(responseBody.contains("Product does not exist for SKU"),
+                "Error message should contain 'Product does not exist for SKU'. Actual: " + responseBody);
+    }
+
+    @Test
     void shouldRejectOrderWithNegativeQuantity() throws Exception {
         // Arrange
         var requestDto = new PlaceOrderRequest();

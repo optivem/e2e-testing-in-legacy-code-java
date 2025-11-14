@@ -210,6 +210,34 @@ class UiE2eTest {
     }
 
     @Test
+    void shouldRejectOrderWithNonExistentSku() {
+        // Act
+        page.navigate(baseUrl + "/shop.html");
+
+        var productIdInput = page.locator("[aria-label='Product ID']");
+        productIdInput.fill("NON-EXISTENT-SKU-12345");
+
+        var quantityInput = page.locator("[aria-label='Quantity']");
+        quantityInput.fill("5");
+
+        var countryInput = page.locator("[aria-label='Country']");
+        countryInput.fill("US");
+
+        var placeOrderButton = page.locator("[aria-label='Place Order']");
+        placeOrderButton.click();
+
+        // Wait for error message to appear
+        var errorMessage = page.locator("[role='alert']");
+        errorMessage.waitFor(new Locator.WaitForOptions().setTimeout(TestConfiguration.getWaitSeconds() * 1000));
+
+        var errorMessageText = errorMessage.textContent();
+
+        // Assert
+        assertTrue(errorMessageText.contains("Product does not exist for SKU"),
+                "Error message should indicate product does not exist. Actual: " + errorMessageText);
+    }
+
+    @Test
     void shouldRejectOrderWithNegativeQuantity() {
         // Act
         page.navigate(baseUrl + "/shop.html");
