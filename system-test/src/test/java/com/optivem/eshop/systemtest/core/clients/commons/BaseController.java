@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.clients.system.api.controllers;
+package com.optivem.eshop.systemtest.core.clients.commons;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -10,16 +10,16 @@ import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class BaseControllerClient {
+public abstract class BaseController {
 
     protected static final ObjectMapper objectMapper = new ObjectMapper();
-    public static final String CONTENT_TYPE = "Content-Type";
-    public static final String APPLICATION_JSON = "application/json";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON = "application/json";
 
     protected final HttpClient httpClient;
     private final String baseUrl;
 
-    public BaseControllerClient(HttpClient httpClient, String baseUrl) {
+    public BaseController(HttpClient httpClient, String baseUrl) {
         this.httpClient = httpClient;
         this.baseUrl = baseUrl;
     }

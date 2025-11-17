@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.clients.system.ui.pages;
 
 import com.microsoft.playwright.Page;
+import com.optivem.eshop.systemtest.core.clients.commons.BasePage;
 
 public class HomePage extends BasePage {
 

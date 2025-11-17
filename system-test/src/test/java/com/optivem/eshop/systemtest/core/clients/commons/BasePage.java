@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.clients.system.ui.pages;
+package com.optivem.eshop.systemtest.core.clients.commons;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

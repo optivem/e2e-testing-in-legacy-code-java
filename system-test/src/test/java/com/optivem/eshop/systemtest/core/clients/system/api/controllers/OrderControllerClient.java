@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.clients.system.api.controllers;
 
+import com.optivem.eshop.systemtest.core.clients.commons.BaseController;
 import com.optivem.eshop.systemtest.core.clients.system.api.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.clients.system.api.dtos.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.clients.system.api.dtos.PlaceOrderResponse;
@@ -7,7 +8,7 @@ import com.optivem.eshop.systemtest.core.clients.system.api.dtos.PlaceOrderRespo
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
-public class OrderControllerClient extends BaseControllerClient {
+public class OrderControllerClient extends BaseController {
 
     public static final String CONTROLLER_ENDPOINT = "api/orders";
 
