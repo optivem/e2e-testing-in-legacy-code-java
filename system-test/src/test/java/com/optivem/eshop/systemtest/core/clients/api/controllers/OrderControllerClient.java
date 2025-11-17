@@ -9,6 +9,8 @@ import java.net.http.HttpResponse;
 
 public class OrderControllerClient extends BaseControllerClient {
 
+    public static final String CONTROLLER_ENDPOINT = "api/orders";
+
     public OrderControllerClient(HttpClient client, String baseUrl) {
         super(client, baseUrl);
     }
@@ -19,7 +21,7 @@ public class OrderControllerClient extends BaseControllerClient {
         request.setQuantity(quantity);
         request.setCountry(country);
 
-        return post("api/orders", request);
+        return post(CONTROLLER_ENDPOINT, request);
     }
 
     public PlaceOrderResponse confirmOrderPlacedSuccessfully(HttpResponse<String> httpResponse) {
@@ -36,7 +38,7 @@ public class OrderControllerClient extends BaseControllerClient {
     }
 
     public HttpResponse<String> viewOrder(String orderNumber) {
-        var endpoint = "api/orders/" + orderNumber;
+        var endpoint = CONTROLLER_ENDPOINT + "/" + orderNumber;
         return get(endpoint);
     }
 
@@ -46,7 +48,7 @@ public class OrderControllerClient extends BaseControllerClient {
     }
 
     public HttpResponse<String> cancelOrder(String orderNumber) {
-        var endpoint = "api/orders/" + orderNumber + "/cancel";
+        var endpoint = CONTROLLER_ENDPOINT + "/" + orderNumber + "/cancel";
         return post(endpoint);
     }
 

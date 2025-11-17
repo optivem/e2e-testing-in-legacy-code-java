@@ -3,6 +3,7 @@ package com.optivem.eshop.systemtest.e2etests;
 import com.optivem.eshop.systemtest.TestConfiguration;
 import com.optivem.eshop.systemtest.core.clients.api.ApiClient;
 import com.optivem.eshop.systemtest.core.clients.api.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.clients.api.dtos.OrderStatus;
 import com.optivem.eshop.systemtest.e2etests.helpers.ErpApiHelper;
 
 import org.junit.jupiter.api.AfterEach;
@@ -94,7 +95,7 @@ class ApiE2eTest {
                 "Original price should be " + expectedOriginalPrice);
 
         assertNotNull(getOrderResponse.getStatus(), "Status should not be null");
-        assertEquals("PLACED", getOrderResponse.getStatus(), "Status should be PLACED");
+        assertEquals(OrderStatus.PLACED, getOrderResponse.getStatus(), "Status should be PLACED");
     }
 
     @Test
@@ -116,7 +117,7 @@ class ApiE2eTest {
 
         // Verify order status is CANCELLED
         var orderDetails = getOrderDetails(orderNumber);
-        assertEquals("CANCELLED", orderDetails.getStatus(), "Order status should be CANCELLED");
+        assertEquals(OrderStatus.CANCELLED, orderDetails.getStatus(), "Order status should be CANCELLED");
     }
 
 
