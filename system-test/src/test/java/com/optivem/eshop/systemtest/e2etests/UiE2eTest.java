@@ -200,10 +200,10 @@ class UiE2eTest {
     @MethodSource("provideEmptyQuantityValues")
     void shouldRejectOrderWithEmptyQuantity(String quantityValue) throws Exception {
         // Arrange - Set up product in ERP first
-        String baseSku = "AUTO-EQ-500";
-        BigDecimal unitPrice = new BigDecimal("175.00");
+        var baseSku = "AUTO-EQ-500";
+        var unitPrice = new BigDecimal("175.00");
 
-        String sku = setupProductInErp(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErp(baseSku, "Test Product", unitPrice);
 
         var homePage = uiClient.openHomePage();
         var newOrderPage = homePage.clickNewOrder();
@@ -257,10 +257,10 @@ class UiE2eTest {
     @MethodSource("provideEmptyCountryValues")
     void shouldRejectOrderWithEmptyCountry(String countryValue) throws Exception {
         // Arrange - Set up product in ERP first
-        String baseSku = "AUTO-EC-700";
-        BigDecimal unitPrice = new BigDecimal("245.50");
+        var baseSku = "AUTO-EC-700";
+        var unitPrice = new BigDecimal("245.50");
 
-        String sku = setupProductInErp(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErp(baseSku, "Test Product", unitPrice);
 
         var homePage = uiClient.openHomePage();
         var newOrderPage = homePage.clickNewOrder();

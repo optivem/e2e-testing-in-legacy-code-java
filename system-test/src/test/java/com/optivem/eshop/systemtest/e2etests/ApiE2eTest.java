@@ -42,13 +42,13 @@ class ApiE2eTest {
     }
 
     @Test
-    void placeOrder_shouldReturnOrderNumber() throws Exception {
+    void placeOrder_shouldReturnOrderNumber() {
         // Arrange - Set up product in ERP
-        String baseSku = "AUTO-PO-100";
-        BigDecimal unitPrice = new BigDecimal("199.99");
-        int quantity = 5;
+        var baseSku = "AUTO-PO-100";
+        var unitPrice = new BigDecimal("199.99");
+        var quantity = 5;
 
-        String sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
 
         // Act
         var httpResponse = apiClient.orders().placeOrder(sku, String.valueOf(quantity), "US");
@@ -64,12 +64,12 @@ class ApiE2eTest {
     @Test
     void getOrder_shouldReturnOrderDetails() throws Exception {
         // Arrange - Set up product in ERP first
-        String baseSku = "AUTO-GO-200";
-        BigDecimal unitPrice = new BigDecimal("299.50");
-        int quantity = 3;
-        String country = "DE";
+        var baseSku = "AUTO-GO-200";
+        var unitPrice = new BigDecimal("299.50");
+        var quantity = 3;
+        var country = "DE";
 
-        String sku = setupProductInErpAndGetSku(baseSku, "Test Laptop", unitPrice);
+        var sku = setupProductInErpAndGetSku(baseSku, "Test Laptop", unitPrice);
 
         // Place order
         var orderNumber = placeOrderAndGetOrderNumber(sku, quantity, country);
@@ -90,7 +90,7 @@ class ApiE2eTest {
         // Assert with concrete values based on known input
         assertEquals(unitPrice, getOrderResponse.getUnitPrice(), "Unit price should be " + unitPrice);
 
-        BigDecimal expectedOriginalPrice = new BigDecimal("898.50");
+        var expectedOriginalPrice = new BigDecimal("898.50");
         assertEquals(expectedOriginalPrice, getOrderResponse.getOriginalPrice(),
                 "Original price should be " + expectedOriginalPrice);
 
@@ -101,9 +101,9 @@ class ApiE2eTest {
     @Test
     void cancelOrder_shouldSetStatusToCancelled() throws Exception {
         // Arrange - Place an order
-        String sku = "HUA-P30";
-        int quantity = 2;
-        String country = "UK";
+        var sku = "HUA-P30";
+        var quantity = 2;
+        var country = "UK";
 
         var orderNumber = placeOrderAndGetOrderNumber(sku, quantity, country);
 
@@ -124,9 +124,9 @@ class ApiE2eTest {
     @Test
     void shouldRejectOrderWithNonExistentSku() throws Exception {
         // Arrange
-        String sku = "NON-EXISTENT-SKU-12345";
-        String quantity = "5";
-        String country = "US";
+        var sku = "NON-EXISTENT-SKU-12345";
+        var quantity = "5";
+        var country = "US";
 
         // Act
         var httpResponse = apiClient.orders().placeOrder(sku, quantity, country);
@@ -142,10 +142,10 @@ class ApiE2eTest {
     @Test
     void shouldRejectOrderWithNegativeQuantity() throws Exception {
         // Arrange - Set up product in ERP first
-        String baseSku = "AUTO-NQ-400";
-        BigDecimal unitPrice = new BigDecimal("99.99");
+        var baseSku = "AUTO-NQ-400";
+        var unitPrice = new BigDecimal("99.99");
 
-        String sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
 
         // Act
         var httpResponse = apiClient.orders().placeOrder(sku, "-5", "US");
@@ -179,10 +179,10 @@ class ApiE2eTest {
     @MethodSource("provideEmptyQuantityValues")
     void shouldRejectOrderWithEmptyQuantity(String quantityValue) throws Exception {
         // Arrange - Set up product in ERP first
-        String baseSku = "AUTO-EQ-500";
-        BigDecimal unitPrice = new BigDecimal("150.00");
+        var baseSku = "AUTO-EQ-500";
+        var unitPrice = new BigDecimal("150.00");
 
-        String sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
 
         // Act
         var httpResponse = apiClient.orders().placeOrder(sku, quantityValue, "US");
@@ -216,10 +216,10 @@ class ApiE2eTest {
     @MethodSource("provideEmptyCountryValues")
     void shouldRejectOrderWithEmptyCountry(String countryValue) throws Exception {
         // Arrange - Set up product in ERP first and get unique SKU
-        String baseSku = "AUTO-EC-700";
-        BigDecimal unitPrice = new BigDecimal("225.00");
+        var baseSku = "AUTO-EC-700";
+        var unitPrice = new BigDecimal("225.00");
 
-        String sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
+        var sku = setupProductInErpAndGetSku(baseSku, "Test Product", unitPrice);
 
         // Act
         var httpResponse = apiClient.orders().placeOrder(sku, "5", countryValue);
@@ -234,7 +234,7 @@ class ApiE2eTest {
 
 
     // Helper method that returns the unique SKU for use in tests
-    private String setupProductInErpAndGetSku(String baseSku, String title, BigDecimal price) throws Exception {
+    private String setupProductInErpAndGetSku(String baseSku, String title, BigDecimal price) {
         return ErpApiHelper.setupProductInErp(httpClient, baseSku, title, price);
     }
 
