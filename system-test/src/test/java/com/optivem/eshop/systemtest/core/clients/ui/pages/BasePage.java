@@ -2,6 +2,7 @@ package com.optivem.eshop.systemtest.core.clients.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import com.optivem.eshop.systemtest.TestConfiguration;
 
 public abstract class BasePage {
@@ -54,9 +55,24 @@ public abstract class BasePage {
         return locator.count() == 0;
     }
 
+    protected void waitForHidden(String selector) {
+        var waitForOptions = getWaitForOptions()
+                .setState(WaitForSelectorState.HIDDEN)
+                .setTimeout(timeoutMilliseconds);
+
+        var locator = page.locator(selector);
+        locator.waitFor(waitForOptions);
+    }
+
+
+
     private void wait(Locator locator) {
-        var waitOptions = new Locator.WaitForOptions().setTimeout(timeoutMilliseconds);
-        locator.waitFor(waitOptions);
+        var waitForOptions = new Locator.WaitForOptions().setTimeout(timeoutMilliseconds);
+        locator.waitFor(waitForOptions);
+    }
+
+    private Locator.WaitForOptions getWaitForOptions() {
+        return new Locator.WaitForOptions().setTimeout(timeoutMilliseconds);
     }
 }
 

@@ -100,12 +100,7 @@ public class OrderHistoryPage extends BasePage {
 
     public void clickCancelOrder() {
         click(CANCEL_ORDER_OUTPUT_SELECTOR);
-
-        page.locator(CANCEL_ORDER_OUTPUT_SELECTOR).waitFor(
-                new Locator.WaitForOptions()
-                        .setState(WaitForSelectorState.HIDDEN)
-                        .setTimeout(timeoutMilliseconds)
-        );
+        waitForHidden(CANCEL_ORDER_OUTPUT_SELECTOR);
     }
 
     public void assertCancelButtonNotVisible() {
