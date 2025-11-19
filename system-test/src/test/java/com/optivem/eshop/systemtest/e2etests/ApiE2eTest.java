@@ -197,7 +197,25 @@ class ApiE2eTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("provideNonIntegerQuantityValues")
+    void shouldRejectOrderWithNonIntegerQuantity(String quantityValue) {
+        // Arrange - Set up product in ERP first
+        var baseSku = "AUTO-NIQ-600";
+        var unitPrice = new BigDecimal("175.00");
 
+        var sku = erpApiClient.products().createProduct(baseSku, unitPrice);
+
+        // Act
+        var httpResponse = shopApiClient.orders().placeOrder(sku, quantityValue, "US");
+
+        // Assert
+        shopApiClient.orders().assertOrderPlacementFailed(httpResponse);
+
+        var errorMessage = shopApiClient.orders().getErrorMessage(httpResponse);
+        assertTrue(errorMessage.contains("Quantity must be an integer"),
+                "Error message should contain 'Quantity must be an integer'. Actual: " + errorMessage);
+    }
 
     private static Stream<Arguments> provideEmptyCountryValues() {
         return Stream.of(

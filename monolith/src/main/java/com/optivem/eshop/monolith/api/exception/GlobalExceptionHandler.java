@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
         return fieldErrorPatterns.entrySet().stream()
                 .filter(entry -> lowerMessage.contains(entry.getKey()))
                 .findFirst()
-                .map(entry -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .map(entry -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                         .body(new ErrorResponse(entry.getValue())))
                 .orElse(null);
     }
