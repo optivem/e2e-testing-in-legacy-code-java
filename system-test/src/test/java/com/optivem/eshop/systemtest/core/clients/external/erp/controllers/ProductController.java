@@ -32,12 +32,4 @@ public class ProductController {
         httpClient.assertCreated(httpResponse);
         return uniqueSku;
     }
-
-    public HttpResponse<String> getProducts() {
-        return httpClient.get(ENDPOINT);
-    }
-
-    public void assertGetProductsSuccessful(HttpResponse<String> httpResponse) {
-        httpClient.assertOk(httpResponse);
-    }
 }
