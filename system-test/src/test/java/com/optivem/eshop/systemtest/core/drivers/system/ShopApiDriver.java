@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ShopApiDriver implements ShopDriver {
@@ -96,6 +97,18 @@ public class ShopApiDriver implements ShopDriver {
         var httpResponse = ordersViewed.get(orderNumberAlias);
         var response = apiClient.orders().assertOrderViewedSuccessfully(httpResponse);
         assertEquals(OrderStatus.CANCELLED, response.getStatus(), "Order status should be CANCELLED");
+    }
+
+    @Override
+    public void confirmOrderNumberGeneratedWithPrefix(String orderNumberAlias, String expectedPrefix) {
+        // TODO: VJ: Check the generated order number prefix when placing the order
+
+        var orderNumberValue = context.results().alias(orderNumberAlias);
+        assertThat(orderNumberValue)
+                .withFailMessage("Order number should start with prefix: " + expectedPrefix)
+                .startsWith(expectedPrefix);
+
+        // TODO: VJ: Can call order details?
     }
 
     @Override

@@ -48,6 +48,13 @@ public abstract class BaseE2eTest {
         shopDriver.confirmOrderDetails("ORD-1001", "ABC-123", "5", "PLACED");
     }
 
+    @Test
+    void shouldGenerateOrderNumber() {
+        erpApiDriver.createProduct("ABC-123", "199.99");
+        shopDriver.placeOrder("ORD-1001", "ABC-123", "5", "US");
+        shopDriver.confirmOrderNumberGeneratedWithPrefix("ORD-1001", "ORD-");
+    }
+
 //    @Test
 //    void placeOrder_shouldReturnOrderNumber() {
 //        var baseSku = "AUTO-PO-100";

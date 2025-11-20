@@ -16,4 +16,6 @@ public interface ShopDriver extends AutoCloseable {
     void confirmOrderCancelled(String orderNumberAlias);
 
     void confirmOrderStatusIsCancelled(String orderNumberAlias);
+
+    void confirmOrderNumberGeneratedWithPrefix(String orderNumberAlias, String expectedPrefix);
 }

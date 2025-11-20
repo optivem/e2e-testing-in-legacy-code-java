@@ -9,6 +9,7 @@ import com.optivem.eshop.systemtest.core.clients.system.ui.pages.OrderHistoryPag
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -145,6 +146,22 @@ public class ShopUiDriver implements ShopDriver {
         var displayStatusAfterCancel = orderHistoryPage.getStatus();
         assertEquals("CANCELLED", displayStatusAfterCancel, "Status should be CANCELLED after cancellation");
         orderHistoryPage.assertCancelButtonNotVisible();
+    }
+
+    @Override
+    public void confirmOrderNumberGeneratedWithPrefix(String orderNumberAlias, String expectedPrefix) {
+        // NOTE: VJ: If we are on order creation page, then check order number generated correctly
+
+        var orderNumberValue = context.results().alias(orderNumberAlias);
+
+        viewOrderDetails(orderNumberAlias);
+
+        var displayOrderNumber = orderHistoryPage.getOrderNumber();
+        assertEquals(orderNumberValue, displayOrderNumber, "Should display the order number: " + orderNumberValue);
+
+        assertThat(displayOrderNumber)
+                .withFailMessage("Order number should start with prefix: " + expectedPrefix)
+                .startsWith(expectedPrefix);
     }
 
     @Override
