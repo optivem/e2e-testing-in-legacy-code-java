@@ -64,11 +64,11 @@ public class OrderHistoryPage {
     }
 
     public BigDecimal getUnitPrice() {
-        return pageClient.readInputDecimalValue(UNIT_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputCurrencyDecimalValue(UNIT_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getOriginalPrice() {
-        return pageClient.readInputDecimalValue(ORIGINAL_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputCurrencyDecimalValue(ORIGINAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public String getDiscountRate() {

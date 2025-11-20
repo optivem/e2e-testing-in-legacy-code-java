@@ -94,12 +94,12 @@ public class ShopUiDriver implements ShopDriver {
 
     @Override
     public void confirmOrderDetails(String orderNumberAlias, String productId, String quantity, String status) {
-
         // TODO: VC: If on new order page, we then need to confirm the first original price before going to view the details
 //        var originalPrice = newOrderPage.extractOriginalPrice();
 //
 //        assertEquals(549.75, originalPrice, 0.01, "Original price should be $549.75 (5 × $109.95)");
 
+        viewOrderDetails(orderNumberAlias);
 
         var orderNumber = getOrderNumber(orderNumberAlias);
         var displayOrderNumber = orderHistoryPage.getOrderNumber();

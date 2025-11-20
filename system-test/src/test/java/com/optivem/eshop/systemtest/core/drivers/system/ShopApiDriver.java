@@ -51,6 +51,7 @@ public class ShopApiDriver implements ShopDriver {
         assertTrue(response.getOrderNumber().startsWith(prefix), "Order number should start with prefix: " + prefix);
     }
 
+    // TODO: VJ: Consider deleting
     @Override
     public void viewOrderDetails(String orderNumberAlias) {
         var orderNumber = getOrderNumber(orderNumberAlias);
@@ -61,10 +62,16 @@ public class ShopApiDriver implements ShopDriver {
     @Override
     public void confirmOrderDetails(String orderNumberAlias, String productId, String quantity, String status) {
         var httpResponse = ordersViewed.get(orderNumberAlias);
+
+        if(httpResponse == null) {
+            viewOrderDetails(orderNumberAlias);
+            httpResponse = ordersViewed.get(orderNumberAlias);
+        }
+
         var response = apiClient.orders().assertOrderViewedSuccessfully(httpResponse);
 
-        assertEquals(Long.parseLong(productId), response.getSku());
-        assertEquals(Long.parseLong(quantity), response.getQuantity());
+        assertEquals(productId, response.getSku());
+        assertEquals(Integer.parseInt(quantity), response.getQuantity());
 
         var unitPrice = response.getUnitPrice();
         assertNotNull(unitPrice, "Unit price should not be null");

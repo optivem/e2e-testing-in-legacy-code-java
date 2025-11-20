@@ -56,8 +56,9 @@ public class TestPageClient {
         return locator.inputValue();
     }
 
-    public BigDecimal readInputDecimalValue(String selector) {
+    public BigDecimal readInputCurrencyDecimalValue(String selector) {
         var inputValue = readInputValue(selector);
+        inputValue = inputValue.replace("$", "");
         return new BigDecimal(inputValue);
     }
 

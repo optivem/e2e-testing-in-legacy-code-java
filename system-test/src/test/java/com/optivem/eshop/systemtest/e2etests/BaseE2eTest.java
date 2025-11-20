@@ -38,7 +38,6 @@ public abstract class BaseE2eTest {
         DriverCloser.close(taxApiDriver);
     }
 
-    @Disabled
     @Test
     void shouldCalculateOriginalOrderPrice() {
         erpApiDriver.createProduct("HP-15", "109.95");
