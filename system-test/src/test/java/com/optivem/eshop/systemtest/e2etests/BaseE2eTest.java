@@ -54,19 +54,5 @@ public abstract class BaseE2eTest {
         shopDriver.placeOrder("ORD-1001", "ABC-123", "5", "US");
         shopDriver.confirmOrderNumberGeneratedWithPrefix("ORD-1001", "ORD-");
     }
-
-//    @Test
-//    void placeOrder_shouldReturnOrderNumber() {
-//        var baseSku = "AUTO-PO-100";
-//        var unitPrice = new BigDecimal("199.99");
-//        var quantity = 5;
-//
-//        var sku = erpApiDriver.createProduct(baseSku, unitPrice);
-//
-//        var orderNumber = shopApiDriver.placeOrder(sku, quantity, "US");
-//
-//        assertNotNull(orderNumber, "Order number should not be null");
-//        assertTrue(orderNumber.startsWith("ORD-"), "Order number should start with ORD-");
-//    }
 }
 
