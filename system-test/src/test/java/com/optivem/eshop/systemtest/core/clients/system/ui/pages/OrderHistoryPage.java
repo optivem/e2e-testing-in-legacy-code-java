@@ -11,7 +11,7 @@ public class OrderHistoryPage {
     private static final String ORDER_NUMBER_INPUT_SELECTOR = "[aria-label='Order Number']";
     private static final String SEARCH_BUTTON_SELECTOR = "[aria-label='Search']";
     private static final String ORDER_DETAILS_CONTAINER_SELECTOR = "#orderDetails";
-    private static final String NOTIFICATION_ALERT_SELECTOR = "[role='alert'].notification";
+    private static final String NOTIFICATION_ALERT_SELECTOR = "#notifications [role='alert'].notification";
     private static final String ORDER_NUMBER_OUTPUT_SELECTOR = "[aria-label='Display Order Number']";
     private static final String PRODUCT_ID_OUTPUT_SELECTOR = "[aria-label='Display Product ID']";
     private static final String COUNTRY_OUTPUT_SELECTOR = "[aria-label='Display Country']";

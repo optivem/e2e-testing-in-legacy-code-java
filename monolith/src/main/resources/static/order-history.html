@@ -37,7 +37,8 @@
         <button type="submit" aria-label="Search">Search</button>
     </form>
     
-    <div role="alert" id="orderDetails"></div>
+    <div id="notifications" aria-live="polite"></div>
+    <div id="orderDetails"></div>
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
@@ -49,9 +50,6 @@
 
         async function displayOrderDetails(orderNumber) {
             const resultDiv = document.getElementById('orderDetails');
-            
-            // Save existing notifications
-            const existingNotifications = resultDiv.querySelectorAll('.notification');
 
             try {
                 const response = await fetch(`/api/orders/${orderNumber}`, {
@@ -62,7 +60,7 @@
                     const order = await response.json();
                     
                     const cancelButtonHtml = order.status === 'PLACED' 
-                        ? `<button type="button" id="cancelButton" aria-label="Cancel Order" onclick="cancelOrder('${order.orderNumber}')">Cancel Order</button>`
+                        ? `<button type="button" id="cancelButton" aria-label="Cancel Order">Cancel Order</button>`
                         : '';
                     
                     resultDiv.innerHTML = `
@@ -122,15 +120,16 @@
                         ${cancelButtonHtml}
                     `;
 
-                    // Restore notifications after setting innerHTML
-                    existingNotifications.forEach(notif => {
-                        resultDiv.prepend(notif);
-                    });
+                    // Attach event listener to cancel button if it exists
+                    if (order.status === 'PLACED') {
+                        const cancelBtn = document.getElementById('cancelButton');
+                        cancelBtn.addEventListener('click', () => cancelOrder(order.orderNumber));
+                    }
                 } else {
-                    resultDiv.textContent = 'Order not found. Please check the order number.';
+                    resultDiv.innerHTML = '<p role="alert">Order not found. Please check the order number.</p>';
                 }
             } catch (error) {
-                resultDiv.textContent = 'Error retrieving order. Please try again.';
+                resultDiv.innerHTML = '<p role="alert">Error retrieving order. Please try again.</p>';
                 console.error('Error:', error);
             }
         }
@@ -156,14 +155,26 @@
         }
 
         function showNotification(message, isError = false) {
-            const resultDiv = document.getElementById('orderDetails');
+            const notificationsDiv = document.getElementById('notifications');
+
+            // Clear previous notifications to avoid accumulation
+            notificationsDiv.innerHTML = '';
+
             const notif = document.createElement('div');
             notif.setAttribute('role', 'alert');
             notif.className = `notification ${isError ? 'error' : 'success'}`;
             notif.textContent = message;
 
-            // Prepend notification above order details
-            resultDiv.prepend(notif);
+            notificationsDiv.appendChild(notif);
+
+            // Auto-dismiss success notifications after 5 seconds
+            if (!isError) {
+                setTimeout(() => {
+                    if (notif.parentNode) {
+                        notif.remove();
+                    }
+                }, 5000);
+            }
         }
     </script>
 </body>
