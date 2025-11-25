@@ -16,8 +16,14 @@ public abstract class BasePage {
     }
 
     public Boolean hasSuccessNotification() {
-        pageClient.getPage().waitForSelector("#notifications .notification",
-            new com.microsoft.playwright.Page.WaitForSelectorOptions().setTimeout(5000));
+        try {
+            pageClient.getPage().waitForSelector("#notifications .notification",
+                new com.microsoft.playwright.Page.WaitForSelectorOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(5000));
+        } catch (Exception e) {
+            return null;
+        }
 
         if(pageClient.exists(SUCCESS_NOTIFICATION_SELECTOR)) {
             return true;
