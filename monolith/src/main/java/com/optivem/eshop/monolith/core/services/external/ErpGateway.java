@@ -2,11 +2,9 @@ package com.optivem.eshop.monolith.core.services.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.optivem.eshop.monolith.core.dtos.external.ProductDetailsResponse;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

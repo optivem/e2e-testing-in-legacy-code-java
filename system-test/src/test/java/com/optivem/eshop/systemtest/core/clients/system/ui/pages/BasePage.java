@@ -3,7 +3,6 @@ package com.optivem.eshop.systemtest.core.clients.system.ui.pages;
 import com.optivem.eshop.systemtest.core.clients.commons.TestPageClient;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class BasePage {
 

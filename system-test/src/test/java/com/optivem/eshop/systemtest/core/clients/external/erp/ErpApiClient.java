@@ -3,6 +3,7 @@ package com.optivem.eshop.systemtest.core.clients.external.erp;
 import com.optivem.eshop.systemtest.core.clients.commons.TestHttpClient;
 import com.optivem.eshop.systemtest.core.clients.external.erp.controllers.HomeController;
 import com.optivem.eshop.systemtest.core.clients.external.erp.controllers.ProductController;
+
 import java.net.http.HttpClient;
 
 public class ErpApiClient implements AutoCloseable {

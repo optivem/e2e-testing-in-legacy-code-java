@@ -2,7 +2,6 @@ package com.optivem.eshop.monolith.core.services.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.optivem.eshop.monolith.core.dtos.external.TaxDetailsResponse;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

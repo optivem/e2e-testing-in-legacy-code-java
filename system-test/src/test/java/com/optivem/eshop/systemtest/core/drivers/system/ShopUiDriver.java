@@ -5,8 +5,8 @@ import com.optivem.eshop.systemtest.core.clients.system.ui.pages.HomePage;
 import com.optivem.eshop.systemtest.core.clients.system.ui.pages.NewOrderPage;
 import com.optivem.eshop.systemtest.core.clients.system.ui.pages.OrderHistoryPage;
 import com.optivem.eshop.systemtest.core.commons.dtos.GetOrderResponse;
-import com.optivem.eshop.systemtest.core.commons.dtos.enums.OrderStatus;
 import com.optivem.eshop.systemtest.core.commons.dtos.PlaceOrderResponse;
+import com.optivem.eshop.systemtest.core.commons.dtos.enums.OrderStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
