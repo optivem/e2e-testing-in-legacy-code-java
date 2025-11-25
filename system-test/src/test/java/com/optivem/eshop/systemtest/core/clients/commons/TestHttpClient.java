@@ -1,6 +1,5 @@
 package com.optivem.eshop.systemtest.core.clients.commons;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 import java.net.URI;
@@ -12,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestHttpClient {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
 
@@ -90,20 +89,11 @@ public class TestHttpClient {
     }
 
     public <T> T readBody(HttpResponse<String> httpResponse, Class<T> responseType) {
-        try {
-            var responseBody = httpResponse.body();
-            return objectMapper.readValue(responseBody, responseType);
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to deserialize response to " + responseType.getSimpleName(), ex);
-        }
+        return TestHttpUtils.readBody(httpResponse, responseType);
     }
 
     private String serializeRequest(Object request) {
-        try {
-            return objectMapper.writeValueAsString(request);
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to serialize request object", ex);
-        }
+        return TestHttpUtils.serializeRequest(request);
     }
 
     private HttpResponse<String> sendRequest(HttpRequest httpRequest) {

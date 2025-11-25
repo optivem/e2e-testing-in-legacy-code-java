@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.e2etests;
 
+import com.optivem.eshop.systemtest.core.commons.dtos.OrderStatus;
 import com.optivem.eshop.systemtest.core.drivers.DriverCloser;
 import com.optivem.eshop.systemtest.core.drivers.DriverFactory;
 import com.optivem.eshop.systemtest.core.drivers.external.ErpApiDriver;
@@ -12,13 +13,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Optional;
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BaseE2eTest {
 
@@ -28,13 +27,12 @@ public abstract class BaseE2eTest {
 
     @BeforeEach
     void setUp() {
-        var driverFactory = new DriverFactory();
-        shopDriver = createDriver(driverFactory);
-        erpApiDriver = driverFactory.createErpApiDriver();
-        taxApiDriver = driverFactory.createTaxApiDriver();
+        shopDriver = createDriver();
+        erpApiDriver = DriverFactory.createErpApiDriver();
+        taxApiDriver = DriverFactory.createTaxApiDriver();
     }
 
-    protected abstract ShopDriver createDriver(DriverFactory driverFactory);
+    protected abstract ShopDriver createDriver();
 
     @AfterEach
     void tearDown() {
@@ -47,16 +45,57 @@ public abstract class BaseE2eTest {
     void shouldPlaceOrderAndCalculateOriginalPrice() {
         var sku = "ABC-" + UUID.randomUUID();
         erpApiDriver.createProduct(sku, "20.00");
-        var result = shopDriver.placeOrder(sku, "5", "US");
-        assertTrue(result.isSuccess());
+        var placeOrderResult = shopDriver.placeOrder(sku, "5", "US");
+        assertThat(placeOrderResult.isSuccess()).isTrue();
 
-        var orderNumber = result.getValue();
-        shopDriver.confirmOrderNumberGeneratedWithPrefix(orderNumber, "ORD-");
-        shopDriver.confirmOrderDetails(orderNumber, Optional.of(sku), Optional.of("5"), Optional.of("US"),
-                Optional.of("20.00"), Optional.of("100.00"), Optional.of("PLACED"));
+        var orderNumber = placeOrderResult.getValue().getOrderNumber();
 
-        shopDriver.confirmSubtotalPricePositive(orderNumber);
-        shopDriver.confirmTotalPricePositive(orderNumber);
+        assertThat(orderNumber).startsWith("ORD-");
+
+        var viewOrderResult = shopDriver.viewOrder(orderNumber);
+        assertThat(viewOrderResult.isSuccess()).isTrue();
+
+        var viewOrderResponse = viewOrderResult.getValue();
+        assertThat(viewOrderResponse.getOrderNumber()).isEqualTo(orderNumber);
+        assertThat(viewOrderResponse.getSku()).isEqualTo(sku);
+        assertThat(viewOrderResponse.getQuantity()).isEqualTo(5);
+        assertThat(viewOrderResponse.getCountry()).isEqualTo("US");
+        assertThat(viewOrderResponse.getUnitPrice()).isEqualTo(new BigDecimal("20.00"));
+        assertThat(viewOrderResponse.getOriginalPrice()).isEqualTo(new BigDecimal("100.00"));
+        assertThat(viewOrderResponse.getStatus()).isEqualTo(OrderStatus.PLACED);
+
+        var discountRate = viewOrderResponse.getDiscountRate();
+        var discountAmount = viewOrderResponse.getDiscountAmount();
+        var subtotalPrice = viewOrderResponse.getSubtotalPrice();
+
+        assertThat(discountRate)
+                .withFailMessage("Discount rate should be non-negative")
+                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+
+        assertThat(discountAmount)
+                .withFailMessage("Discount amount should be non-negative")
+                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+
+        assertThat(subtotalPrice)
+                .withFailMessage("Subtotal price should be positive")
+                .isGreaterThan(BigDecimal.ZERO);
+
+
+        var taxRate = viewOrderResponse.getTaxRate();
+        var taxAmount = viewOrderResponse.getTaxAmount();
+        var totalPrice = viewOrderResponse.getTotalPrice();
+
+        assertThat(taxRate)
+                .withFailMessage("Tax rate should be non-negative")
+                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+
+        assertThat(taxAmount)
+                .withFailMessage("Tax amount should be non-negative")
+                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+
+        assertThat(totalPrice)
+                .withFailMessage("Total price should be positive")
+                .isGreaterThan(BigDecimal.ZERO);
     }
 
 
@@ -64,24 +103,30 @@ public abstract class BaseE2eTest {
     void shouldCancelOrder() {
         var sku = "XYZ-" + UUID.randomUUID();
         erpApiDriver.createProduct(sku, "50.00");
-        var result = shopDriver.placeOrder(sku, "2", "US");
-        assertTrue(result.isSuccess());
+        var placeOrderResult = shopDriver.placeOrder(sku, "2", "US");
+        assertThat(placeOrderResult.isSuccess()).isTrue();
 
-        var orderNumber = result.getValue();
-        shopDriver.confirmOrderDetails(orderNumber, Optional.of(sku), Optional.of("2"), Optional.of("US"),
-                Optional.of("50.00"), Optional.of("100.00"), Optional.of("PLACED"));
+        var orderNumber = placeOrderResult.getValue().getOrderNumber();
+        var cancelOrderResult = shopDriver.cancelOrder(orderNumber);
+        assertThat(cancelOrderResult.isSuccess()).isTrue();
 
-        shopDriver.cancelOrder(orderNumber);
-        shopDriver.confirmOrderCancelled(orderNumber);
+        var viewOrderResult = shopDriver.viewOrder(orderNumber);
+        assertThat(viewOrderResult.isSuccess()).isTrue();
 
-        shopDriver.confirmOrderDetails(orderNumber, Optional.of(sku), Optional.of("2"), Optional.of("US"),
-                Optional.of("50.00"), Optional.of("100.00"), Optional.of("CANCELLED"));
+        var viewOrderResponse = viewOrderResult.getValue();
+        assertThat(viewOrderResponse.getOrderNumber()).isEqualTo(orderNumber);
+        assertThat(viewOrderResponse.getSku()).isEqualTo(sku);
+        assertThat(viewOrderResponse.getQuantity()).isEqualTo(2);
+        assertThat(viewOrderResponse.getCountry()).isEqualTo("US");
+        assertThat(viewOrderResponse.getUnitPrice()).isEqualTo(new BigDecimal("50.00"));
+        assertThat(viewOrderResponse.getOriginalPrice()).isEqualTo(new BigDecimal("100.00"));
+        assertThat(viewOrderResponse.getStatus()).isEqualTo(OrderStatus.CANCELLED);
     }
 
     @Test
     void shouldRejectOrderWithNonExistentSku() {
         var result = shopDriver.placeOrder("NON-EXISTENT-SKU-12345", "5", "US");
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Product does not exist for SKU: NON-EXISTENT-SKU-12345");
     }
 
@@ -90,7 +135,7 @@ public abstract class BaseE2eTest {
         var sku = "DEF-" + UUID.randomUUID();
         erpApiDriver.createProduct(sku, "30.00");
         var result = shopDriver.placeOrder(sku, "-3", "US");
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Quantity must be positive");
     }
 
@@ -106,7 +151,7 @@ public abstract class BaseE2eTest {
     @MethodSource("provideEmptySkuValues")
     void shouldRejectOrderWithEmptySku(String sku) {
         var result = shopDriver.placeOrder(sku, "5", "US");
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("SKU must not be empty");
     }
 
@@ -121,7 +166,7 @@ public abstract class BaseE2eTest {
     @MethodSource("provideEmptyQuantityValues")
     void shouldRejectOrderWithEmptyQuantity(String emptyQuantity) {
         var result = shopDriver.placeOrder("some-sku", emptyQuantity, "US");
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Quantity must not be empty");
     }
 
@@ -136,7 +181,7 @@ public abstract class BaseE2eTest {
     @MethodSource("provideNonIntegerQuantityValues")
     void shouldRejectOrderWithNonIntegerQuantity(String nonIntegerQuantity) {
         var result = shopDriver.placeOrder("some-sku", nonIntegerQuantity, "US");
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Quantity must be an integer");
     }
 
@@ -151,7 +196,7 @@ public abstract class BaseE2eTest {
     @MethodSource("provideEmptyCountryValues")
     void shouldRejectOrderWithEmptyCountry(String emptyCountry) {
         var result = shopDriver.placeOrder("some-sku", "5", emptyCountry);
-        assertTrue(result.isFailure());
+        assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Country must not be empty");
     }
 

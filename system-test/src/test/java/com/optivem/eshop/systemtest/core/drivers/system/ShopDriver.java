@@ -1,25 +1,14 @@
 package com.optivem.eshop.systemtest.core.drivers.system;
 
-import java.util.Optional;
+import com.optivem.eshop.systemtest.core.commons.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.commons.dtos.PlaceOrderResponse;
 
 public interface ShopDriver extends AutoCloseable {
-    void goToShop();
+    Result<Void> goToShop();
 
-    Result<String> placeOrder(String sku, String quantity, String country);
+    Result<PlaceOrderResponse> placeOrder(String sku, String quantity, String country);
 
-    void confirmOrderDetails(String orderNumber, Optional<String> sku, Optional<String> quantity, Optional<String> country,
-                             Optional<String> unitPrice, Optional<String> originalPrice,  Optional<String> status);
+    Result<Void> cancelOrder(String orderNumber);
 
-    void confirmOrderNumberGeneratedWithPrefix(String orderNumber, String expectedPrefix);
-
-
-    void confirmOrderPlaced(String orderNumber, String prefix);
-
-    void cancelOrder(String orderNumber);
-
-    void confirmOrderCancelled(String orderNumber);
-
-    void confirmSubtotalPricePositive(String orderNumber);
-
-    void confirmTotalPricePositive(String orderNumber);
+    Result<GetOrderResponse> viewOrder(String orderNumber);
 }

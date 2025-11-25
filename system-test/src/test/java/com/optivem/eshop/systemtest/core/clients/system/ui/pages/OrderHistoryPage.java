@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.clients.system.ui.pages;
 
 import com.optivem.eshop.systemtest.core.clients.commons.TestPageClient;
+import com.optivem.eshop.systemtest.core.commons.dtos.OrderStatus;
 
 import java.math.BigDecimal;
 
@@ -70,32 +71,33 @@ public class OrderHistoryPage extends BasePage {
         return pageClient.readInputCurrencyDecimalValue(ORIGINAL_PRICE_OUTPUT_SELECTOR);
     }
 
-    public String getDiscountRate() {
-        return pageClient.readInputValue(DISCOUNT_RATE_OUTPUT_SELECTOR);
+    public BigDecimal getDiscountRate() {
+        return pageClient.readInputPercentageDecimalValue(DISCOUNT_RATE_OUTPUT_SELECTOR);
     }
 
-    public String getDiscountAmount() {
-        return pageClient.readInputValue(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
+    public BigDecimal getDiscountAmount() {
+        return pageClient.readInputCurrencyDecimalValue(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
     }
 
-    public String getSubtotalPrice() {
-        return pageClient.readInputValue(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
+    public BigDecimal getSubtotalPrice() {
+        return pageClient.readInputCurrencyDecimalValue(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
-    public String getTaxRate() {
-        return pageClient.readInputValue(TAX_RATE_OUTPUT_SELECTOR);
+    public BigDecimal getTaxRate() {
+        return pageClient.readInputPercentageDecimalValue(TAX_RATE_OUTPUT_SELECTOR);
     }
 
-    public String getTaxAmount() {
-        return pageClient.readInputValue(TAX_AMOUNT_OUTPUT_SELECTOR);
+    public BigDecimal getTaxAmount() {
+        return pageClient.readInputCurrencyDecimalValue(TAX_AMOUNT_OUTPUT_SELECTOR);
     }
 
-    public String getTotalPrice() {
-        return pageClient.readInputValue(TOTAL_PRICE_OUTPUT_SELECTOR);
+    public BigDecimal getTotalPrice() {
+        return pageClient.readInputCurrencyDecimalValue(TOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
-    public String getStatus() {
-        return pageClient.readInputValue(STATUS_OUTPUT_SELECTOR);
+    public OrderStatus getStatus() {
+        var status = pageClient.readInputValue(STATUS_OUTPUT_SELECTOR);
+        return OrderStatus.valueOf(status);
     }
 
     public void clickCancelOrder() {

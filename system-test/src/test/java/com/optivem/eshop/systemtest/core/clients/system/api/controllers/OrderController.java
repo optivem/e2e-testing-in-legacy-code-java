@@ -1,9 +1,9 @@
 package com.optivem.eshop.systemtest.core.clients.system.api.controllers;
 
 import com.optivem.eshop.systemtest.core.clients.commons.TestHttpClient;
-import com.optivem.eshop.systemtest.core.clients.system.api.dtos.GetOrderResponse;
-import com.optivem.eshop.systemtest.core.clients.system.api.dtos.PlaceOrderRequest;
-import com.optivem.eshop.systemtest.core.clients.system.api.dtos.PlaceOrderResponse;
+import com.optivem.eshop.systemtest.core.commons.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.commons.dtos.PlaceOrderRequest;
+import com.optivem.eshop.systemtest.core.commons.dtos.PlaceOrderResponse;
 import org.springframework.http.HttpStatus;
 
 import java.net.http.HttpResponse;
@@ -20,10 +20,11 @@ public class OrderController {
     }
 
     public HttpResponse<String> placeOrder(String sku, String quantity, String country) {
-        var request = new PlaceOrderRequest();
-        request.setSku(sku);
-        request.setQuantity(quantity);
-        request.setCountry(country);
+        var request = PlaceOrderRequest.builder()
+                .sku(sku)
+                .quantity(quantity)
+                .country(country)
+                .build();
 
         return httpClient.post(ENDPOINT, request);
     }

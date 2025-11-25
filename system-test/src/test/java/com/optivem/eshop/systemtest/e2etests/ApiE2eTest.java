@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 class ApiE2eTest extends BaseE2eTest {
 
     @Override
-    protected ShopDriver createDriver(DriverFactory driverFactory) {
+    protected ShopDriver createDriver() {
         return DriverFactory.createShopApiDriver();
     }
 }

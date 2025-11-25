@@ -72,6 +72,12 @@ public class TestPageClient {
         return new BigDecimal(inputValue);
     }
 
+    public BigDecimal readInputPercentageDecimalValue(String selector) {
+        var inputValue = readInputValue(selector);
+        inputValue = inputValue.replace("%", "");
+        return new BigDecimal(inputValue);
+    }
+
     public boolean isHidden(String selector) {
         var locator = page.locator(selector);
         return locator.count() == 0;

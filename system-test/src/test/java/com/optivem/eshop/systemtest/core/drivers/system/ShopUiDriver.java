@@ -4,13 +4,11 @@ import com.optivem.eshop.systemtest.core.clients.system.ui.ShopUiClient;
 import com.optivem.eshop.systemtest.core.clients.system.ui.pages.HomePage;
 import com.optivem.eshop.systemtest.core.clients.system.ui.pages.NewOrderPage;
 import com.optivem.eshop.systemtest.core.clients.system.ui.pages.OrderHistoryPage;
+import com.optivem.eshop.systemtest.core.commons.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.commons.dtos.OrderStatus;
+import com.optivem.eshop.systemtest.core.commons.dtos.PlaceOrderResponse;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ShopUiDriver implements ShopDriver {
     private final ShopUiClient client;
@@ -33,12 +31,15 @@ public class ShopUiDriver implements ShopDriver {
     }
 
     @Override
-    public void goToShop() {
+    public Result<Void> goToShop() {
         homePage = client.openHomePage();
         client.assertHomePageLoaded();
         currentPage = Pages.HOME;
 
         newOrderPage = homePage.clickNewOrder();
+
+        // TODO: VJ: Handle error case
+        return Result.success();
     }
 
     private void ensureOnNewOrderPage() {
@@ -58,7 +59,7 @@ public class ShopUiDriver implements ShopDriver {
     }
 
     @Override
-    public Result<String> placeOrder(String sku, String quantity, String country) {
+    public Result<PlaceOrderResponse> placeOrder(String sku, String quantity, String country) {
 
         ensureOnNewOrderPage();
         newOrderPage.inputProductId(sku);
@@ -68,7 +69,8 @@ public class ShopUiDriver implements ShopDriver {
 
         var orderNumberValue = newOrderPage.getOrderNumber();
         if (orderNumberValue.isPresent()) {
-            return Result.success(orderNumberValue.get());
+            var response = PlaceOrderResponse.builder().orderNumber(orderNumberValue.get()).build();
+            return Result.success(response);
         }
 
         // If no order number, read the error message from the page
@@ -78,129 +80,161 @@ public class ShopUiDriver implements ShopDriver {
 //        orderNumberValue.ifPresent(v -> context.results().alias(orderNumberAlias, v));
     }
 
+//    @Override
+//    public void confirmOrderPlaced(String orderNumber, String prefix) {
+//        newOrderPage.assertSuccessConfirmationMessageShown();
+//        assertTrue(newOrderPage.getOrderNumber().isPresent(), "Order number should be present after placing order");
+//        assertTrue(newOrderPage.getOriginalPrice().isPresent(), "Original price should be present after placing order");
+//        assertTrue(newOrderPage.getOriginalPrice().get().compareTo(BigDecimal.ZERO) > 0, "Original price should be positive after placing order");
+//
+//        var displayOrderNumber = newOrderPage.getOrderNumber();
+//        assertTrue(displayOrderNumber.isPresent(), "Order number should be present");
+//        assertTrue(displayOrderNumber.get().startsWith(prefix), "Order number should start with prefix: " + prefix);
+//    }
+
+
     @Override
-    public void confirmOrderPlaced(String orderNumber, String prefix) {
-        newOrderPage.assertSuccessConfirmationMessageShown();
-        assertTrue(newOrderPage.getOrderNumber().isPresent(), "Order number should be present after placing order");
-        assertTrue(newOrderPage.getOriginalPrice().isPresent(), "Original price should be present after placing order");
-        assertTrue(newOrderPage.getOriginalPrice().get().compareTo(BigDecimal.ZERO) > 0, "Original price should be positive after placing order");
-
-        var displayOrderNumber = newOrderPage.getOrderNumber();
-        assertTrue(displayOrderNumber.isPresent(), "Order number should be present");
-        assertTrue(displayOrderNumber.get().startsWith(prefix), "Order number should start with prefix: " + prefix);
-    }
-
-
-    private void viewOrderDetails(String orderNumber) {
+    public Result<GetOrderResponse> viewOrder(String orderNumber) {
         ensureOnOrderHistoryPage();
         orderHistoryPage.inputOrderNumber(orderNumber);
         orderHistoryPage.clickSearch();
         orderHistoryPage.waitForOrderDetails();
-    }
-
-    @Override
-    public void confirmOrderDetails(String orderNumber, Optional<String> sku, Optional<String> quantity, Optional<String> country,
-                                    Optional<String> unitPrice, Optional<String> originalPrice,  Optional<String> status) {
-        // TODO: VC: If on new order page, we then need to confirm the first original price before going to view the details
-//        var originalPrice = newOrderPage.extractOriginalPrice();
-//
-//        assertEquals(549.75, originalPrice, 0.01, "Original price should be $549.75 (5 × $109.95)");
-
-
-        viewOrderDetails(orderNumber);
 
         var displayOrderNumber = orderHistoryPage.getOrderNumber();
-        assertEquals(orderNumber, displayOrderNumber, "Should display the order number: " + orderNumber);
+        var productId = orderHistoryPage.getProductId();
+        var quantity = orderHistoryPage.getQuantity();
+        var country = orderHistoryPage.getCountry();
+        var unitPrice = orderHistoryPage.getUnitPrice();
+        var originalPrice = orderHistoryPage.getOriginalPrice();
+        var discountRate = orderHistoryPage.getDiscountRate();
+        var discountAmount = orderHistoryPage.getDiscountAmount();
+        var subtotalPrice = orderHistoryPage.getSubtotalPrice();
+        var taxRate = orderHistoryPage.getTaxRate();
+        var taxAmount = orderHistoryPage.getTaxAmount();
+        var totalPrice = orderHistoryPage.getTotalPrice();
+        var status = orderHistoryPage.getStatus();
 
-        if(sku.isPresent()) {
-            var displayProductId = orderHistoryPage.getProductId();
-            assertEquals(sku.get(), displayProductId, "Should display product ID: " + sku);
-        }
+        var response = GetOrderResponse.builder()
+                .orderNumber(displayOrderNumber)
+                .sku(productId)
+                .quantity(Integer.parseInt(quantity))
+                .unitPrice(unitPrice)
+                .originalPrice(originalPrice)
+                .discountRate(discountRate)
+                .discountAmount(discountAmount)
+                .subtotalPrice(subtotalPrice)
+                .taxRate(taxRate)
+                .taxAmount(taxAmount)
+                .totalPrice(totalPrice)
+                .country(country)
+                .status(status)
+                .build();
 
-        if(quantity.isPresent()) {
-            var displayQuantity = orderHistoryPage.getQuantity();
-            assertEquals(quantity.get(), displayQuantity, "Should display quantity: " + quantity);
-        }
-
-        if(country.isPresent()) {
-            var displayCountry = orderHistoryPage.getCountry();
-            assertEquals(country.get(), displayCountry, "Should display country: " + country);
-        }
-
-        if(unitPrice.isPresent()) {
-            var displayUnitPriceStr = orderHistoryPage.getUnitPrice().toString();
-            assertEquals(unitPrice.get(), displayUnitPriceStr, "Should display unit price: " + unitPrice);
-        }
-
-        if(originalPrice.isPresent()) {
-            var displayOriginalPriceStr = orderHistoryPage.getOriginalPrice().toString();
-            assertEquals(originalPrice.get(), displayOriginalPriceStr, "Should display original price: " + originalPrice);
-        }
-
-        if(status.isPresent()) {
-            var displayStatus = orderHistoryPage.getStatus();
-            assertEquals(status.get(), displayStatus, "Should display status: " + status);
-        }
+        return Result.success(response);
     }
 
+//    @Override
+//    public void confirmOrderDetails(String orderNumber, Optional<String> sku, Optional<String> quantity, Optional<String> country,
+//                                    Optional<String> unitPrice, Optional<String> originalPrice,  Optional<String> status) {
+//        // TODO: VC: If on new order page, we then need to confirm the first original price before going to view the details
+////        var originalPrice = newOrderPage.extractOriginalPrice();
+////
+////        assertEquals(549.75, originalPrice, 0.01, "Original price should be $549.75 (5 × $109.95)");
+//
+//
+//        viewOrderDetails(orderNumber);
+//
+//        var displayOrderNumber = orderHistoryPage.getOrderNumber();
+//        assertEquals(orderNumber, displayOrderNumber, "Should display the order number: " + orderNumber);
+//
+//        if(sku.isPresent()) {
+//            var displayProductId = orderHistoryPage.getProductId();
+//            assertEquals(sku.get(), displayProductId, "Should display product ID: " + sku);
+//        }
+//
+//        if(quantity.isPresent()) {
+//            var displayQuantity = orderHistoryPage.getQuantity();
+//            assertEquals(quantity.get(), displayQuantity, "Should display quantity: " + quantity);
+//        }
+//
+//        if(country.isPresent()) {
+//            var displayCountry = orderHistoryPage.getCountry();
+//            assertEquals(country.get(), displayCountry, "Should display country: " + country);
+//        }
+//
+//        if(unitPrice.isPresent()) {
+//            var displayUnitPriceStr = orderHistoryPage.getUnitPrice().toString();
+//            assertEquals(unitPrice.get(), displayUnitPriceStr, "Should display unit price: " + unitPrice);
+//        }
+//
+//        if(originalPrice.isPresent()) {
+//            var displayOriginalPriceStr = orderHistoryPage.getOriginalPrice().toString();
+//            assertEquals(originalPrice.get(), displayOriginalPriceStr, "Should display original price: " + originalPrice);
+//        }
+//
+//        if(status.isPresent()) {
+//            var displayStatus = orderHistoryPage.getStatus();
+//            assertEquals(status.get(), displayStatus, "Should display status: " + status);
+//        }
+//    }
+
     @Override
-    public void cancelOrder(String orderNumberAlias) {
-        viewOrderDetails(orderNumberAlias);
+    public Result<Void> cancelOrder(String orderNumberAlias) {
+        viewOrder(orderNumberAlias);
         orderHistoryPage.clickCancelOrder();
-    }
 
-    @Override
-    public void confirmOrderCancelled(String orderNumber) {
         var cancellationMessage = orderHistoryPage.getNotificationMessage();
         assertEquals("Order cancelled successfully!", cancellationMessage, "Should display cancellation success message");
 
         var displayStatusAfterCancel = orderHistoryPage.getStatus();
-        assertEquals("CANCELLED", displayStatusAfterCancel, "Status should be CANCELLED after cancellation");
+        assertEquals(OrderStatus.CANCELLED, displayStatusAfterCancel, "Status should be CANCELLED after cancellation");
         orderHistoryPage.assertCancelButtonNotVisible();
+
+        return Result.success();
     }
 
-    @Override
-    public void confirmSubtotalPricePositive(String orderNumber) {
-        var displayDiscountRate = orderHistoryPage.getDiscountRate();
-        var displayDiscountAmount = orderHistoryPage.getDiscountAmount();
-        var displaySubtotalPrice = orderHistoryPage.getSubtotalPrice();
+//    @Override
+//    public void confirmSubtotalPricePositive(String orderNumber) {
+//        var displayDiscountRate = orderHistoryPage.getDiscountRate();
+//        var displayDiscountAmount = orderHistoryPage.getDiscountAmount();
+//        var displaySubtotalPrice = orderHistoryPage.getSubtotalPrice();
+//
+//        assertTrue(displayDiscountRate.endsWith("%"), "Should display discount rate with % symbol");
+//        assertTrue(displayDiscountAmount.startsWith("$"), "Should display discount amount with $ symbol");
+//        assertTrue(displaySubtotalPrice.startsWith("$"), "Should display subtotal price with $ symbol");
+//
+//        // TODO: VJ: Assert actual values
+//    }
 
-        assertTrue(displayDiscountRate.endsWith("%"), "Should display discount rate with % symbol");
-        assertTrue(displayDiscountAmount.startsWith("$"), "Should display discount amount with $ symbol");
-        assertTrue(displaySubtotalPrice.startsWith("$"), "Should display subtotal price with $ symbol");
-
-        // TODO: VJ: Assert actual values
-    }
-
-    @Override
-    public void confirmTotalPricePositive(String orderNumber) {
-        var displayTaxRate = orderHistoryPage.getTaxRate();
-        var displayTaxAmount = orderHistoryPage.getTaxAmount();
-        var displayTotalPrice = orderHistoryPage.getTotalPrice();
-
-        assertTrue(displayTaxRate.endsWith("%"), "Should display tax rate with % symbol");
-        assertTrue(displayTaxAmount.startsWith("$"), "Should display tax amount with $ symbol");
-        assertTrue(displayTotalPrice.startsWith("$"), "Should display total price with $ symbol");
-
-        // TODO: VJ: Assert actual values
-    }
-
-
+//    @Override
+//    public void confirmTotalPricePositive(String orderNumber) {
+//        var displayTaxRate = orderHistoryPage.getTaxRate();
+//        var displayTaxAmount = orderHistoryPage.getTaxAmount();
+//        var displayTotalPrice = orderHistoryPage.getTotalPrice();
+//
+//        assertTrue(displayTaxRate.endsWith("%"), "Should display tax rate with % symbol");
+//        assertTrue(displayTaxAmount.startsWith("$"), "Should display tax amount with $ symbol");
+//        assertTrue(displayTotalPrice.startsWith("$"), "Should display total price with $ symbol");
+//
+//        // TODO: VJ: Assert actual values
+//    }
 
 
-    @Override
-    public void confirmOrderNumberGeneratedWithPrefix(String orderNumber, String expectedPrefix) {
-        // NOTE: VJ: If we are on order creation page, then check order number generated correctly
 
-        viewOrderDetails(orderNumber);
 
-        var displayOrderNumber = orderHistoryPage.getOrderNumber();
-        assertEquals(orderNumber, displayOrderNumber, "Should display the order number: " + orderNumber);
-
-        assertThat(displayOrderNumber)
-                .withFailMessage("Order number should start with prefix: " + expectedPrefix)
-                .startsWith(expectedPrefix);
-    }
+//    @Override
+//    public void confirmOrderNumberGeneratedWithPrefix(String orderNumber, String expectedPrefix) {
+//        // NOTE: VJ: If we are on order creation page, then check order number generated correctly
+//
+//        viewOrderDetails(orderNumber);
+//
+//        var displayOrderNumber = orderHistoryPage.getOrderNumber();
+//        assertEquals(orderNumber, displayOrderNumber, "Should display the order number: " + orderNumber);
+//
+//        assertThat(displayOrderNumber)
+//                .withFailMessage("Order number should start with prefix: " + expectedPrefix)
+//                .startsWith(expectedPrefix);
+//    }
 
     @Override
     public void close() {
