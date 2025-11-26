@@ -42,15 +42,16 @@ springBoot {
 
 // Frontend build tasks
 task npmInstall(type: Exec) {
-	commandLine 'cmd', '/c', 'npm', 'install'
+	def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
+	commandLine isWindows ? ['cmd', '/c', 'npm', 'install'] : ['npm', 'install']
 	inputs.file('package.json')
-	inputs.file('package-lock.json')
 	outputs.dir('node_modules')
 }
 
 task npmBuild(type: Exec) {
 	dependsOn npmInstall
-	commandLine 'cmd', '/c', 'npm', 'run', 'build'
+	def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
+	commandLine isWindows ? ['cmd', '/c', 'npm', 'run', 'build'] : ['npm', 'run', 'build']
 	inputs.dir('src/frontend')
 	inputs.file('tsconfig.json')
 	inputs.file('vite.config.ts')

@@ -37,8 +37,10 @@ Check that you have Node 22+
 node -v
 ```
 
-For frontend, you need to install npm
+**Note:** Frontend dependencies are automatically installed during the build process. If you want to work on the frontend separately, run:
+
 ```shell
+cd monolith
 npm install
 ```
 
