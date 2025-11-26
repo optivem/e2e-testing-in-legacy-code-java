@@ -10,11 +10,5 @@ class UiE2eTest extends BaseE2eTest {
         return DriverFactory.createShopUiDriver();
     }
 
-    // TODO: Verifying the different responses, e.g. for the place order response
-
-    //        assertTrue(newOrderPage.getOrderNumber().isPresent(), "Order number should be present after placing order");
-//        assertTrue(newOrderPage.getOriginalPrice().isPresent(), "Original price should be present after placing order");
-//        assertTrue(newOrderPage.getOriginalPrice().get().compareTo(BigDecimal.ZERO) > 0, "Original price should be positive after placing order");
-//
 }
 

@@ -14,7 +14,7 @@ public class TestPageClient {
     private static final int DEFAULT_TIMEOUT_SECONDS = 10;
     private static final int DEFAULT_TIMEOUT_MILLISECONDS = DEFAULT_TIMEOUT_SECONDS * 1000;
 
-    public TestPageClient(Page page, String baseUrl, int timeoutMilliseconds) {
+    private TestPageClient(Page page, String baseUrl, int timeoutMilliseconds) {
         this.page = page;
         this.baseUrl = baseUrl;
         this.timeoutMilliseconds = timeoutMilliseconds;
@@ -86,6 +86,15 @@ public class TestPageClient {
     public void waitForHidden(String selector) {
         var waitForOptions = getWaitForOptions()
                 .setState(WaitForSelectorState.HIDDEN)
+                .setTimeout(timeoutMilliseconds);
+
+        var locator = page.locator(selector);
+        locator.waitFor(waitForOptions);
+    }
+
+    public void waitForVisible(String selector) {
+        var waitForOptions = getWaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
                 .setTimeout(timeoutMilliseconds);
 
         var locator = page.locator(selector);

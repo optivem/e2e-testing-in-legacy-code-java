@@ -8,6 +8,7 @@ import com.optivem.eshop.systemtest.core.drivers.external.TaxApiDriver;
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -127,11 +128,28 @@ public abstract class BaseE2eTest {
         assertThat(result.getErrors()).contains("Product does not exist for SKU: NON-EXISTENT-SKU-12345");
     }
 
+    @Disabled
+    @Test
+    void shouldNotBeAbleToViewNonExistentOrder() {
+        var result = shopDriver.viewOrder("NON-EXISTENT-ORDER-12345");
+        assertThat(result.isFailure()).isTrue();
+        assertThat(result.getErrors()).contains("Order NON-EXISTENT-ORDER-12345 does not exist.");
+    }
+
     @Test
     void shouldRejectOrderWithNegativeQuantity() {
         var sku = "DEF-" + UUID.randomUUID();
         erpApiDriver.createProduct(sku, "30.00");
         var result = shopDriver.placeOrder(sku, "-3", "US");
+        assertThat(result.isFailure()).isTrue();
+        assertThat(result.getErrors()).contains("Quantity must be positive");
+    }
+
+    @Test
+    void shouldRejectOrderWithZeroQuantity() {
+        var sku = "GHI-" + UUID.randomUUID();
+        erpApiDriver.createProduct(sku, "40.00");
+        var result = shopDriver.placeOrder(sku, "0", "US");
         assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Quantity must be positive");
     }
@@ -195,6 +213,15 @@ public abstract class BaseE2eTest {
         var result = shopDriver.placeOrder("some-sku", "5", emptyCountry);
         assertThat(result.isFailure()).isTrue();
         assertThat(result.getErrors()).contains("Country must not be empty");
+    }
+
+    @Test
+    void shouldRejectOrderWithUnsupportedCountry() {
+        var sku = "JKL-" + UUID.randomUUID();
+        erpApiDriver.createProduct(sku, "25.00");
+        var result = shopDriver.placeOrder(sku, "3", "XX");
+        assertThat(result.isFailure()).isTrue();
+        assertThat(result.getErrors()).contains("Country does not exist: XX");
     }
 }
 

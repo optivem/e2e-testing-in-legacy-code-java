@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class BasePage {
 
+    private static final String NOTIFICATION_SELECTOR = "#notifications .notification";
     private static final String SUCCESS_NOTIFICATION_SELECTOR = "[role='alert'].success";
     private static final String ERROR_NOTIFICATION_SELECTOR = "[role='alert'].error";
 
@@ -15,23 +16,18 @@ public abstract class BasePage {
         this.pageClient = pageClient;
     }
 
-    public Boolean hasSuccessNotification() {
-        try {
-            pageClient.getPage().waitForSelector("#notifications .notification",
-                new com.microsoft.playwright.Page.WaitForSelectorOptions()
-                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
-                    .setTimeout(5000));
-        } catch (Exception e) {
-            return null;
-        }
+    public boolean hasSuccessNotification() {
+        pageClient.waitForVisible(NOTIFICATION_SELECTOR);
 
         if(pageClient.exists(SUCCESS_NOTIFICATION_SELECTOR)) {
             return true;
         }
+
         if(pageClient.exists(ERROR_NOTIFICATION_SELECTOR)) {
             return false;
         }
-        return null;
+
+        throw new RuntimeException("Notification is neither success nor error");
     }
 
 

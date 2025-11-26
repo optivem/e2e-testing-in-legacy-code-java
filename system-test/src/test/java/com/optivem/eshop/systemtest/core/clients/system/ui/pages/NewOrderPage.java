@@ -34,23 +34,17 @@ public class NewOrderPage extends BasePage {
         pageClient.click(PLACE_ORDER_BUTTONG_SELECTOR);
     }
 
-    public Optional<String> getOrderNumber() {
-        var hasSuccess = hasSuccessNotification();
-        if(hasSuccess == null || !hasSuccess) {
-            return Optional.empty();
-        }
-
+    public String getOrderNumber() {
         var confirmationMessageText = readSuccessNotification();
 
         var pattern = Pattern.compile(ORDER_NUMBER_REGEX);
         var matcher = pattern.matcher(confirmationMessageText);
 
         if(!matcher.find()) {
-            return Optional.empty();
+            throw new RuntimeException("Could not find order number");
         }
 
-        var result = matcher.group(ORDER_NUMBER_MATCHER_GROUP);
-        return Optional.of(result);
+        return matcher.group(ORDER_NUMBER_MATCHER_GROUP);
     }
 }
 

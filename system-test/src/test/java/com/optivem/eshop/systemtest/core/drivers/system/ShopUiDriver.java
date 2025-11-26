@@ -53,10 +53,11 @@ public class ShopUiDriver implements ShopDriver {
         newOrderPage.inputCountry(country);
         newOrderPage.clickPlaceOrder();
 
-        var orderNumberValue = newOrderPage.getOrderNumber();
-        if (orderNumberValue.isPresent()) {
-            // TODO: VJ: Read also the original price
-            var response = PlaceOrderResponse.builder().orderNumber(orderNumberValue.get()).build();
+        var isSuccess = newOrderPage.hasSuccessNotification();
+
+        if(isSuccess) {
+            var orderNumberValue = newOrderPage.getOrderNumber();
+            var response = PlaceOrderResponse.builder().orderNumber(orderNumberValue).build();
             return Result.success(response);
         }
 

@@ -17,6 +17,7 @@ public class ShopUiClient implements AutoCloseable {
     private final String baseUrl;
     private final Playwright playwright;
     private final Browser browser;
+    private final BrowserContext context;
     private final Page page;
     private final TestPageClient pageClient;
     private final HomePage homePage;
@@ -27,6 +28,7 @@ public class ShopUiClient implements AutoCloseable {
         this.baseUrl = baseUrl;
         this.playwright = Playwright.create();
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+        this.context = browser.newContext();
         this.page = browser.newPage();
         this.pageClient = new TestPageClient(page, baseUrl);
         this.homePage = new HomePage(pageClient);
@@ -59,9 +61,15 @@ public class ShopUiClient implements AutoCloseable {
         if (page != null) {
             page.close();
         }
+
+        if(context != null) {
+            context.close();
+        }
+
         if (browser != null) {
             browser.close();
         }
+
         if (playwright != null) {
             playwright.close();
         }
