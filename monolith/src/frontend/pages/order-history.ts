@@ -1,6 +1,6 @@
 // UI Controller for Order History page
 
-import { showNotification } from '../common';
+import { showNotification, showApiError } from '../common';
 import { orderService } from '../services/order-service';
 import type { GetOrderResponse } from '../types/order.types';
 
@@ -18,10 +18,7 @@ async function displayOrderDetails(orderNumber: string): Promise<void> {
   if (result.success) {
     renderOrderDetails(result.data);
   } else {
-    const errorMessage = result.error.fieldErrors
-      ? `${result.error.message}\n${result.error.fieldErrors.join('\n')}`
-      : result.error.message;
-    showNotification(errorMessage, true);
+    showApiError(result.error);
   }
 }
 
@@ -79,10 +76,7 @@ async function handleCancelOrder(orderNumber: string): Promise<void> {
     showNotification('Order cancelled successfully!', false);
     await displayOrderDetails(orderNumber);
   } else {
-    const errorMessage = result.error.fieldErrors
-      ? `${result.error.message}\n${result.error.fieldErrors.join('\n')}`
-      : result.error.message;
-    showNotification(errorMessage, true);
+    showApiError(result.error);
   }
 }
 

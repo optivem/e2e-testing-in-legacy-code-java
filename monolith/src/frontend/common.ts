@@ -31,6 +31,19 @@ export function showNotification(
   }
 }
 
+/**
+ * Displays an error from a failed API Result using showNotification.
+ * Formats the error message including any field-level validation errors.
+ *
+ * @param error The ApiError from a failed Result
+ */
+export function showApiError(error: ApiError): void {
+  const errorMessage = error.fieldErrors
+    ? `${error.message}\n${error.fieldErrors.join('\n')}`
+    : error.message;
+  showNotification(errorMessage, true);
+}
+
 async function safeParseJson(response: Response): Promise<any> {
   try {
     return await response.json();
