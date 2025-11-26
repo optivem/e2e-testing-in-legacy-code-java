@@ -1,7 +1,8 @@
 // Service layer for Order API operations
 
 import { fetchJson } from '../common';
-import type { PlaceOrderRequest, PlaceOrderResponse, GetOrderResponse, Result } from '../types/order.types';
+import type { PlaceOrderRequest, PlaceOrderResponse, GetOrderResponse } from '../types/api.types';
+import type { Result } from '../types/result.types';
 
 class OrderService {
   private baseUrl: string;

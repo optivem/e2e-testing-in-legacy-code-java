@@ -2,7 +2,7 @@
 
 import { handleResult, showSuccessNotification } from '../common';
 import { orderService } from '../services/order-service';
-import type { GetOrderResponse } from '../types/order.types';
+import type { GetOrderResponse } from '../types/api.types';
 
 document.getElementById('searchForm')?.addEventListener('submit', async function(e: Event) {
   e.preventDefault();

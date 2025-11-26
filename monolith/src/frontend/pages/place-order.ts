@@ -2,7 +2,7 @@
 
 import { showNotification, handleResult, showSuccessNotification } from '../common';
 import { orderService } from '../services/order-service';
-import type { OrderFormData } from '../types/order.types';
+import type { OrderFormData } from '../types/form.types';
 
 document.getElementById('orderForm')?.addEventListener('submit', async function(e: Event) {
   e.preventDefault();

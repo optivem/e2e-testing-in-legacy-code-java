@@ -1,6 +1,7 @@
 // Common notification functions shared across all pages
 
-import type { ApiError, ProblemDetail, Result } from './types/order.types';
+import type { ApiError, ProblemDetail } from './types/error.types';
+import type { Result } from './types/result.types';
 
 export function showNotification(
   message: string,
