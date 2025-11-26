@@ -1,6 +1,6 @@
 // Service layer for Order API operations
 
-import { extractApiError } from '../common';
+import { fetchJson } from '../common';
 import type { PlaceOrderRequest, PlaceOrderResponse, GetOrderResponse, Result } from '../types/order.types';
 
 class OrderService {
@@ -11,80 +11,27 @@ class OrderService {
   }
 
   async placeOrder(sku: string, quantity: number, country: string): Promise<Result<PlaceOrderResponse>> {
-    try {
-      const requestBody: PlaceOrderRequest = { sku, quantity, country };
+    const requestBody: PlaceOrderRequest = { sku, quantity, country };
 
-      const response = await fetch(this.baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return { success: true, data };
-      }
-
-      const error = await extractApiError(response);
-      return { success: false, error };
-    } catch (e: any) {
-      return {
-        success: false,
-        error: {
-          message: `Network error: ${e.message}`,
-          status: 0
-        }
-      };
-    }
+    return fetchJson<PlaceOrderResponse>(this.baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
   }
 
   async getOrder(orderNumber: string): Promise<Result<GetOrderResponse>> {
-    try {
-      const response = await fetch(`${this.baseUrl}/${orderNumber}`, {
-        method: 'GET'
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return { success: true, data };
-      }
-
-      const error = await extractApiError(response);
-      return { success: false, error };
-    } catch (e: any) {
-      return {
-        success: false,
-        error: {
-          message: `Network error: ${e.message}`,
-          status: 0
-        }
-      };
-    }
+    return fetchJson<GetOrderResponse>(`${this.baseUrl}/${orderNumber}`, {
+      method: 'GET'
+    });
   }
 
   async cancelOrder(orderNumber: string): Promise<Result<void>> {
-    try {
-      const response = await fetch(`${this.baseUrl}/${orderNumber}/cancel`, {
-        method: 'POST'
-      });
-
-      if (response.status === 204 || response.ok) {
-        return { success: true, data: undefined };
-      }
-
-      const error = await extractApiError(response);
-      return { success: false, error };
-    } catch (e: any) {
-      return {
-        success: false,
-        error: {
-          message: `Network error: ${e.message}`,
-          status: 0
-        }
-      };
-    }
+    return fetchJson<void>(`${this.baseUrl}/${orderNumber}/cancel`, {
+      method: 'POST'
+    });
   }
 }
 

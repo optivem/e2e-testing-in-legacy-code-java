@@ -72,6 +72,40 @@ export function handleResult<T>(
   }
 }
 
+/**
+ * Performs a fetch request and returns a Result.
+ * Handles HTTP errors, network errors, and JSON parsing.
+ *
+ * @param url The URL to fetch
+ * @param options Fetch options (method, headers, body, etc.)
+ * @returns Result containing parsed JSON data or error
+ */
+export async function fetchJson<T>(url: string, options?: RequestInit): Promise<Result<T>> {
+  try {
+    const response = await fetch(url, options);
+
+    if (response.ok) {
+      // Handle 204 No Content
+      if (response.status === 204) {
+        return { success: true, data: undefined as T };
+      }
+      const data = await response.json();
+      return { success: true, data };
+    }
+
+    const error = await extractApiError(response);
+    return { success: false, error };
+  } catch (e: any) {
+    return {
+      success: false,
+      error: {
+        message: `Network error: ${e.message}`,
+        status: 0
+      }
+    };
+  }
+}
+
 async function safeParseJson(response: Response): Promise<any> {
   try {
     return await response.json();
