@@ -16,21 +16,19 @@ services:
       timeout: 5s
       retries: 5
 
-  erp-api:
-    image: williamyeh/json-server
+  external:
+    image: node:18-alpine
     ports:
-      - "9101:3000"
+      - "9001:9001"
     volumes:
-      - ./json-server-db.erp-api.json:/data/db.json
-    command: --watch /data/db.json --host 0.0.0.0
-
-  tax-api:
-    image: williamyeh/json-server
-    ports:
-      - "9201:3000"
-    volumes:
-      - ./json-server-db.tax-api.json:/data/db.json
-    command: --watch /data/db.json --host 0.0.0.0
+      - ./external/mock-server.js:/app/mock-server.js
+      - ./external/json-server-db.erp-api.json:/app/json-server-db.erp-api.json
+      - ./external/json-server-db.tax-api.json:/app/json-server-db.tax-api.json
+      - ./external/package.json:/app/package.json
+    working_dir: /app
+    command: sh -c "npm install && npm start"
+    environment:
+      - PORT=9001
 
   backend:
     image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-java/backend:latest
@@ -45,9 +43,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      erp-api:
-        condition: service_started
-      tax-api:
+      external:
         condition: service_started
 
   frontend:

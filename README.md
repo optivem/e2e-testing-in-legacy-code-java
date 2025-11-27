@@ -13,6 +13,7 @@
 - Docker Desktop
 - PowerShell 7+
 - Node 22+
+- NPM 10+
 
 Ensure you have JDK 21 installed
 
@@ -38,21 +39,10 @@ Check that you have Node 22+
 node -v
 ```
 
-## Project Structure
-
-```
-modern-acceptance-testing-in-legacy-code-java/
-├── backend/          # Spring Boot REST API (Java 21)
-├── frontend/         # TypeScript UI (Vite + Nginx)
-└── system-test/      # E2E & Smoke Tests (Playwright + REST Assured)
-```
-
-**Frontend Development:** Run `npm run dev` in the frontend folder for hot reload during development:
-
+Check that you have NPM 10+ (in frontend)
 ```shell
 cd frontend
-npm install
-npm run dev  # Starts dev server on port 5173 with API proxy
+node -v
 ```
 
 ## Run Everything

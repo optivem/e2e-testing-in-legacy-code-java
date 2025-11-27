@@ -34,9 +34,9 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 erp:
-  url: http://erp-api:3000
+  url: http://external:9001/erp/api
 tax:
-  url: http://tax-api:3000
+  url: http://external:9001/tax/api
 
 ---
 spring:
@@ -44,9 +44,9 @@ spring:
     activate:
       on-profile: qa
 erp:
-  url: http://erp-api:3000
+  url: http://external:9001/erp/api
 tax:
-  url: http://tax-api:3000
+  url: http://external:9001/tax/api
 
 ---
 spring:

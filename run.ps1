@@ -10,8 +10,8 @@ param(
     # Service URLs
     [string]$FrontendUrl = "http://localhost:3001",
     [string]$BackendUrl = "http://localhost:8081",
-    [string]$ErpApiUrl = "http://localhost:9101",
-    [string]$TaxApiUrl = "http://localhost:9201",
+    [string]$ErpApiUrl = "http://localhost:9001/erp/health",
+    [string]$TaxApiUrl = "http://localhost:9001/tax/health",
     [string]$PostgresHost = "localhost:5401"
 )
 
@@ -75,7 +75,8 @@ function Wait-ForService {
 function Wait-ForServices {
     Write-Host "Checking if services are healthy..." -ForegroundColor Cyan
 
-    Wait-ForService -Url $ErpApiUrl -ServiceName "ERP API" -ContainerName "erp-api" -LogLines 20
+    Wait-ForService -Url $ErpApiUrl -ServiceName "ERP API" -ContainerName "external" -LogLines 20
+    Wait-ForService -Url $TaxApiUrl -ServiceName "Tax API" -ContainerName "external" -LogLines 20
     Wait-ForService -Url $BackendUrl -ServiceName "Backend API" -ContainerName "backend" -LogLines 50
     Wait-ForService -Url $FrontendUrl -ServiceName "Frontend" -ContainerName "frontend" -LogLines 50
 
@@ -150,10 +151,16 @@ function Start-System {
     Write-Host $FrontendUrl -ForegroundColor Yellow
     Write-Host "- Backend API: " -NoNewline
     Write-Host $BackendUrl -ForegroundColor Yellow
-    Write-Host "- ERP API: " -NoNewline
-    Write-Host $ErpApiUrl -ForegroundColor Yellow
-    Write-Host "- Tax API: " -NoNewline
-    Write-Host $TaxApiUrl -ForegroundColor Yellow
+    Write-Host "- External API: " -NoNewline
+    Write-Host "http://localhost:9001/health" -ForegroundColor Yellow
+    Write-Host "  - ERP Health: " -NoNewline
+    Write-Host "http://localhost:9001/erp/health" -ForegroundColor Yellow
+    Write-Host "  - ERP API: " -NoNewline
+    Write-Host "http://localhost:9001/erp/api/products" -ForegroundColor Yellow
+    Write-Host "  - Tax Health: " -NoNewline
+    Write-Host "http://localhost:9001/tax/health" -ForegroundColor Yellow
+    Write-Host "  - Tax API: " -NoNewline
+    Write-Host "http://localhost:9001/tax/api/countries" -ForegroundColor Yellow
     Write-Host "- PostgreSQL: " -NoNewline
     Write-Host $PostgresHost -ForegroundColor Yellow
     Write-Host ""

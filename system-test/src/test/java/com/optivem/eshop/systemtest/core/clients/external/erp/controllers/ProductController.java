@@ -7,7 +7,7 @@ import com.optivem.eshop.systemtest.core.commons.results.Result;
 
 public class ProductController {
 
-    private static final String ENDPOINT = "/products";
+    private static final String ENDPOINT = "/api/products";
 
     private final TestHttpClient httpClient;
 

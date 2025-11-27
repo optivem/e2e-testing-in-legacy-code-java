@@ -12,7 +12,7 @@ public class TaxApiDriver implements AutoCloseable {
     }
 
     public Result<Void> goToTaxation() {
-        return taxApiClient.home().home();
+        return taxApiClient.health().health();
     }
 
     @Override

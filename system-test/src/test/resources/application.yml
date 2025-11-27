@@ -6,7 +6,7 @@ test:
       baseUrl: http://localhost:8081/api
   erp:
     api:
-      baseUrl: http://localhost:9101
+      baseUrl: http://localhost:9001/erp
   tax:
     api:
-      baseUrl: http://localhost:9201
+      baseUrl: http://localhost:9001/tax

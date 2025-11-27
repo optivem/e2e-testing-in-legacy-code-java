@@ -24,7 +24,7 @@ public class TaxApiSmokeTest {
     }
 
     @Test
-    void home_shouldReturn200OK() {
+    void shouldBeAbleToGoToTax() {
         var result = taxApiDriver.goToTaxation();
         assertThat(result.isSuccess()).isTrue();
     }

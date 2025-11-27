@@ -12,7 +12,7 @@ public class ErpApiDriver implements AutoCloseable {
     }
 
     public Result<Void> goToErp() {
-        return erpApiClient.home().home();
+        return erpApiClient.health().health();
     }
 
     public Result<Void> createProduct(String sku, String unitPrice) {
