@@ -143,6 +143,30 @@
       "price": "20.00",
       "category": "Test Category",
       "brand": "Test Brand"
+    },
+    {
+      "id": "MNO-964ed790-403c-4810-808f-61017e868c56",
+      "title": "Test product title for MNO-964ed790-403c-4810-808f-61017e868c56",
+      "description": "Test product description for MNO-964ed790-403c-4810-808f-61017e868c56",
+      "price": "35.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-7af6dcd5-6049-418b-8c0d-1dff5771bcad",
+      "title": "Test product title for ABC-7af6dcd5-6049-418b-8c0d-1dff5771bcad",
+      "description": "Test product description for ABC-7af6dcd5-6049-418b-8c0d-1dff5771bcad",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-62300d10-b0ff-40bf-9cf9-aca5027f5a0f",
+      "title": "Test product title for ABC-62300d10-b0ff-40bf-9cf9-aca5027f5a0f",
+      "description": "Test product description for ABC-62300d10-b0ff-40bf-9cf9-aca5027f5a0f",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
     }
   ]
 }
