@@ -197,7 +197,7 @@ function Test-System {
     Write-Host ""
     Write-Host "All tests passed!" -ForegroundColor Green
     Write-Host "Test report: " -NoNewline
-    Write-Host "system-test\build\reports\tests\test\index.html" -ForegroundColor Yellow
+    Write-Host $TEST_REPORT_PATH -ForegroundColor Yellow
 }
 
 function Stop-System {
