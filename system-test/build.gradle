@@ -43,3 +43,13 @@ tasks.named('test') {
 		showStackTraces = true
 	}
 }
+
+// Disable bootJar task since this is a test-only module
+tasks.named('bootJar') {
+	enabled = false
+}
+
+tasks.named('jar') {
+	enabled = true
+}
+
