@@ -14,7 +14,7 @@ public class ShopApiDriver implements ShopDriver {
 
     @Override
     public Result<Void> goToShop() {
-        return apiClient.echo().echo();
+        return apiClient.health().checkHealth();
     }
 
     @Override

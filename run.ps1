@@ -9,7 +9,7 @@ param(
 
     # Service URLs
     [string]$FrontendUrl = "http://localhost:3001",
-    [string]$BackendUrl = "http://localhost:8081",
+    [string]$BackendUrl = "http://localhost:8081/actuator/health",
     [string]$ErpApiUrl = "http://localhost:9001/erp/health",
     [string]$TaxApiUrl = "http://localhost:9001/tax/health",
     [string]$PostgresHost = "localhost:5401"

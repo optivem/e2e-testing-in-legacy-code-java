@@ -95,6 +95,54 @@
       "price": "20.00",
       "category": "Test Category",
       "brand": "Test Brand"
+    },
+    {
+      "id": "MNO-26e2df06-1ed2-442f-bb43-11b6c67cbd44",
+      "title": "Test product title for MNO-26e2df06-1ed2-442f-bb43-11b6c67cbd44",
+      "description": "Test product description for MNO-26e2df06-1ed2-442f-bb43-11b6c67cbd44",
+      "price": "35.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-281a471e-c81c-46b2-bf9d-6f693bb6127f",
+      "title": "Test product title for ABC-281a471e-c81c-46b2-bf9d-6f693bb6127f",
+      "description": "Test product description for ABC-281a471e-c81c-46b2-bf9d-6f693bb6127f",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-47949947-703b-4394-9847-7f9feff86d06",
+      "title": "Test product title for ABC-47949947-703b-4394-9847-7f9feff86d06",
+      "description": "Test product description for ABC-47949947-703b-4394-9847-7f9feff86d06",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "MNO-04fb6b3b-3fdc-4116-92b0-c9db4584744f",
+      "title": "Test product title for MNO-04fb6b3b-3fdc-4116-92b0-c9db4584744f",
+      "description": "Test product description for MNO-04fb6b3b-3fdc-4116-92b0-c9db4584744f",
+      "price": "35.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-d3d133eb-8b0c-47e2-913f-1829d1f9e018",
+      "title": "Test product title for ABC-d3d133eb-8b0c-47e2-913f-1829d1f9e018",
+      "description": "Test product description for ABC-d3d133eb-8b0c-47e2-913f-1829d1f9e018",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
+    },
+    {
+      "id": "ABC-33425a20-a1ac-4945-b60a-87b854470b5d",
+      "title": "Test product title for ABC-33425a20-a1ac-4945-b60a-87b854470b5d",
+      "description": "Test product description for ABC-33425a20-a1ac-4945-b60a-87b854470b5d",
+      "price": "20.00",
+      "category": "Test Category",
+      "brand": "Test Brand"
     }
   ]
 }

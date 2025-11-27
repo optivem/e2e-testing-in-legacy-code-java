@@ -4,17 +4,17 @@ import com.optivem.eshop.systemtest.core.clients.commons.TestHttpClient;
 import com.optivem.eshop.systemtest.core.clients.commons.TestHttpUtils;
 import com.optivem.eshop.systemtest.core.commons.results.Result;
 
-public class EchoController {
+public class HealthController {
 
-    private static final String ENDPOINT = "/echo";
+    private static final String ENDPOINT = "/health";
 
     private final TestHttpClient httpClient;
 
-    public EchoController(TestHttpClient httpClient) {
+    public HealthController(TestHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
-    public Result<Void> echo() {
+    public Result<Void> checkHealth() {
         var httpResponse = httpClient.get(ENDPOINT);
         return TestHttpUtils.getOkResultOrFailure(httpResponse);
     }

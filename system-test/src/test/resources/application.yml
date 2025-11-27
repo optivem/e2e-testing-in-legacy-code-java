@@ -3,7 +3,7 @@ test:
     ui:
       baseUrl: http://localhost:3001
     api:
-      baseUrl: http://localhost:8081/api
+      baseUrl: http://localhost:8081
   erp:
     api:
       baseUrl: http://localhost:9001/erp
