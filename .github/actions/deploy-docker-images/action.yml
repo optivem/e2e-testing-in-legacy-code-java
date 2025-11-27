@@ -44,23 +44,30 @@ runs:
         docker compose -f docker-compose.pipeline.yml up -d
       shell: bash
 
-    - name: Wait for Application to be Ready
+    - name: Wait for System - Frontend
       uses: optivem/wait-for-docker-compose-action@v1
       with:
-        url: 'http://localhost:8080/'
+        url: 'http://localhost:3001/'
         max-attempts: '30'
         wait-seconds: '10'
 
-    - name: Setup Java
+    - name: Wait for System - Backend
+      uses: optivem/wait-for-docker-compose-action@v1
+      with:
+        url: 'http://localhost:8081/'
+        max-attempts: '30'
+        wait-seconds: '10'
+
+    - name: Prepare for Smoke Tests - Setup Java
       uses: actions/setup-java@v4
       with:
         java-version: 21
         distribution: temurin
 
-    - name: Setup Gradle
+    - name: Prepare for Smoke Tests - Setup Gradle
       uses: gradle/actions/setup-gradle@v4
     
-    - name: Make Gradle Wrapper executable
+    - name: Prepare for Smoke Tests - Make Gradle Wrapper executable
       run: chmod +x ./gradlew
       shell: bash
       working-directory: system-test
