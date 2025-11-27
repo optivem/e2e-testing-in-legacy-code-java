@@ -39,22 +39,12 @@ jobs:
       with:
         node-version: '22'
 
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        java-version: 21
-        distribution: temurin
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-    
-    - name: Make Gradle Wrapper executable
-      run: chmod +x ./gradlew
-      shell: bash
+    - name: Install Dependencies
+      run: npm install
       working-directory: frontend
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+    - name: Build Frontend
+      run: npm run build
       working-directory: frontend
 
     - name: Publish Docker Image

@@ -38,7 +38,7 @@ tasks.named('test') {
 }
 
 springBoot {
-	mainClass = 'com.optivem.eshop.monolith.EshopApplication'
+	mainClass = 'com.optivem.eshop.backend.EshopApplication'
 }
 
 
