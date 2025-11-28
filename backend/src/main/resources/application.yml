@@ -1,25 +1,23 @@
 spring:
-  profiles:
-    active: e2e
   jackson:
     deserialization:
       ACCEPT_FLOAT_AS_INT: false
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5401/eshop}
-    username: ${SPRING_DATASOURCE_USERNAME:eshop_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:eshop_password}
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5401/eshop}
+    username: ${POSTGRES_USERNAME:eshop_user}
+    password: ${POSTGRES_PASSWORD:eshop_password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: create-drop
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 management:
   endpoints:
@@ -42,36 +40,7 @@ error:
     bad-request: ${error.types.base-url}/bad-request
     internal-server-error: ${error.types.base-url}/internal-server-error
 
----
-spring:
-  config:
-    activate:
-      on-profile: e2e
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    show-sql: true
 erp:
-  url: http://external:9001/erp/api
+  url: ${ERP_API_URL:http://localhost:9001/erp/api}
 tax:
-  url: http://external:9001/tax/api
-
----
-spring:
-  config:
-    activate:
-      on-profile: qa
-erp:
-  url: http://external:9001/erp/api
-tax:
-  url: http://external:9001/tax/api
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-erp:
-  url: http://erp-api:3000
-tax:
-  url: http://tax-api:3000
+  url: ${TAX_API_URL:http://localhost:9001/tax/api}

@@ -31,7 +31,7 @@ server.get('/tax/health', (req, res) => {
 });
 
 // Mount ERP API at /erp/api with custom rewriter
-const erpRouter = jsonServer.router(path.join(__dirname, 'json-server-db.erp-api.json'));
+const erpRouter = jsonServer.router(path.join(__dirname, 'erp.db.json'));
 server.get('/erp/api', (req, res) => {
   res.status(200).json({
     message: 'ERP API',
@@ -41,7 +41,7 @@ server.get('/erp/api', (req, res) => {
 server.use('/erp/api', erpRouter);
 
 // Mount Tax API at /tax/api with custom rewriter
-const taxRouter = jsonServer.router(path.join(__dirname, 'json-server-db.tax-api.json'));
+const taxRouter = jsonServer.router(path.join(__dirname, 'tax.db.json'));
 server.get('/tax/api', (req, res) => {
   res.status(200).json({
     message: 'Tax API',
