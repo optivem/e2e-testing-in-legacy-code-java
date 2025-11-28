@@ -8,20 +8,20 @@ param(
     [string]$Mode = "local"
 )
 
-# Constants - Service URLs
+# Script Configuration
+$ErrorActionPreference = "Continue"
+$ComposeFile = if ($Mode -eq "pipeline") { "docker-compose.pipeline.yml" } else { "docker-compose.local.yml" }
+
+# System Configuration
+$ContainerName = "modern-acceptance-testing-in-legacy-code-java"
 $FrontendUrl = "http://localhost:3001"
 $BackendUrl = "http://localhost:8081/health"
 $ErpApiUrl = "http://localhost:9001/erp/health"
 $TaxApiUrl = "http://localhost:9001/tax/health"
-$PostgresHost = "localhost:5401"
 
-# Constants - Configuration
-$ContainerName = "modern-acceptance-testing-in-legacy-code-java"
+# Test Configuration
+$TestCommand = "& .\gradlew.bat clean test"
 $TestReportPath = "system-test\build\reports\tests\test\index.html"
-
-# Script Configuration
-$ErrorActionPreference = "Continue"
-$ComposeFile = if ($Mode -eq "pipeline") { "docker-compose.pipeline.yml" } else { "docker-compose.local.yml" }
 
 # Import build scripts
 . .\backend\Build-Backend.ps1
@@ -123,8 +123,6 @@ function Start-System {
     Write-Host $ErpApiUrl -ForegroundColor Yellow
     Write-Host "- Tax API Health: " -NoNewline
     Write-Host $TaxApiUrl -ForegroundColor Yellow
-    Write-Host "- PostgreSQL Host: " -NoNewline
-    Write-Host $PostgresHost -ForegroundColor Yellow
     Write-Host ""
     Write-Host "To view logs: " -NoNewline
     Write-Host ".\run.ps1 logs $Mode" -ForegroundColor Cyan
@@ -133,7 +131,7 @@ function Start-System {
 }
 
 function Test-System {
-    Execute-Command -Command "& .\gradlew.bat clean test" -SubFolder "system-test"
+    Execute-Command -Command $TestCommand -SubFolder "system-test"
 
     Write-Host ""
     Write-Host "All tests passed!" -ForegroundColor Green
