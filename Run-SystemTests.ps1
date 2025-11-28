@@ -26,34 +26,45 @@ $TestReportPath = $Config.TestReportPath
 $SystemComponents = $Config.SystemComponents
 $ExternalSystems = $Config.ExternalSystems
 
-# Remember starting location
-$InitialLocation = Get-Location
-
 function Execute-Command {
     param(
         [string]$Command,
         [string]$Path = $null
     )
 
-    if ($Path) {
-        Write-Host "Changing directory to: $Path" -ForegroundColor Cyan
-        Set-Location $Path
+    $OriginalLocation = Get-Location
+
+    try {
+        if ($Path) {
+            Write-Host "Changing directory to: $Path" -ForegroundColor Cyan
+            Set-Location $Path
+        }
+
+        Write-Host "Executing: $Command" -ForegroundColor Cyan
+
+        $output = Invoke-Expression $Command 2>&1
+        $exitCode = $LASTEXITCODE
+
+        # Display the output
+        if ($output) {
+            $output | ForEach-Object { Write-Host $_ }
+        }
+
+        if ($exitCode -ne 0 -and $null -ne $exitCode) {
+            Write-Host ""
+            Write-Host "Working directory: $(Get-Location)" -ForegroundColor Red
+            Write-Host "Command: $Command" -ForegroundColor Red
+            Write-Host "Command failed with exit code: $exitCode" -ForegroundColor Red
+            throw "Failed to execute command: $Command (Exit Code: $exitCode)"
+        }
+
+        return $output
+
+    } finally {
+        if ($Path) {
+            Set-Location $OriginalLocation
+        }
     }
-
-    Write-Host "$Command" -ForegroundColor Cyan
-    $Result = Invoke-Expression $Command
-
-    if ($Path) {
-        Write-Host "Changing directory to: $InitialLocation" -ForegroundColor Cyan
-        Set-Location $InitialLocation
-    }
-
-    if ($LASTEXITCODE -ne 0) {
-        $ErrorMessage = "Failed to execute command: $Command"
-        throw $ErrorMessage
-    }
-
-    return $Result
 }
 
 function Wait-ForService {
@@ -165,7 +176,8 @@ function Write-Heading {
     Write-Host ""
 }
 
-
+# Remember starting location
+$InitialLocation = Get-Location
 
 # Main execution
 try {
