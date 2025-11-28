@@ -12,6 +12,7 @@ public class ResultAssert extends AbstractAssert<ResultAssert, Result<?>> {
         return new ResultAssert(actual);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ResultAssert isSuccess() {
         isNotNull();
         if (!actual.isSuccess()) {
@@ -20,6 +21,7 @@ public class ResultAssert extends AbstractAssert<ResultAssert, Result<?>> {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ResultAssert isFailure() {
         isNotNull();
         if (!actual.isFailure()) {
@@ -28,6 +30,7 @@ public class ResultAssert extends AbstractAssert<ResultAssert, Result<?>> {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ResultAssert isFailure(String errorMessage) {
         isFailure();
         if (!actual.getErrors().contains(errorMessage)) {
