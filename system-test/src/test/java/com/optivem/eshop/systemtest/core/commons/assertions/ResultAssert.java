@@ -1,0 +1,50 @@
+package com.optivem.eshop.systemtest.core.commons.assertions;
+
+import com.optivem.eshop.systemtest.core.drivers.commons.Result;
+import org.assertj.core.api.AbstractAssert;
+
+public class ResultAssert extends AbstractAssert<ResultAssert, Result<?>> {
+
+    private ResultAssert(Result<?> actual) {
+        super(actual, ResultAssert.class);
+    }
+
+    public static ResultAssert assertThatResult(Result<?> actual) {
+        return new ResultAssert(actual);
+    }
+
+    public ResultAssert isSuccess() {
+        isNotNull();
+        if (!actual.isSuccess()) {
+            failWithMessage("Expected result to be success but was failure with errors: %s", actual.getErrors());
+        }
+        return this;
+    }
+
+    public ResultAssert isFailure() {
+        isNotNull();
+        if (!actual.isFailure()) {
+            failWithMessage("Expected result to be failure but was success");
+        }
+        return this;
+    }
+
+    public ResultAssert isFailureWithError(String errorMessage) {
+        isFailure();
+        if (!actual.getErrors().contains(errorMessage)) {
+            failWithMessage("Expected result to contain error '%s' but errors were: %s", errorMessage, actual.getErrors());
+        }
+        return this;
+    }
+
+    public ResultAssert hasErrors(String... errorMessages) {
+        isFailure();
+        for (String errorMessage : errorMessages) {
+            if (!actual.getErrors().contains(errorMessage)) {
+                failWithMessage("Expected result to contain error '%s' but errors were: %s", errorMessage, actual.getErrors());
+            }
+        }
+        return this;
+    }
+}
+
