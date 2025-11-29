@@ -3,7 +3,7 @@ param(
     [ValidateSet("local", "pipeline")]
     [string]$Mode = "local",
 
-    [switch]$TestOnly,
+    [switch]$Restart,
 
     [int]$LogLines = 50
 )
@@ -44,7 +44,7 @@ if (-not (Test-Path $ScriptPath)) {
 
 Write-Host "Executing script from repository..." -ForegroundColor Cyan
 Set-Location "$RepoPath"
-& $ScriptPath -Mode $Mode -TestOnly:$TestOnly -LogLines $LogLines -WorkingDirectory $WorkingDirectory
+& $ScriptPath -Mode $Mode -Restart:$Restart -LogLines $LogLines -WorkingDirectory $WorkingDirectory
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Script execution failed with exit code: $LASTEXITCODE" -ForegroundColor Red
