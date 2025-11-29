@@ -4,7 +4,7 @@
 # System Configuration
 $Config = @{
     # Docker Configuration
-    ContainerName = "modern-acceptance-testing-in-legacy-code-java"
+    ContainerName = "modern-acceptance-testing-in-legacy-code"
 
     # System Components (our application services)
     SystemComponents = @(
