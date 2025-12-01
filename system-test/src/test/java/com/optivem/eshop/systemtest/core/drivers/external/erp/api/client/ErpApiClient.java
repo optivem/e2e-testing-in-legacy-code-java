@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.drivers.external.erp.api.client;
 
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.client.controllers.HealthController;
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.client.controllers.ProductController;
@@ -9,13 +10,12 @@ import java.net.http.HttpClient;
 public class ErpApiClient implements AutoCloseable {
 
     private final HttpClient client;
-    private final TestHttpClient testHttpClient;
     private final HealthController healthController;
     private final ProductController productController;
 
     public ErpApiClient(String baseUrl) {
         this.client = HttpClient.newHttpClient();
-        this.testHttpClient = new TestHttpClient(client, baseUrl);
+        var testHttpClient = new TestHttpClient(client, baseUrl);
         this.healthController = new HealthController(testHttpClient);
         this.productController = new ProductController(testHttpClient);
     }
@@ -30,6 +30,6 @@ public class ErpApiClient implements AutoCloseable {
 
     @Override
     public void close() {
-        client.close();
+        Closer.close(client);
     }
 }

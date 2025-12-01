@@ -16,15 +16,15 @@ public class ProductController {
     }
 
     public Result<Void> createProduct(String sku, String price) {
-        var product = new CreateProductRequest();
-        product.setId(sku);
-        product.setTitle("Test product title for " + sku);
-        product.setDescription("Test product description for " + sku);
-        product.setPrice(price);
-        product.setCategory("Test Category");
-        product.setBrand("Test Brand");
+        var request = new CreateProductRequest();
+        request.setId(sku);
+        request.setTitle("Test product title for " + sku);
+        request.setDescription("Test product description for " + sku);
+        request.setPrice(price);
+        request.setCategory("Test Category");
+        request.setBrand("Test Brand");
 
-        var httpResponse = httpClient.post(ENDPOINT, product);
+        var httpResponse = httpClient.post(ENDPOINT, request);
 
         return TestHttpUtils.getCreatedResultOrFailure(httpResponse);
     }

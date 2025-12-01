@@ -1,9 +1,12 @@
 package com.optivem.eshop.systemtest.core.drivers.system.shop.ui.client;
 
 import com.microsoft.playwright.*;
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestPageClient;
 import com.optivem.eshop.systemtest.core.drivers.system.shop.ui.client.pages.HomePage;
+import org.springframework.http.HttpStatus;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +22,6 @@ public class ShopUiClient implements AutoCloseable {
     private final Browser browser;
     private final BrowserContext context;
     private final Page page;
-    private final TestPageClient pageClient;
     private final HomePage homePage;
 
     private Response response;
@@ -30,7 +32,7 @@ public class ShopUiClient implements AutoCloseable {
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
         this.context = browser.newContext();
         this.page = browser.newPage();
-        this.pageClient = new TestPageClient(page, baseUrl);
+        var pageClient = new TestPageClient(page, baseUrl);
         this.homePage = new HomePage(pageClient);
     }
 
@@ -40,39 +42,29 @@ public class ShopUiClient implements AutoCloseable {
     }
 
     public boolean isStatusOk() {
-        return response.status() == 200;
+        return response.status() == HttpStatus.OK.value();
     }
 
-    public void assertPageLoaded() {
-        assertEquals(200, response.status());
+    public boolean isPageLoaded() {
+        if(response == null || response.status() != HttpStatus.OK.value()) {
+            return false;
+        }
 
         var contentType = response.headers().get(CONTENT_TYPE);
-        assertTrue(contentType != null && contentType.contains(TEXT_HTML),
-                "Content-Type should be text/html, but was: " + contentType);
+        if(contentType == null || !contentType.equals(TEXT_HTML)) {
+            return false;
+        }
 
-        // Check HTML structure using Playwright's content method
         var pageContent = page.content();
-        assertTrue(pageContent.contains(HTML_OPENING_TAG), "Response should contain HTML opening tag");
-        assertTrue(pageContent.contains(HTML_CLOSING_TAG), "Response should contain HTML closing tag");
+        return pageContent != null && pageContent.contains(HTML_OPENING_TAG) && pageContent.contains(HTML_CLOSING_TAG);
     }
 
     @Override
     public void close() {
-        if (page != null) {
-            page.close();
-        }
-
-        if(context != null) {
-            context.close();
-        }
-
-        if (browser != null) {
-            browser.close();
-        }
-
-        if (playwright != null) {
-            playwright.close();
-        }
+        Closer.close(page);
+        Closer.close(context);
+        Closer.close(browser);
+        Closer.close(playwright);
     }
 }
 

@@ -67,8 +67,8 @@ public class OrderHistoryPage extends BasePage {
         return pageClient.readInputValue(COUNTRY_OUTPUT_SELECTOR);
     }
 
-    public String getQuantity() {
-        return pageClient.readInputValue(QUANTITY_OUTPUT_SELECTOR);
+    public int getQuantity() {
+        return pageClient.readInputIntegerValue(QUANTITY_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getUnitPrice() {
@@ -113,8 +113,8 @@ public class OrderHistoryPage extends BasePage {
         pageClient.waitForHidden(CANCEL_ORDER_OUTPUT_SELECTOR);
     }
 
-    public void assertCancelButtonNotVisible() {
-        assertTrue(pageClient.isHidden(CANCEL_ORDER_OUTPUT_SELECTOR), "Cancel Order button should not be visible");
+    public boolean isCancelButtonHidden() {
+        return pageClient.isHidden(CANCEL_ORDER_OUTPUT_SELECTOR);
     }
 }
 

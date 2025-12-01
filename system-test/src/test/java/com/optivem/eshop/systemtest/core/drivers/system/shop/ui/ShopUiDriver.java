@@ -10,6 +10,9 @@ import com.optivem.eshop.systemtest.core.drivers.system.commons.enums.OrderStatu
 import com.optivem.eshop.systemtest.core.drivers.commons.Result;
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ShopUiDriver implements ShopDriver {
@@ -36,18 +39,16 @@ public class ShopUiDriver implements ShopDriver {
     public Result<Void> goToShop() {
         homePage = client.openHomePage();
 
-        if(!client.isStatusOk()) {
+        if(!client.isStatusOk() || !client.isPageLoaded()) {
             return Result.failure();
         }
 
-        client.assertPageLoaded();
         currentPage = Pages.HOME;
         return Result.success();
     }
 
     @Override
     public Result<PlaceOrderResponse> placeOrder(String sku, String quantity, String country) {
-
         ensureOnNewOrderPage();
         newOrderPage.inputSku(sku);
         newOrderPage.inputQuantity(quantity);
@@ -96,7 +97,7 @@ public class ShopUiDriver implements ShopDriver {
         var response = GetOrderResponse.builder()
                 .orderNumber(displayOrderNumber)
                 .sku(sku)
-                .quantity(Integer.parseInt(quantity))
+                .quantity(quantity)
                 .unitPrice(unitPrice)
                 .originalPrice(originalPrice)
                 .discountRate(discountRate)
@@ -118,11 +119,18 @@ public class ShopUiDriver implements ShopDriver {
         orderHistoryPage.clickCancelOrder();
 
         var cancellationMessage = orderHistoryPage.readSuccessNotification();
-        assertEquals("Order cancelled successfully!", cancellationMessage, "Should display cancellation success message");
+        if(!Objects.equals(cancellationMessage, "Order cancelled successfully!")) {
+            return Result.failure();
+        }
 
         var displayStatusAfterCancel = orderHistoryPage.getStatus();
-        assertEquals(OrderStatus.CANCELLED, displayStatusAfterCancel, "Status should be CANCELLED after cancellation");
-        orderHistoryPage.assertCancelButtonNotVisible();
+        if(!Objects.equals(displayStatusAfterCancel, OrderStatus.CANCELLED)) {
+            return Result.failure();
+        }
+
+        if(!orderHistoryPage.isCancelButtonHidden()) {
+            return Result.failure();
+        }
 
         return Result.success();
     }

@@ -66,6 +66,11 @@ public class TestPageClient {
         return locator.inputValue();
     }
 
+    public int readInputIntegerValue(String selector) {
+        var inputValue = readInputValue(selector);
+        return Integer.parseInt(inputValue);
+    }
+
     public BigDecimal readInputCurrencyDecimalValue(String selector) {
         var inputValue = readInputValue(selector);
         inputValue = inputValue.replace("$", "");

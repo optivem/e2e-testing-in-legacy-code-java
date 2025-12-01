@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.drivers.external.erp.api;
 
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.client.ErpApiClient;
 import com.optivem.eshop.systemtest.core.drivers.commons.Result;
 
@@ -21,7 +22,7 @@ public class ErpApiDriver implements AutoCloseable {
 
     @Override
     public void close() {
-        erpApiClient.close();
+        Closer.close(erpApiClient);
     }
 }
 

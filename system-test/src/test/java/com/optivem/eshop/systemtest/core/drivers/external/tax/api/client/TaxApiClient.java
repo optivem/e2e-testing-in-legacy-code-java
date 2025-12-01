@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.drivers.external.tax.api.client;
 
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.client.controllers.HealthController;
 
@@ -23,7 +24,7 @@ public class TaxApiClient implements AutoCloseable {
 
     @Override
     public void close() {
-        client.close();
+        Closer.close(client);
     }
 }
 
