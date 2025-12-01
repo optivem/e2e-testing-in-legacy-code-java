@@ -3,6 +3,8 @@
 
 $Config = @{
     # Test Configuration
+    TestInstallCommands = $null
+
     SmokeTestCommand = "& .\gradlew.bat clean test --tests 'com.optivem.eshop.systemtest.smoketests.*'"
     E2ETestCommand = "& .\gradlew.bat clean test --tests 'com.optivem.eshop.systemtest.e2etests.*'"
 
