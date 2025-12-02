@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.optivem.eshop.systemtest.core.drivers.commons.ResultAssert.assertThatResult;
 
 public class ErpApiSmokeTest {
 
@@ -26,7 +26,7 @@ public class ErpApiSmokeTest {
     @Test
     void shouldBeAbleToGoToErp() {
         var result = erpApiDriver.goToErp();
-        assertThat(result.isSuccess()).isTrue();
+        assertThatResult(result).isSuccess();
     }
 }
 
