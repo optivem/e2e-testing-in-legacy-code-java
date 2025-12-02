@@ -30,26 +30,6 @@ public class TestHttpUtils {
         }
     }
 
-    public static List<String> getErrorMessages(HttpResponse<String> httpResponse) {
-        var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
-
-        var errors = new ArrayList<String>();
-
-        if (problemDetail.getDetail() != null) {
-            errors.add(problemDetail.getDetail());
-        }
-
-        if(problemDetail.getErrors() != null) {
-            for (var error : problemDetail.getErrors()) {
-                errors.add(error.getMessage());
-            }
-        }
-
-        return errors;
-    }
-
-
-
     public static <T> Result<T> getOkResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
         return getResultOrFailure(httpResponse, responseType, HttpStatus.OK);
     }
@@ -67,14 +47,7 @@ public class TestHttpUtils {
     }
 
     public static Result<Void> getNoContentResultOrFailure(HttpResponse<String> httpResponse) {
-        var isSuccess = hasStatusCode(httpResponse, HttpStatus.NO_CONTENT);
-
-        if (!isSuccess) {
-            var errorMessages = getErrorMessages(httpResponse);
-            return Result.failure(errorMessages);
-        }
-
-        return Result.success();
+        return getResultOrFailure(httpResponse, HttpStatus.NO_CONTENT);
     }
 
     public static URI getUri(String baseUrl, String path) {
@@ -110,6 +83,24 @@ public class TestHttpUtils {
         }
 
         return Result.success();
+    }
+
+    private static List<String> getErrorMessages(HttpResponse<String> httpResponse) {
+        var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
+
+        var errors = new ArrayList<String>();
+
+        if (problemDetail.getDetail() != null) {
+            errors.add(problemDetail.getDetail());
+        }
+
+        if(problemDetail.getErrors() != null) {
+            for (var error : problemDetail.getErrors()) {
+                errors.add(error.getMessage());
+            }
+        }
+
+        return errors;
     }
 
 }

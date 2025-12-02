@@ -1,15 +1,21 @@
 package com.optivem.eshop.systemtest.core.drivers.external.erp.api;
 
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.client.ErpApiClient;
 import com.optivem.eshop.systemtest.core.drivers.commons.Result;
 
+import java.net.http.HttpClient;
+
 public class ErpApiDriver implements AutoCloseable {
 
+    private final HttpClient httpClient;
     private final ErpApiClient erpApiClient;
 
     public ErpApiDriver(String baseUrl) {
-        this.erpApiClient = new ErpApiClient(baseUrl);
+        this.httpClient = HttpClient.newHttpClient();
+        var testHttpClient = new TestHttpClient(httpClient, baseUrl);
+        this.erpApiClient = new ErpApiClient(testHttpClient);
     }
 
     public Result<Void> goToErp() {
@@ -22,7 +28,7 @@ public class ErpApiDriver implements AutoCloseable {
 
     @Override
     public void close() {
-        Closer.close(erpApiClient);
+        Closer.close(httpClient);
     }
 }
 

@@ -1,16 +1,23 @@
 package com.optivem.eshop.systemtest.core.drivers.system.shop.api;
 
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.system.shop.api.client.ShopApiClient;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.drivers.commons.Result;
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 
+import java.net.http.HttpClient;
+
 public class ShopApiDriver implements ShopDriver {
+    private final HttpClient httpClient;
     private final ShopApiClient apiClient;
 
     public ShopApiDriver(String baseUrl) {
-        this.apiClient = new ShopApiClient(baseUrl);
+        this.httpClient = HttpClient.newHttpClient();
+        var testHttpClient = new TestHttpClient(httpClient, baseUrl);
+        this.apiClient = new ShopApiClient(testHttpClient);
     }
 
     @Override
@@ -35,7 +42,7 @@ public class ShopApiDriver implements ShopDriver {
 
     @Override
     public void close() {
-        apiClient.close();
+        Closer.close(httpClient);
     }
 }
 

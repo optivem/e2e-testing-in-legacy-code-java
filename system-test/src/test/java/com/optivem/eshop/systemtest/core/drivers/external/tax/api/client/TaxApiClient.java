@@ -1,30 +1,18 @@
 package com.optivem.eshop.systemtest.core.drivers.external.tax.api.client;
 
-import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.client.controllers.HealthController;
 
-import java.net.http.HttpClient;
+public class TaxApiClient {
 
-public class TaxApiClient implements AutoCloseable {
-
-    private final HttpClient client;
-    private final TestHttpClient testHttpClient;
     private final HealthController healthController;
 
-    public TaxApiClient(String baseUrl) {
-        this.client = HttpClient.newHttpClient();
-        this.testHttpClient = new TestHttpClient(client, baseUrl);
+    public TaxApiClient(TestHttpClient testHttpClient) {
         this.healthController = new HealthController(testHttpClient);
     }
 
     public HealthController health() {
         return healthController;
-    }
-
-    @Override
-    public void close() {
-        Closer.close(client);
     }
 }
 

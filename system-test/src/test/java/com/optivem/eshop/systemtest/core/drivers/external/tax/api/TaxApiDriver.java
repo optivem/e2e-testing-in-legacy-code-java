@@ -1,15 +1,21 @@
 package com.optivem.eshop.systemtest.core.drivers.external.tax.api;
 
 import com.optivem.eshop.systemtest.core.drivers.commons.clients.Closer;
+import com.optivem.eshop.systemtest.core.drivers.commons.clients.TestHttpClient;
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.client.TaxApiClient;
 import com.optivem.eshop.systemtest.core.drivers.commons.Result;
 
+import java.net.http.HttpClient;
+
 public class TaxApiDriver implements AutoCloseable {
 
+    private final HttpClient httpClient;
     private final TaxApiClient taxApiClient;
 
     public TaxApiDriver(String baseUrl) {
-        this.taxApiClient = new TaxApiClient(baseUrl);
+        this.httpClient = HttpClient.newHttpClient();
+        var testHttpClient = new TestHttpClient(httpClient, baseUrl);
+        this.taxApiClient = new TaxApiClient(testHttpClient);
     }
 
     public Result<Void> goToTax() {
@@ -18,7 +24,7 @@ public class TaxApiDriver implements AutoCloseable {
 
     @Override
     public void close() {
-        Closer.close(taxApiClient);
+        Closer.close(httpClient);
     }
 }
 
