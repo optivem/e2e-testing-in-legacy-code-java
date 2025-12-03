@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.channels;
+package com.optivem.eshop.systemtest.core.channels.library;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
