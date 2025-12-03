@@ -149,15 +149,42 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
         @Override
         public String getDisplayName(int invocationIndex) {
             if (testData == null || testData.length == 0) {
-                return "[" + channel + "]";
+                return "[Channel: " + channel + "]";
             } else {
-                StringBuilder sb = new StringBuilder("[" + channel);
-                for (Object data : testData) {
-                    sb.append(", ").append(data);
+                StringBuilder sb = new StringBuilder("[Channel: " + channel);
+
+                java.lang.reflect.Parameter[] parameters = testMethod.getParameters();
+                int displayCount = Math.min(parameters.length, testData.length);
+
+                for (int i = 0; i < displayCount; i++) {
+                    String paramName = parameters[i].getName();
+                    String paramValue = formatParameterValue(testData[i]);
+                    sb.append(", ").append(paramName).append(": ").append(paramValue);
                 }
                 sb.append("]");
                 return sb.toString();
             }
+        }
+
+        /**
+         * Format a parameter value for display, making empty/whitespace strings more readable.
+         */
+        private String formatParameterValue(Object value) {
+            if (value == null) {
+                return "<null>";
+            }
+
+            if (value instanceof String) {
+                String str = (String) value;
+                if (str.isEmpty()) {
+                    return "<empty>";
+                }
+                if (str.trim().isEmpty()) {
+                    return "<whitespace>";
+                }
+            }
+
+            return String.valueOf(value);
         }
 
         @Override
