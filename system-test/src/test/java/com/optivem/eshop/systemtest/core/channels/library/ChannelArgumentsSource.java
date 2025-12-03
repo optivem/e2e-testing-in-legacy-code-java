@@ -11,7 +11,11 @@ import java.lang.annotation.Target;
  * Each @ChannelArgumentsSource annotation represents one row of test arguments that will be
  * executed against all specified channels.
  *
- * Example:
+ * Supports two modes:
+ * 1. Inline values: @ChannelArgumentsSource({"value1", "value2"})
+ * 2. Provider class: @ChannelArgumentsSource(provider = MyProvider.class)
+ *
+ * Example with inline values:
  * <pre>
  * @TestTemplate
  * @Channel({ChannelType.UI, ChannelType.API})
@@ -21,15 +25,32 @@ import java.lang.annotation.Target;
  *     // This test will run 4 times: UI with "3.5", UI with "lala", API with "3.5", API with "lala"
  * }
  * </pre>
+ *
+ * Example with provider:
+ * <pre>
+ * @TestTemplate
+ * @Channel({ChannelType.UI, ChannelType.API})
+ * @ChannelArgumentsSource(provider = OrderDataProvider.class)
+ * void shouldPlaceOrder(String sku, int quantity, String country) {
+ *     // Provider can return complex objects
+ * }
+ * </pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(ChannelArgumentsSource.Container.class)
 public @interface ChannelArgumentsSource {
     /**
-     * The test argument values for this row.
+     * The test argument values for this row (inline mode).
+     * Mutually exclusive with provider().
      */
-    String[] value();
+    String[] value() default {};
+
+    /**
+     * The provider class that supplies test arguments (provider mode).
+     * Mutually exclusive with value().
+     */
+    Class<? extends ChannelArgumentsProvider> provider() default NullArgumentsProvider.class;
 
     /**
      * Container annotation for repeated @ChannelArgumentsSource annotations.

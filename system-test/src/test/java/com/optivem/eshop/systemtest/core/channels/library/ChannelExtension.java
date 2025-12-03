@@ -41,16 +41,16 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
         ChannelArgumentsSource singleAnnotation =
                 testMethod.getAnnotation(ChannelArgumentsSource.class);
 
-        List<String[]> dataRows = new ArrayList<>();
+        List<Object[]> dataRows = new ArrayList<>();
 
         if (containerAnnotation != null) {
             // Multiple @ChannelArgumentsSource annotations
-            for (ChannelArgumentsSource data : containerAnnotation.value()) {
-                dataRows.add(data.value());
+            for (ChannelArgumentsSource annotation : containerAnnotation.value()) {
+                dataRows.addAll(extractArgumentsFromAnnotation(annotation, context));
             }
         } else if (singleAnnotation != null) {
             // Single @ChannelArgumentsSource annotation
-            dataRows.add(singleAnnotation.value());
+            dataRows.addAll(extractArgumentsFromAnnotation(singleAnnotation, context));
         }
 
         if (dataRows.isEmpty()) {
@@ -61,7 +61,7 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
             // Combine channels with data rows
             List<TestTemplateInvocationContext> contexts = new ArrayList<>();
             for (String channel : channels) {
-                for (String[] dataRow : dataRows) {
+                for (Object[] dataRow : dataRows) {
                     contexts.add(new ChannelInvocationContext(channel, dataRow));
                 }
             }
@@ -70,14 +70,45 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
     }
 
     /**
+     * Extracts arguments from a single @ChannelArgumentsSource annotation.
+     * Handles both inline values and provider classes.
+     */
+    private List<Object[]> extractArgumentsFromAnnotation(ChannelArgumentsSource annotation, ExtensionContext context) {
+        List<Object[]> results = new ArrayList<>();
+
+        // Check if provider is specified
+        Class<? extends ChannelArgumentsProvider> providerClass = annotation.provider();
+
+        if (providerClass != null && providerClass != NullArgumentsProvider.class) {
+            // Use provider class
+            try {
+                ChannelArgumentsProvider provider = providerClass.getDeclaredConstructor().newInstance();
+                provider.provideArguments(context).forEach(results::add);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to instantiate provider: " + providerClass.getName(), e);
+            }
+        } else if (annotation.value().length > 0) {
+            // Use inline values
+            String[] values = annotation.value();
+            Object[] row = new Object[values.length];
+            for (int i = 0; i < values.length; i++) {
+                row[i] = values[i];
+            }
+            results.add(row);
+        }
+
+        return results;
+    }
+
+    /**
      * Inner class representing a single test invocation context for a specific channel.
      */
     private static class ChannelInvocationContext implements TestTemplateInvocationContext {
 
         private final String channel;
-        private final String[] testData;
+        private final Object[] testData;
 
-        public ChannelInvocationContext(String channel, String[] testData) {
+        public ChannelInvocationContext(String channel, Object[] testData) {
             this.channel = channel;
             this.testData = testData;
         }
@@ -88,7 +119,7 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
                 return "[" + channel + "]";
             } else {
                 StringBuilder sb = new StringBuilder("[" + channel);
-                for (String data : testData) {
+                for (Object data : testData) {
                     sb.append(", ").append(data);
                 }
                 sb.append("]");
@@ -138,9 +169,9 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
      */
     private static class TestDataParameterResolver implements ParameterResolver {
 
-        private final String[] testData;
+        private final Object[] testData;
 
-        public TestDataParameterResolver(String[] testData) {
+        public TestDataParameterResolver(Object[] testData) {
             this.testData = testData;
         }
 
@@ -155,7 +186,21 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
         public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
             int index = parameterContext.getIndex();
             if (index < testData.length) {
-                return convertParameter(testData[index], parameterContext.getParameter().getType());
+                Object value = testData[index];
+                Class<?> targetType = parameterContext.getParameter().getType();
+
+                // If value is already the correct type (from provider), return it directly
+                if (value != null && targetType.isAssignableFrom(value.getClass())) {
+                    return value;
+                }
+
+                // Otherwise, if it's a string, try to convert it
+                if (value instanceof String) {
+                    return convertParameter((String) value, targetType);
+                }
+
+                // Return as-is for other types
+                return value;
             }
             throw new IllegalStateException("No test data available for parameter index " + index);
         }
