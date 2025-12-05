@@ -5,6 +5,7 @@ import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
 
 public class GoToShop extends BaseShopCommand {
+    public static final String COMMAND_NAME = "GoToShop";
 
     public GoToShop(ShopDriver driver, DslContext context) {
         super(driver, context);
@@ -13,7 +14,7 @@ public class GoToShop extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.goToShop();
-        context.results().registerResult("goToShop", result);
+        context.results().registerResult(COMMAND_NAME, result);
     }
 }
 

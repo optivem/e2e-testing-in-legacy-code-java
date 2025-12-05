@@ -5,6 +5,8 @@ import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
 
 public class CancelOrder extends BaseShopCommand {
+    public static final String COMMAND_NAME = "CancelOrder";
+
     private String orderNumber;
 
     public CancelOrder(ShopDriver driver, DslContext context) {
@@ -19,7 +21,7 @@ public class CancelOrder extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.cancelOrder(orderNumber);
-        context.results().registerResult("cancelOrder", result);
+        context.results().registerResult(COMMAND_NAME, result);
     }
 }
 

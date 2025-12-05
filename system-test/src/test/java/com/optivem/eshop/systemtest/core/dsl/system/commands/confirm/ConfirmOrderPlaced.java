@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.dsl.system.commands.execute.PlaceOrder;
 
 import static com.optivem.testing.assertions.ResultAssert.assertThatResult;
 
@@ -21,7 +22,7 @@ public class ConfirmOrderPlaced extends BaseShopCommand {
 
     @Override
     public void execute() {
-        var result = context.results().getResult("placeOrder", orderNumberResultAlias, PlaceOrderResponse.class);
+        var result = context.results().getResult(PlaceOrder.COMMAND_NAME, orderNumberResultAlias, PlaceOrderResponse.class);
         assertThatResult(result).isSuccess();
     }
 }

@@ -5,6 +5,8 @@ import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
 
 public class ViewOrder extends BaseShopCommand {
+    public static final String COMMAND_NAME = "ViewOrder";
+
     private String orderNumber;
 
     public ViewOrder(ShopDriver driver, DslContext context) {
@@ -19,7 +21,7 @@ public class ViewOrder extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.viewOrder(orderNumber);
-        context.results().registerResult("viewOrder", result);
+        context.results().registerResult(COMMAND_NAME, result);
     }
 }
 

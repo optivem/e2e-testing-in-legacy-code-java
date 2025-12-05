@@ -6,6 +6,8 @@ import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
 
 public class PlaceOrder extends BaseShopCommand {
+    public static final String COMMAND_NAME = "PlaceOrder";
+
     private String orderNumberResultAlias;
     private String skuParamAlias;
     private String quantity;
@@ -46,6 +48,6 @@ public class PlaceOrder extends BaseShopCommand {
                 .build();
         var result = driver.placeOrder(request);
 
-        context.results().registerResult("placeOrder", orderNumberResultAlias, result);
+        context.results().registerResult(COMMAND_NAME, orderNumberResultAlias, result);
     }
 }
