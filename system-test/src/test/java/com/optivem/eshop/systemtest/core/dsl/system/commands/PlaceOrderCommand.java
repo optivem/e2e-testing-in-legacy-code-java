@@ -2,21 +2,30 @@ package com.optivem.eshop.systemtest.core.dsl.system.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderRequest;
-import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
-import com.optivem.results.Result;
+import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 
 public class PlaceOrderCommand {
     private final ShopDriver driver;
-    private String sku;
+    private final DslContext context;
+
+    private String orderNumberResultAlias;
+    private String skuParamAlias;
     private String quantity;
     private String country;
 
-    public PlaceOrderCommand(ShopDriver driver) {
+    public PlaceOrderCommand(ShopDriver driver, DslContext context) {
         this.driver = driver;
+        this.context = context;
     }
 
-    public PlaceOrderCommand sku(String sku) {
-        this.sku = sku;
+    public PlaceOrderCommand orderNumber(String orderNumberResultAlias) {
+        this.orderNumberResultAlias = orderNumberResultAlias;
+        return this;
+    }
+
+
+    public PlaceOrderCommand sku(String skuParamAlias) {
+        this.skuParamAlias = skuParamAlias;
         return this;
     }
 
@@ -30,12 +39,16 @@ public class PlaceOrderCommand {
         return this;
     }
 
-    public Result<PlaceOrderResponse> execute() {
+    public void execute() {
+        var sku = context.params().alias(skuParamAlias);
+
         var request = PlaceOrderRequest.builder()
                 .sku(sku)
                 .quantity(quantity)
                 .country(country)
                 .build();
-        return driver.placeOrder(request);
+        var result = driver.placeOrder(request);
+
+        context.results().register("placeOrder", orderNumberResultAlias, result);
     }
 }
