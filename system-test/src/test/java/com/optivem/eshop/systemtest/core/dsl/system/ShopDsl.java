@@ -1,9 +1,10 @@
 package com.optivem.eshop.systemtest.core.dsl.system;
 
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
-import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.dsl.system.commands.CancelOrderCommand;
+import com.optivem.eshop.systemtest.core.dsl.system.commands.GoToShopCommand;
 import com.optivem.eshop.systemtest.core.dsl.system.commands.PlaceOrderCommand;
-import com.optivem.results.Result;
+import com.optivem.eshop.systemtest.core.dsl.system.commands.ViewOrderCommand;
 
 public class ShopDsl {
     private final ShopDriver driver;
@@ -12,22 +13,20 @@ public class ShopDsl {
         this.driver = driver;
     }
 
-    public Result<Void> goToShop() {
-        return driver.goToShop();
+    public GoToShopCommand goToShop() {
+        return new GoToShopCommand(driver);
     }
 
     public PlaceOrderCommand placeOrder() {
         return new PlaceOrderCommand(driver);
     }
 
-    public Result<Void> cancelOrder(String orderNumber) {
-        return driver.cancelOrder(orderNumber);
+    public CancelOrderCommand cancelOrder() {
+        return new CancelOrderCommand(driver);
     }
 
-
-    public Result<GetOrderResponse> viewOrder(String orderNumber) {
-        return driver.viewOrder(orderNumber);
+    public ViewOrderCommand viewOrder() {
+        return new ViewOrderCommand(driver);
     }
-
 
 }
