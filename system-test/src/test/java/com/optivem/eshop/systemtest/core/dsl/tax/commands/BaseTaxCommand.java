@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.dsl.system.commands;
+package com.optivem.eshop.systemtest.core.dsl.tax.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.TaxApiDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslCommand;

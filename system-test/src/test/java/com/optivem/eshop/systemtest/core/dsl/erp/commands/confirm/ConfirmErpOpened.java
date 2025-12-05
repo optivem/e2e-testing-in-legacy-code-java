@@ -3,7 +3,7 @@ package com.optivem.eshop.systemtest.core.dsl.erp.commands.confirm;
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.ErpApiDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.erp.commands.execute.GoToErp;
-import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseErpCommand;
+import com.optivem.eshop.systemtest.core.dsl.erp.commands.BaseErpCommand;
 
 import static com.optivem.testing.assertions.ResultAssert.assertThatResult;
 

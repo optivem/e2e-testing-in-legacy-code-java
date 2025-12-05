@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.dsl.system.commands;
+package com.optivem.eshop.systemtest.core.dsl.erp.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.ErpApiDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslCommand;

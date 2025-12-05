@@ -1,8 +1,8 @@
-package com.optivem.eshop.systemtest.core.dsl.system.commands.execute;
+package com.optivem.eshop.systemtest.core.dsl.shop.commands.execute;
 
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
-import com.optivem.eshop.systemtest.core.dsl.system.commands.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.dsl.shop.commands.BaseShopCommand;
 
 public class CancelOrder extends BaseShopCommand {
     public static final String COMMAND_NAME = "CancelOrder";
