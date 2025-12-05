@@ -1,0 +1,18 @@
+package com.optivem.eshop.systemtest.core.dsl.system.commands;
+
+import com.optivem.eshop.systemtest.core.drivers.external.tax.api.TaxApiDriver;
+import com.optivem.eshop.systemtest.core.dsl.commons.DslCommand;
+import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
+
+public abstract class BaseTaxCommand implements DslCommand {
+    protected final TaxApiDriver driver;
+    protected final DslContext context;
+
+    protected BaseTaxCommand(TaxApiDriver driver, DslContext context) {
+        this.driver = driver;
+        this.context = context;
+    }
+
+    public abstract void execute();
+}
+
