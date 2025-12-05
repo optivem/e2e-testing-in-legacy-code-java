@@ -21,6 +21,13 @@ public class ConfirmOrderViewed extends BaseShopCommand<Void> {
     private BigDecimal expectedOriginalPrice;
     private OrderStatus expectedStatus;
 
+    private boolean verifyDiscountRateGreaterThanOrEqualToZero;
+    private boolean verifyDiscountAmountGreaterThanOrEqualToZero;
+    private boolean verifySubtotalPriceGreaterThanZero;
+    private boolean verifyTaxRateGreaterThanOrEqualToZero;
+    private boolean verifyTaxAmountGreaterThanOrEqualToZero;
+    private boolean verifyTotalPriceGreaterThanZero;
+
     public ConfirmOrderViewed(ShopDriver driver, DslContext context) {
         super(driver, context);
     }
@@ -60,35 +67,38 @@ public class ConfirmOrderViewed extends BaseShopCommand<Void> {
         return this;
     }
 
-//    var discountRate = viewOrderResponse.getDiscountRate();
-//    var discountAmount = viewOrderResponse.getDiscountAmount();
-//    var subtotalPrice = viewOrderResponse.getSubtotalPrice();
-//
-//    assertThat(discountRate)
-//                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
-//
-//    assertThat(discountAmount)
-//                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
-//
-//    assertThat(subtotalPrice)
-//                .isGreaterThan(BigDecimal.ZERO);
-//
-//
-//    var taxRate = viewOrderResponse.getTaxRate();
-//    var taxAmount = viewOrderResponse.getTaxAmount();
-//    var totalPrice = viewOrderResponse.getTotalPrice();
-//
-//    assertThat(taxRate)
-//                .withFailMessage("Tax rate should be non-negative")
-//                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
-//
-//    assertThat(taxAmount)
-//                .withFailMessage("Tax amount should be non-negative")
-//                .isGreaterThanOrEqualTo(BigDecimal.ZERO);
-//
-//    assertThat(totalPrice)
-//                .withFailMessage("Total price should be positive")
-//                .isGreaterThan(BigDecimal.ZERO);
+    // ...existing code...
+
+    public ConfirmOrderViewed discountRateGreaterThanOrEqualToZero() {
+        this.verifyDiscountRateGreaterThanOrEqualToZero = true;
+        return this;
+    }
+
+    public ConfirmOrderViewed discountAmountGreaterThanOrEqualToZero() {
+        this.verifyDiscountAmountGreaterThanOrEqualToZero = true;
+        return this;
+    }
+
+    public ConfirmOrderViewed subtotalPriceGreaterThanZero() {
+        this.verifySubtotalPriceGreaterThanZero = true;
+        return this;
+    }
+
+    public ConfirmOrderViewed taxRateGreaterThanOrEqualToZero() {
+        this.verifyTaxRateGreaterThanOrEqualToZero = true;
+        return this;
+    }
+
+    public ConfirmOrderViewed taxAmountGreaterThanOrEqualToZero() {
+        this.verifyTaxAmountGreaterThanOrEqualToZero = true;
+        return this;
+    }
+
+    public ConfirmOrderViewed totalPriceGreaterThanZero() {
+        this.verifyTotalPriceGreaterThanZero = true;
+        return this;
+    }
+
 
     @Override
     public Void execute() {
@@ -127,6 +137,48 @@ public class ConfirmOrderViewed extends BaseShopCommand<Void> {
 
         if (expectedStatus != null) {
             assertThat(viewOrderResponse.getStatus()).isEqualTo(expectedStatus);
+        }
+
+        if (verifyDiscountRateGreaterThanOrEqualToZero) {
+            var discountRate = viewOrderResponse.getDiscountRate();
+            assertThat(discountRate)
+                    .withFailMessage("Discount rate should be non-negative")
+                    .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+        }
+
+        if (verifyDiscountAmountGreaterThanOrEqualToZero) {
+            var discountAmount = viewOrderResponse.getDiscountAmount();
+            assertThat(discountAmount)
+                    .withFailMessage("Discount amount should be non-negative")
+                    .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+        }
+
+        if (verifySubtotalPriceGreaterThanZero) {
+            var subtotalPrice = viewOrderResponse.getSubtotalPrice();
+            assertThat(subtotalPrice)
+                    .withFailMessage("Subtotal price should be positive")
+                    .isGreaterThan(BigDecimal.ZERO);
+        }
+
+        if (verifyTaxRateGreaterThanOrEqualToZero) {
+            var taxRate = viewOrderResponse.getTaxRate();
+            assertThat(taxRate)
+                    .withFailMessage("Tax rate should be non-negative")
+                    .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+        }
+
+        if (verifyTaxAmountGreaterThanOrEqualToZero) {
+            var taxAmount = viewOrderResponse.getTaxAmount();
+            assertThat(taxAmount)
+                    .withFailMessage("Tax amount should be non-negative")
+                    .isGreaterThanOrEqualTo(BigDecimal.ZERO);
+        }
+
+        if (verifyTotalPriceGreaterThanZero) {
+            var totalPrice = viewOrderResponse.getTotalPrice();
+            assertThat(totalPrice)
+                    .withFailMessage("Total price should be positive")
+                    .isGreaterThan(BigDecimal.ZERO);
         }
 
         return null;

@@ -156,6 +156,12 @@ public class E2eTest {
                 .unitPrice("20.00")
                 .originalPrice("100.00")
                 .status(OrderStatus.PLACED)
+                .discountRateGreaterThanOrEqualToZero()
+                .discountAmountGreaterThanOrEqualToZero()
+                .subtotalPriceGreaterThanZero()
+                .taxRateGreaterThanOrEqualToZero()
+                .taxAmountGreaterThanOrEqualToZero()
+                .totalPriceGreaterThanZero()
                 .execute();
     }
 
