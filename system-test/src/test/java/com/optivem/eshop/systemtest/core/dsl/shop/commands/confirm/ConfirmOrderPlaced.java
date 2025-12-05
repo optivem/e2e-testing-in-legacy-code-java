@@ -11,7 +11,7 @@ import static com.optivem.testing.assertions.ResultAssert.assertThatResult;
 public class ConfirmOrderPlaced extends BaseShopCommand {
     private String orderNumberResultAlias;
 
-    protected ConfirmOrderPlaced(ShopDriver driver, DslContext context) {
+    public ConfirmOrderPlaced(ShopDriver driver, DslContext context) {
         super(driver, context);
     }
 
