@@ -19,7 +19,7 @@ public class ViewOrder extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.viewOrder(orderNumber);
-        context.results().register("viewOrder", result);
+        context.results().registerResult("viewOrder", result);
     }
 }
 

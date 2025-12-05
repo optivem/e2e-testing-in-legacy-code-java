@@ -37,7 +37,7 @@ public class PlaceOrder extends BaseShopCommand {
 
     @Override
     public void execute() {
-        var sku = context.params().alias(skuParamAlias);
+        var sku = context.params().getOrGenerateAliasValue(skuParamAlias);
 
         var request = PlaceOrderRequest.builder()
                 .sku(sku)
@@ -46,6 +46,6 @@ public class PlaceOrder extends BaseShopCommand {
                 .build();
         var result = driver.placeOrder(request);
 
-        context.results().register("placeOrder", orderNumberResultAlias, result);
+        context.results().registerResult("placeOrder", orderNumberResultAlias, result);
     }
 }

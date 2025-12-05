@@ -11,7 +11,7 @@ public class ParamContext {
         this.map = new HashMap<>();
     }
 
-    public String alias(String alias) {
+    public String getOrGenerateAliasValue(String alias) {
         if(!map.containsKey(alias)) {
             var value = generateRandomValue(alias);
             map.put(alias, value);

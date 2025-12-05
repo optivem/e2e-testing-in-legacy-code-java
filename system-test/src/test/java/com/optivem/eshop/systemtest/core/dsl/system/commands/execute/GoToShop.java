@@ -13,7 +13,7 @@ public class GoToShop extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.goToShop();
-        context.results().register("goToShop", result);
+        context.results().registerResult("goToShop", result);
     }
 }
 

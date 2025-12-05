@@ -12,7 +12,7 @@ public class ResultContext {
         this.map = new HashMap<>();
     }
 
-    public void alias(String alias, String value) {
+    public void setAliasValue(String alias, String value) {
         if(map.containsKey(alias)) {
             throw new IllegalStateException("Alias already exists: " + alias);
         }
@@ -20,7 +20,7 @@ public class ResultContext {
         map.put(alias, value);
     }
 
-    public String alias(String alias) {
+    public String getAliasValue(String alias) {
         var value = map.get(alias);
         if(value == null) {
             throw new IllegalStateException("Alias not found: " + alias);
@@ -29,14 +29,14 @@ public class ResultContext {
         return value;
     }
 
-    public <T> void register(String command, Result<T> result) {
+    public <T> void registerResult(String command, Result<T> result) {
         // TODO: VJ: Implement
     }
 
-    public <T> void register(String command, String key, Result<T> result) {
+    public <T> void registerResult(String command, String key, Result<T> result) {
     }
 
-    public <T> Result<T> get(String command, String key, Class<T> type) {
+    public <T> Result<T> getResult(String command, String key, Class<T> type) {
         return null;
     }
 }

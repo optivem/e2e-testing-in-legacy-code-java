@@ -19,7 +19,7 @@ public class CancelOrder extends BaseShopCommand {
     @Override
     public void execute() {
         var result = driver.cancelOrder(orderNumber);
-        context.results().register("cancelOrder", result);
+        context.results().registerResult("cancelOrder", result);
     }
 }
 
