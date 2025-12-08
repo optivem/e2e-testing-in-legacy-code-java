@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.dsl.tax;
 
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.TaxApiDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
-import com.optivem.eshop.systemtest.core.dsl.tax.commands.execute.GoToTax;
+import com.optivem.eshop.systemtest.core.dsl.tax.commands.GoToTax;
 
 public class TaxDsl {
     private final TaxApiDriver driver;

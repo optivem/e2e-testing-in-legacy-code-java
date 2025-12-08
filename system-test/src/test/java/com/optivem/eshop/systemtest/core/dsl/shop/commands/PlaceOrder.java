@@ -1,12 +1,10 @@
-package com.optivem.eshop.systemtest.core.dsl.shop.commands.execute;
+package com.optivem.eshop.systemtest.core.dsl.shop.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
-import com.optivem.eshop.systemtest.core.dsl.shop.commands.BaseShopCommand;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
 
 public class PlaceOrder extends BaseShopCommand<CommandResult<PlaceOrderResponse, PlaceOrderSuccessResult>> {
     public static final String COMMAND_NAME = "PlaceOrder";

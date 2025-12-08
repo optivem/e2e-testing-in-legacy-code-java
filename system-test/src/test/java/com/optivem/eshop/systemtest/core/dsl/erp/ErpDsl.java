@@ -2,8 +2,8 @@ package com.optivem.eshop.systemtest.core.dsl.erp;
 
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.ErpApiDriver;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
-import com.optivem.eshop.systemtest.core.dsl.erp.commands.execute.CreateProduct;
-import com.optivem.eshop.systemtest.core.dsl.erp.commands.execute.GoToErp;
+import com.optivem.eshop.systemtest.core.dsl.erp.commands.CreateProduct;
+import com.optivem.eshop.systemtest.core.dsl.erp.commands.GoToErp;
 
 public class ErpDsl {
     private final ErpApiDriver driver;

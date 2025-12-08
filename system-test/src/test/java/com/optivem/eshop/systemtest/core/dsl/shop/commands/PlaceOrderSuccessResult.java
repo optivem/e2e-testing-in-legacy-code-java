@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.dsl.shop.commands.execute;
+package com.optivem.eshop.systemtest.core.dsl.shop.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.dsl.commons.commands.BaseSuccessResult;
