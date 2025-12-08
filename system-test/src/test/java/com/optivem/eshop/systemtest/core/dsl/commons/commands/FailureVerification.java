@@ -15,7 +15,7 @@ public class FailureVerification {
         this.context = context;
     }
 
-    public FailureVerification shouldHaveErrorMessage(String expectedMessage) {
+    public FailureVerification errorMessage(String expectedMessage) {
         // Replace all aliases in the expected message with their actual generated values
         var expandedExpectedMessage = expectedMessage;
         var aliases = context.params().getAllAliases();

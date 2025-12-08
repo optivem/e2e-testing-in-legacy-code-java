@@ -80,26 +80,26 @@ public class E2eTest {
                 .country("US")
                 .execute()
                 .shouldSucceed()
-                .shouldHaveOrderNumber(ORDER_NUMBER)
-                .shouldHaveOrderNumberStartingWith("ORD-");
+                .orderNumber(ORDER_NUMBER)
+                .orderNumberStartingWith("ORD-");
 
         shop.viewOrder()
                 .orderNumber(ORDER_NUMBER)
                 .execute()
                 .shouldSucceed()
-                .shouldHaveOrderNumber(ORDER_NUMBER)
-                .shouldHaveSku(SKU)
-                .shouldHaveQuantity(5)
-                .shouldHaveCountry("US")
-                .shouldHaveUnitPrice("20.00")
-                .shouldHaveOriginalPrice("100.00")
-                .shouldHaveStatus(OrderStatus.PLACED)
-                .shouldHaveDiscountRateGreaterThanOrEqualToZero()
-                .shouldHaveDiscountAmountGreaterThanOrEqualToZero()
-                .shouldHaveSubtotalPriceGreaterThanZero()
-                .shouldHaveTaxRateGreaterThanOrEqualToZero()
-                .shouldHaveTaxAmountGreaterThanOrEqualToZero()
-                .shouldHaveTotalPriceGreaterThanZero();
+                .orderNumber(ORDER_NUMBER)
+                .sku(SKU)
+                .quantity(5)
+                .country("US")
+                .unitPrice("20.00")
+                .originalPrice("100.00")
+                .status(OrderStatus.PLACED)
+                .discountRateGreaterThanOrEqualToZero()
+                .discountAmountGreaterThanOrEqualToZero()
+                .subtotalPriceGreaterThanZero()
+                .taxRateGreaterThanOrEqualToZero()
+                .taxAmountGreaterThanOrEqualToZero()
+                .totalPriceGreaterThanZero();
     }
 
     @TestTemplate
@@ -158,7 +158,7 @@ public class E2eTest {
                 .country("US")
                 .execute()
                 .shouldFail()
-                .shouldHaveErrorMessage("Product does not exist for SKU: NON-EXISTENT-SKU-12345");
+                .errorMessage("Product does not exist for SKU: NON-EXISTENT-SKU-12345");
     }
 
     @TestTemplate

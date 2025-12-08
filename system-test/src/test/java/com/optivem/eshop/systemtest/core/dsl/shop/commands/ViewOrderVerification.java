@@ -16,44 +16,44 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         super(response, context);
     }
 
-    public ViewOrderVerification shouldHaveOrderNumber(String orderNumberResultAlias) {
+    public ViewOrderVerification orderNumber(String orderNumberResultAlias) {
         var expectedOrderNumber = context.results().getAliasValue(orderNumberResultAlias);
         assertThat(response.getOrderNumber()).isEqualTo(expectedOrderNumber);
         return this;
     }
 
-    public ViewOrderVerification shouldHaveSku(String skuParamAlias) {
+    public ViewOrderVerification sku(String skuParamAlias) {
         var expectedSku = context.params().getOrGenerateAliasValue(skuParamAlias);
         assertThat(response.getSku()).isEqualTo(expectedSku);
         return this;
     }
 
-    public ViewOrderVerification shouldHaveQuantity(int expectedQuantity) {
+    public ViewOrderVerification quantity(int expectedQuantity) {
         assertThat(response.getQuantity()).isEqualTo(expectedQuantity);
         return this;
     }
 
-    public ViewOrderVerification shouldHaveCountry(String expectedCountry) {
+    public ViewOrderVerification country(String expectedCountry) {
         assertThat(response.getCountry()).isEqualTo(expectedCountry);
         return this;
     }
 
-    public ViewOrderVerification shouldHaveUnitPrice(String expectedUnitPrice) {
+    public ViewOrderVerification unitPrice(String expectedUnitPrice) {
         assertThat(response.getUnitPrice()).isEqualTo(new BigDecimal(expectedUnitPrice));
         return this;
     }
 
-    public ViewOrderVerification shouldHaveOriginalPrice(String expectedOriginalPrice) {
+    public ViewOrderVerification originalPrice(String expectedOriginalPrice) {
         assertThat(response.getOriginalPrice()).isEqualTo(new BigDecimal(expectedOriginalPrice));
         return this;
     }
 
-    public ViewOrderVerification shouldHaveStatus(OrderStatus expectedStatus) {
+    public ViewOrderVerification status(OrderStatus expectedStatus) {
         assertThat(response.getStatus()).isEqualTo(expectedStatus);
         return this;
     }
 
-    public ViewOrderVerification shouldHaveDiscountRateGreaterThanOrEqualToZero() {
+    public ViewOrderVerification discountRateGreaterThanOrEqualToZero() {
         var discountRate = response.getDiscountRate();
         assertThat(discountRate)
                 .withFailMessage("Discount rate should be non-negative, but was: %s", discountRate)
@@ -61,7 +61,7 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         return this;
     }
 
-    public ViewOrderVerification shouldHaveDiscountAmountGreaterThanOrEqualToZero() {
+    public ViewOrderVerification discountAmountGreaterThanOrEqualToZero() {
         var discountAmount = response.getDiscountAmount();
         assertThat(discountAmount)
                 .withFailMessage("Discount amount should be non-negative, but was: %s", discountAmount)
@@ -69,7 +69,7 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         return this;
     }
 
-    public ViewOrderVerification shouldHaveSubtotalPriceGreaterThanZero() {
+    public ViewOrderVerification subtotalPriceGreaterThanZero() {
         var subtotalPrice = response.getSubtotalPrice();
         assertThat(subtotalPrice)
                 .withFailMessage("Subtotal price should be positive, but was: %s", subtotalPrice)
@@ -77,7 +77,7 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         return this;
     }
 
-    public ViewOrderVerification shouldHaveTaxRateGreaterThanOrEqualToZero() {
+    public ViewOrderVerification taxRateGreaterThanOrEqualToZero() {
         var taxRate = response.getTaxRate();
         assertThat(taxRate)
                 .withFailMessage("Tax rate should be non-negative, but was: %s", taxRate)
@@ -85,7 +85,7 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         return this;
     }
 
-    public ViewOrderVerification shouldHaveTaxAmountGreaterThanOrEqualToZero() {
+    public ViewOrderVerification taxAmountGreaterThanOrEqualToZero() {
         var taxAmount = response.getTaxAmount();
         assertThat(taxAmount)
                 .withFailMessage("Tax amount should be non-negative, but was: %s", taxAmount)
@@ -93,7 +93,7 @@ public class ViewOrderVerification extends BaseSuccessResult<GetOrderResponse> {
         return this;
     }
 
-    public ViewOrderVerification shouldHaveTotalPriceGreaterThanZero() {
+    public ViewOrderVerification totalPriceGreaterThanZero() {
         var totalPrice = response.getTotalPrice();
         assertThat(totalPrice)
                 .withFailMessage("Total price should be positive, but was: %s", totalPrice)

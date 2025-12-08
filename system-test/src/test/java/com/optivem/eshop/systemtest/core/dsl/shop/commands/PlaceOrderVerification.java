@@ -13,13 +13,13 @@ public class PlaceOrderVerification extends BaseSuccessResult<PlaceOrderResponse
         super(response, context);
     }
 
-    public PlaceOrderVerification shouldHaveOrderNumber(String orderNumberResultAlias) {
+    public PlaceOrderVerification orderNumber(String orderNumberResultAlias) {
         var expectedOrderNumber = context.results().getAliasValue(orderNumberResultAlias);
         assertThat(response.getOrderNumber()).isEqualTo(expectedOrderNumber);
         return this;
     }
 
-    public PlaceOrderVerification shouldHaveOrderNumberStartingWith(String prefix) {
+    public PlaceOrderVerification orderNumberStartingWith(String prefix) {
         assertThat(response.getOrderNumber()).startsWith(prefix);
         return this;
     }
