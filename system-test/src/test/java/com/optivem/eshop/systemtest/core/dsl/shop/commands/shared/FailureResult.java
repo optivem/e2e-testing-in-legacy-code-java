@@ -1,9 +1,7 @@
-package com.optivem.eshop.systemtest.core.dsl.shop.commands.execute;
+package com.optivem.eshop.systemtest.core.dsl.shop.commands.shared;
 
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.results.Result;
-
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

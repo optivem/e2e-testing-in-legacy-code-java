@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.dsl.shop.commands.shared.CommandResult;
 
 public class ViewOrder extends BaseShopCommand<CommandResult<GetOrderResponse, ViewOrderSuccessResult>> {
     public static final String COMMAND_NAME = "ViewOrder";

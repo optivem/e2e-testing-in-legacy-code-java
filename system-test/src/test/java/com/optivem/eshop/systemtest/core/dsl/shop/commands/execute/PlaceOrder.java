@@ -5,6 +5,7 @@ import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderR
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.dsl.shop.commands.shared.CommandResult;
 
 public class PlaceOrder extends BaseShopCommand<CommandResult<PlaceOrderResponse, PlaceOrderSuccessResult>> {
     public static final String COMMAND_NAME = "PlaceOrder";
