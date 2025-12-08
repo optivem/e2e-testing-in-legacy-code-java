@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.dsl.shop.verifications;
 
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.enums.OrderStatus;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.base.BaseSuccessVerification;
+import com.optivem.eshop.systemtest.core.dsl.commons.verifications.base.BaseSuccessVerification;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
 
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
 package com.optivem.eshop.systemtest.core.dsl.shop.verifications;
 
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.base.BaseSuccessVerification;
+import com.optivem.eshop.systemtest.core.dsl.commons.verifications.base.BaseSuccessVerification;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
 
 import static org.assertj.core.api.Assertions.assertThat;
