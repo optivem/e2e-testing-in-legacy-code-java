@@ -138,19 +138,6 @@ public class E2eTest {
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithNonExistentSku() {
-        var request = PlaceOrderRequest.builder()
-                .sku("NON-EXISTENT-SKU-12345")
-                .quantity("5")
-                .country("US")
-                .build();
-
-        var result = shopDriver.placeOrder(request);
-        assertThatResult(result).isFailure("Product does not exist for SKU: NON-EXISTENT-SKU-12345");
-    }
-
-    @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
-    void shouldRejectOrderWithNonExistentSkuWithDsl() {
 
         shop.placeOrder()
                 .sku("NON-EXISTENT-SKU-12345")
