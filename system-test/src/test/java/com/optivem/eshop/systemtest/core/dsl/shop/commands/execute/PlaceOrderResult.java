@@ -35,15 +35,18 @@ public class PlaceOrderResult {
             this.context = context;
         }
 
+        public PlaceOrderSuccessResult expectOrderNumber(String orderNumberResultAlias) {
+            var expectedOrderNumber = context.results().getAliasValue(orderNumberResultAlias);
+            assertThat(response.getOrderNumber()).isEqualTo(expectedOrderNumber);
+            return this;
+        }
+
         public PlaceOrderSuccessResult expectOrderNumberStartsWith(String prefix) {
             assertThat(response.getOrderNumber()).startsWith(prefix);
             return this;
         }
 
-        public PlaceOrderSuccessResult expectOrderNumber(String expected) {
-            assertThat(response.getOrderNumber()).isEqualTo(expected);
-            return this;
-        }
+
     }
 }
 

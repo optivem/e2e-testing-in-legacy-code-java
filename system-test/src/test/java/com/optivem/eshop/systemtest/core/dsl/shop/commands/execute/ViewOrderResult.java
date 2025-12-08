@@ -38,6 +38,12 @@ public class ViewOrderResult {
             this.context = context;
         }
 
+        public ViewOrderSuccessResult expectOrderNumber(String orderNumberResultAlias) {
+            var expectedOrderNumber = context.results().getAliasValue(orderNumberResultAlias);
+            assertThat(response.getOrderNumber()).isEqualTo(expectedOrderNumber);
+            return this;
+        }
+
         public ViewOrderSuccessResult expectSku(String skuParamAlias) {
             var expectedSku = context.params().getOrGenerateAliasValue(skuParamAlias);
             assertThat(response.getSku()).isEqualTo(expectedSku);
@@ -116,6 +122,8 @@ public class ViewOrderResult {
                     .isGreaterThan(BigDecimal.ZERO);
             return this;
         }
+
+
     }
 }
 

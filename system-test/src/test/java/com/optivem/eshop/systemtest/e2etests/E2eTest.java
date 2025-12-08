@@ -76,12 +76,14 @@ public class E2eTest {
                 .country("US")
                 .execute()
                 .expectSuccess()
+                .expectOrderNumber(ORDER_NUMBER)
                 .expectOrderNumberStartsWith("ORD-");
 
         shop.viewOrder()
                 .orderNumber(ORDER_NUMBER)
                 .execute()
                 .expectSuccess()
+                .expectOrderNumber(ORDER_NUMBER)
                 .expectSku(SKU)
                 .expectQuantity(5)
                 .expectCountry("US")
@@ -95,7 +97,6 @@ public class E2eTest {
                 .expectTaxAmountGreaterThanOrEqualToZero()
                 .expectTotalPriceGreaterThanZero();
     }
-
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
