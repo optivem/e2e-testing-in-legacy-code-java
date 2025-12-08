@@ -3,18 +3,16 @@ package com.optivem.eshop.systemtest.core.dsl.shop.commands.execute;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.enums.OrderStatus;
 import com.optivem.eshop.systemtest.core.dsl.commons.DslContext;
+import com.optivem.eshop.systemtest.core.dsl.shop.commands.shared.BaseSuccessResult;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ViewOrderSuccessResult {
-    private final GetOrderResponse response;
-    private final DslContext context;
+public class ViewOrderSuccessResult extends BaseSuccessResult<GetOrderResponse, ViewOrderSuccessResult> {
 
     public ViewOrderSuccessResult(GetOrderResponse response, DslContext context) {
-        this.response = response;
-        this.context = context;
+        super(response, context);
     }
 
     public ViewOrderSuccessResult expectOrderNumber(String orderNumberResultAlias) {
