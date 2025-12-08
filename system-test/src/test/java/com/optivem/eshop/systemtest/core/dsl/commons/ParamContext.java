@@ -11,19 +11,15 @@ public class ParamContext {
         this.map = new HashMap<>();
     }
 
-    public String generateAliasValue(String alias) {
+    public String getOrGenerateAliasValue(String alias) {
         if(map.containsKey(alias)) {
-            throw new IllegalStateException("Alias already exists: " + alias);
+            return map.get(alias);
         }
 
         var value = generateRandomValue(alias);
         map.put(alias, value);
 
         return value;
-    }
-
-    public String getAliasValue(String alias) {
-        return map.get(alias);
     }
 
     private static String generateRandomValue(String alias) {

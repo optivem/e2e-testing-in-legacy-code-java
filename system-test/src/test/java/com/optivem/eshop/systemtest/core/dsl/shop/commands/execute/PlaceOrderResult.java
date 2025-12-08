@@ -20,6 +20,19 @@ public class PlaceOrderResult {
         return this;
     }
 
+    public PlaceOrderResult expectFailure() {
+        assertThatResult(result).isFailure();
+        return this;
+    }
+
+    public PlaceOrderResult expectErrorMessage(String expectedMessagePattern) {
+        assertThatResult(result).isFailure();
+        var errors = result.getErrors();
+        assertThat(errors)
+                .anyMatch(error -> error.matches(expectedMessagePattern));
+        return this;
+    }
+
     public PlaceOrderResult expectOrderNumberStartsWith(String prefix) {
         assertThat(orderNumber).startsWith(prefix);
         return this;

@@ -26,7 +26,7 @@ public class GivenProduct extends BaseErpCommand<Void> {
 
     @Override
     public Void execute() {
-        var sku = context.params().generateAliasValue(skuParamAlias);
+        var sku = context.params().getOrGenerateAliasValue(skuParamAlias);
 
         var result = driver.createProduct(sku, unitPrice);
         context.results().registerResult("CreateProduct", skuParamAlias, result);

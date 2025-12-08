@@ -115,7 +115,7 @@ public class ConfirmOrderViewed extends BaseShopCommand<Void> {
         assertThat(viewOrderResponse.getOrderNumber()).isEqualTo(expectedOrderNumber);
 
         if (skuParamAlias != null) {
-            var expectedSku = context.params().getAliasValue(skuParamAlias);
+            var expectedSku = context.params().getOrGenerateAliasValue(skuParamAlias);
             assertThat(viewOrderResponse.getSku()).isEqualTo(expectedSku);
         }
 
