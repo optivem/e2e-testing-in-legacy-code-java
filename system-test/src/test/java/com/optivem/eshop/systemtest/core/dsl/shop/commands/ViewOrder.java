@@ -7,8 +7,6 @@ import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.base.BaseShopCommand;
 
 public class ViewOrder extends BaseShopCommand<CommandResult<GetOrderResponse, ViewOrderSuccessResult>> {
-    public static final String COMMAND_NAME = "ViewOrder";
-
     private String orderNumberResultAlias;
 
     public ViewOrder(ShopDriver driver, DslContext context) {
@@ -26,7 +24,6 @@ public class ViewOrder extends BaseShopCommand<CommandResult<GetOrderResponse, V
 
         var result = driver.viewOrder(orderNumber);
 
-        context.results().registerResult(COMMAND_NAME, orderNumberResultAlias, result);
         return new CommandResult<>(result, context, ViewOrderSuccessResult::new);
     }
 }

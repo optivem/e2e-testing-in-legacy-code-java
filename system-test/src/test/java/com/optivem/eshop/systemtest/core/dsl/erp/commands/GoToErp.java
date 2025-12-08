@@ -7,8 +7,6 @@ import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.erp.commands.base.BaseErpCommand;
 
 public class GoToErp extends BaseErpCommand<CommandResult<Void, VoidSuccessResult>> {
-    public static final String COMMAND_NAME = "GoToErp";
-
     public GoToErp(ErpApiDriver driver, DslContext context) {
         super(driver, context);
     }
@@ -16,7 +14,6 @@ public class GoToErp extends BaseErpCommand<CommandResult<Void, VoidSuccessResul
     @Override
     public CommandResult<Void, VoidSuccessResult> execute() {
         var result = driver.goToErp();
-        context.results().registerResult(COMMAND_NAME, result);
         return new CommandResult<>(result, context, VoidSuccessResult::new);
     }
 }

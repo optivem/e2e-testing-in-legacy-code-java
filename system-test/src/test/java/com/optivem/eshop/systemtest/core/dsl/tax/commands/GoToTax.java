@@ -7,8 +7,6 @@ import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.tax.commands.base.BaseTaxCommand;
 
 public class GoToTax extends BaseTaxCommand<CommandResult<Void, VoidSuccessResult>> {
-    public static final String COMMAND_NAME = "GoToTax";
-
     public GoToTax(TaxApiDriver driver, DslContext context) {
         super(driver, context);
     }
@@ -16,7 +14,6 @@ public class GoToTax extends BaseTaxCommand<CommandResult<Void, VoidSuccessResul
     @Override
     public CommandResult<Void, VoidSuccessResult> execute() {
         var result = driver.goToTax();
-        context.results().registerResult(COMMAND_NAME, result);
         return new CommandResult<>(result, context, VoidSuccessResult::new);
     }
 }

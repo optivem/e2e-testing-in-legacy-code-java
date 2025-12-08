@@ -7,23 +7,21 @@ import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.base.BaseShopCommand;
 
 public class CancelOrder extends BaseShopCommand<CommandResult<Void, VoidSuccessResult>> {
-    public static final String COMMAND_NAME = "CancelOrder";
-
-    private String orderNumber;
+    private String orderNumberResultAlias;
 
     public CancelOrder(ShopDriver driver, DslContext context) {
         super(driver, context);
     }
 
-    public CancelOrder orderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
+    public CancelOrder orderNumber(String orderNumberResultAlias) {
+        this.orderNumberResultAlias = orderNumberResultAlias;
         return this;
     }
 
     @Override
     public CommandResult<Void, VoidSuccessResult> execute() {
+        var orderNumber = context.results().getAliasValue(orderNumberResultAlias);
         var result = driver.cancelOrder(orderNumber);
-        context.results().registerResult(COMMAND_NAME, result);
         return new CommandResult<>(result, context, VoidSuccessResult::new);
     }
 }
