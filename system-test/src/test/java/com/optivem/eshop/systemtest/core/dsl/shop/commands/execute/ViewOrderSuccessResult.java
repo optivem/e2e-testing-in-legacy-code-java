@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ViewOrderSuccessResult extends BaseSuccessResult<GetOrderResponse, ViewOrderSuccessResult> {
+public class ViewOrderSuccessResult extends BaseSuccessResult<GetOrderResponse> {
 
     public ViewOrderSuccessResult(GetOrderResponse response, DslContext context) {
         super(response, context);

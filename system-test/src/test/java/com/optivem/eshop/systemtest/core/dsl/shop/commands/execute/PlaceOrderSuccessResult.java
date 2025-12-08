@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.dsl.shop.commands.shared.BaseSuccessRes
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PlaceOrderSuccessResult extends BaseSuccessResult<PlaceOrderResponse, PlaceOrderSuccessResult> {
+public class PlaceOrderSuccessResult extends BaseSuccessResult<PlaceOrderResponse> {
 
     public PlaceOrderSuccessResult(PlaceOrderResponse response, DslContext context) {
         super(response, context);
