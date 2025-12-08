@@ -12,7 +12,7 @@ public class ParamContext {
     }
 
     public String getOrGenerateAliasValue(String alias) {
-        if(alias == null || alias.isEmpty() || alias.isBlank()) {
+        if(alias == null || alias.isBlank()) {
             return alias;
         }
 
@@ -30,7 +30,7 @@ public class ParamContext {
         return new HashMap<>(map);
     }
 
-        private static String generateRandomValue(String alias) {
+    private static String generateRandomValue(String alias) {
         var suffix = UUID.randomUUID().toString().substring(0, 8);
         return alias + "-" + suffix;
     }

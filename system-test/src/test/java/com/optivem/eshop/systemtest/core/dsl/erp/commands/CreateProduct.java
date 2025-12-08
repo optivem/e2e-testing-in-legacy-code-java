@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.dsl.commons.commands.VoidVerification;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.erp.commands.base.BaseErpCommand;
 
-public class CreateProduct extends BaseErpCommand<CommandResult<Void, VoidVerification>> {
+public class CreateProduct extends BaseErpCommand<Void, VoidVerification> {
     private static final String DEFAULT_UNIT_PRICE = "20.00";
 
     private String skuParamAlias;

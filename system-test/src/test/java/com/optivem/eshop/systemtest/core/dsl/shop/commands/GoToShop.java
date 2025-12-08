@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.dsl.commons.commands.VoidVerification;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.base.BaseShopCommand;
 
-public class GoToShop extends BaseShopCommand<CommandResult<Void, VoidVerification>> {
+public class GoToShop extends BaseShopCommand<Void, VoidVerification> {
     public GoToShop(ShopDriver driver, DslContext context) {
         super(driver, context);
     }

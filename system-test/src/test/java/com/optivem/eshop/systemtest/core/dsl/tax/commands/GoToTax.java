@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.dsl.commons.commands.VoidVerification;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.tax.commands.base.BaseTaxCommand;
 
-public class GoToTax extends BaseTaxCommand<CommandResult<Void, VoidVerification>> {
+public class GoToTax extends BaseTaxCommand<Void, VoidVerification> {
     public GoToTax(TaxApiDriver driver, DslContext context) {
         super(driver, context);
     }

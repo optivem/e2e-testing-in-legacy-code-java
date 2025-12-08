@@ -7,7 +7,7 @@ import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
 import com.optivem.eshop.systemtest.core.dsl.commons.context.DslContext;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.base.BaseShopCommand;
 
-public class PlaceOrder extends BaseShopCommand<CommandResult<PlaceOrderResponse, PlaceOrderVerification>> {
+public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
     private String orderNumberResultAlias;
     private String skuParamAlias;
     private String quantity;
