@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.drivers.system;
+package com.optivem.eshop.systemtest.core.drivers.system.shop;
 
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.dtos.PlaceOrderResponse;

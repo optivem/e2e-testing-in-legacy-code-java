@@ -1,7 +1,7 @@
 package com.optivem.eshop.systemtest.smoketests;
 
 import com.optivem.eshop.systemtest.core.drivers.DriverFactory;
-import com.optivem.eshop.systemtest.core.drivers.system.ShopDriver;
+import com.optivem.eshop.systemtest.core.drivers.system.shop.ShopDriver;
 
 public class ShopApiSmokeTest extends BaseShopSmokeTest {
 
