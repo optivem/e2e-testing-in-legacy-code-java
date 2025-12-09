@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.dsl.commons.commands;
 
 import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
 import com.optivem.eshop.systemtest.core.dsl.commons.verifications.FailureVerification;
-import com.optivem.results.Result;
+import com.optivem.result.Result;
 
 import java.util.function.BiFunction;
 
