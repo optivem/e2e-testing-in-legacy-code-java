@@ -39,6 +39,29 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
+    void shouldPlaceOrderWithCorrectOriginalPrice() {
+        dsl.erp().createProduct()
+                .sku(SKU)
+                .unitPrice(20.00)
+                .execute()
+                .shouldSucceed();
+
+        dsl.shop().placeOrder()
+                .orderNumber(ORDER_NUMBER)
+                .sku(SKU)
+                .quantity(5)
+                .execute()
+                .shouldSucceed();
+
+        dsl.shop().viewOrder()
+                .orderNumber(ORDER_NUMBER)
+                .execute()
+                .shouldSucceed()
+                .originalPrice(100.00);
+    }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrderAndCalculateOriginalPrice() {
         dsl.erp().createProduct()
                 .sku(SKU)
