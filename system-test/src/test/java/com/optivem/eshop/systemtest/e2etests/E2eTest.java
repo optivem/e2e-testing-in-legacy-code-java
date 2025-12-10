@@ -52,6 +52,13 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
+    void shouldRejectOrderWithInvalidQuantity() {
+        dsl.shop().placeOrder().quantity("invalid-quantity").execute()
+                .shouldFail().errorMessage("Quantity must be an integer");
+    }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrderAndCalculateOriginalPrice() {
         dsl.erp().createProduct()
                 .sku(SKU)
