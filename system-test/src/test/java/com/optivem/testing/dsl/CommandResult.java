@@ -1,7 +1,5 @@
-package com.optivem.eshop.systemtest.core.dsl.commons.commands;
+package com.optivem.testing.dsl;
 
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
-import com.optivem.eshop.systemtest.core.dsl.commons.verifications.FailureVerification;
 import com.optivem.results.Result;
 
 import java.util.function.BiFunction;

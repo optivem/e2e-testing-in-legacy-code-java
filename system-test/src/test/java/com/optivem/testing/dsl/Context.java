@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.dsl.commons.context;
+package com.optivem.testing.dsl;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.dsl.shop;
 
 import com.optivem.eshop.systemtest.core.drivers.DriverFactory;
 import com.optivem.eshop.systemtest.core.drivers.system.shop.ShopDriver;
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
+import com.optivem.testing.dsl.Context;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.CancelOrder;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.GoToShop;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.PlaceOrder;

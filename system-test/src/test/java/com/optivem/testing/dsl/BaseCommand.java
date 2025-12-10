@@ -1,8 +1,4 @@
-package com.optivem.eshop.systemtest.core.dsl.commons.commands.base;
-
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.Command;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
+package com.optivem.testing.dsl;
 
 public abstract class BaseCommand<TDriver, TResponse, TVerification> implements Command<CommandResult<TResponse, TVerification>> {
     protected final TDriver driver;

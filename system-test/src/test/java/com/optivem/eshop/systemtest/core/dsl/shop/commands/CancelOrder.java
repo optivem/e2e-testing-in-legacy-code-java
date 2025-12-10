@@ -1,9 +1,9 @@
 package com.optivem.eshop.systemtest.core.dsl.shop.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.system.shop.ShopDriver;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
-import com.optivem.eshop.systemtest.core.dsl.commons.verifications.VoidVerification;
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
+import com.optivem.testing.dsl.CommandResult;
+import com.optivem.testing.dsl.VoidVerification;
+import com.optivem.testing.dsl.Context;
 import com.optivem.eshop.systemtest.core.dsl.shop.commands.base.BaseShopCommand;
 
 public class CancelOrder extends BaseShopCommand<Void, VoidVerification> {

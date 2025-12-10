@@ -1,6 +1,5 @@
-package com.optivem.eshop.systemtest.core.dsl.commons.verifications;
+package com.optivem.testing.dsl;
 
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
 import com.optivem.results.Result;
 
 import static org.assertj.core.api.Assertions.assertThat;

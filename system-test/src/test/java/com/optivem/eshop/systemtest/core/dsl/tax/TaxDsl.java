@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.dsl.tax;
 
 import com.optivem.eshop.systemtest.core.drivers.DriverFactory;
 import com.optivem.eshop.systemtest.core.drivers.external.tax.api.TaxApiDriver;
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
+import com.optivem.testing.dsl.Context;
 import com.optivem.eshop.systemtest.core.dsl.tax.commands.GoToTax;
 import com.optivem.lang.Closer;
 

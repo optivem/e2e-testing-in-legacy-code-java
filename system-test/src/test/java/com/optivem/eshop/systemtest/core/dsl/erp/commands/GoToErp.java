@@ -1,9 +1,9 @@
 package com.optivem.eshop.systemtest.core.dsl.erp.commands;
 
 import com.optivem.eshop.systemtest.core.drivers.external.erp.api.ErpApiDriver;
-import com.optivem.eshop.systemtest.core.dsl.commons.commands.CommandResult;
-import com.optivem.eshop.systemtest.core.dsl.commons.verifications.VoidVerification;
-import com.optivem.eshop.systemtest.core.dsl.commons.context.Context;
+import com.optivem.testing.dsl.CommandResult;
+import com.optivem.testing.dsl.VoidVerification;
+import com.optivem.testing.dsl.Context;
 import com.optivem.eshop.systemtest.core.dsl.erp.commands.base.BaseErpCommand;
 
 public class GoToErp extends BaseErpCommand<Void, VoidVerification> {
