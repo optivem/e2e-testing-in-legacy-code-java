@@ -82,18 +82,18 @@ public class PageGateway {
         return locator.inputValue();
     }
 
-    public int readInputIntegerValue(String selector) {
+    public int readInputInteger(String selector) {
         var inputValue = readInputValue(selector);
         return Integer.parseInt(inputValue);
     }
 
-    public BigDecimal readInputCurrencyDecimalValue(String selector) {
+    public BigDecimal readInputMoney(String selector) {
         var inputValue = readInputValue(selector);
         inputValue = inputValue.replace("$", "");
         return new BigDecimal(inputValue);
     }
 
-    public BigDecimal readInputPercentageDecimalValue(String selector) {
+    public BigDecimal readInputPercentage(String selector) {
         var inputValue = readInputValue(selector);
         inputValue = inputValue.replace("%", "");
         return new BigDecimal(inputValue);

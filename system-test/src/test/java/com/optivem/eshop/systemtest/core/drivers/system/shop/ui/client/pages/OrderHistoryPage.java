@@ -68,39 +68,39 @@ public class OrderHistoryPage extends BasePage {
     }
 
     public int getQuantity() {
-        return pageClient.readInputIntegerValue(QUANTITY_OUTPUT_SELECTOR);
+        return pageClient.readInputInteger(QUANTITY_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getUnitPrice() {
-        return pageClient.readInputCurrencyDecimalValue(UNIT_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(UNIT_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getOriginalPrice() {
-        return pageClient.readInputCurrencyDecimalValue(ORIGINAL_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(ORIGINAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getDiscountRate() {
-        return pageClient.readInputPercentageDecimalValue(DISCOUNT_RATE_OUTPUT_SELECTOR);
+        return pageClient.readInputPercentage(DISCOUNT_RATE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getDiscountAmount() {
-        return pageClient.readInputCurrencyDecimalValue(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getSubtotalPrice() {
-        return pageClient.readInputCurrencyDecimalValue(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTaxRate() {
-        return pageClient.readInputPercentageDecimalValue(TAX_RATE_OUTPUT_SELECTOR);
+        return pageClient.readInputPercentage(TAX_RATE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTaxAmount() {
-        return pageClient.readInputCurrencyDecimalValue(TAX_AMOUNT_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(TAX_AMOUNT_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTotalPrice() {
-        return pageClient.readInputCurrencyDecimalValue(TOTAL_PRICE_OUTPUT_SELECTOR);
+        return pageClient.readInputMoney(TOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public OrderStatus getStatus() {
