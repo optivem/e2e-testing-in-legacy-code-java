@@ -50,21 +50,21 @@ public class ViewOrderVerification extends BaseSuccessVerification<GetOrderRespo
         return this;
     }
 
-    public ViewOrderVerification unitPrice(String expectedUnitPrice) {
-        var expectedPrice = new BigDecimal(expectedUnitPrice);
+    public ViewOrderVerification unitPrice(double expectedUnitPrice) {
+        var expectedPrice = BigDecimal.valueOf(expectedUnitPrice);
         var actualPrice = response.getUnitPrice();
         assertThat(actualPrice)
                 .withFailMessage("Expected unit price to be %s, but was %s", expectedPrice, actualPrice)
-                .isEqualTo(expectedPrice);
+                .isEqualByComparingTo(expectedPrice);
         return this;
     }
 
-    public ViewOrderVerification originalPrice(String expectedOriginalPrice) {
-        var expectedPrice = new BigDecimal(expectedOriginalPrice);
+    public ViewOrderVerification originalPrice(double expectedOriginalPrice) {
+        var expectedPrice = BigDecimal.valueOf(expectedOriginalPrice);
         var actualPrice = response.getOriginalPrice();
         assertThat(actualPrice)
                 .withFailMessage("Expected original price to be %s, but was %s", expectedPrice, actualPrice)
-                .isEqualTo(expectedPrice);
+                .isEqualByComparingTo(expectedPrice);
         return this;
     }
 

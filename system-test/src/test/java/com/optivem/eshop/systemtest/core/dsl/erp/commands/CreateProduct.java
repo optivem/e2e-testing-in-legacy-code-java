@@ -28,6 +28,10 @@ public class CreateProduct extends BaseErpCommand<Void, VoidVerification> {
         return this;
     }
 
+    public CreateProduct unitPrice(double unitPrice) {
+        return unitPrice(String.valueOf(unitPrice));
+    }
+
     @Override
     public CommandResult<Void, VoidVerification> execute() {
         var sku = context.getParamValue(skuParamAlias);

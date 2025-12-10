@@ -41,6 +41,10 @@ public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVe
         return this;
     }
 
+    public PlaceOrder quantity(int quantity) {
+        return quantity(String.valueOf(quantity));
+    }
+
     public PlaceOrder country(String country) {
         this.country = country;
         return this;

@@ -151,10 +151,11 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
 
         @Override
         public String getDisplayName(int invocationIndex) {
+            String methodName = testMethod.getName();
             if (testData == null || testData.length == 0) {
-                return "[Channel: " + channel + "]";
+                return methodName + " [Channel: " + channel + "]";
             } else {
-                StringBuilder sb = new StringBuilder("[Channel: " + channel);
+                StringBuilder sb = new StringBuilder(methodName + " [Channel: " + channel);
 
                 java.lang.reflect.Parameter[] parameters = testMethod.getParameters();
                 int displayCount = Math.min(parameters.length, testData.length);

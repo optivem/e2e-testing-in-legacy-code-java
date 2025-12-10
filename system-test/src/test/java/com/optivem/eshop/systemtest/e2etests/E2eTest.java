@@ -42,14 +42,14 @@ public class E2eTest {
     void shouldPlaceOrderAndCalculateOriginalPrice() {
         dsl.erp().createProduct()
                 .sku(SKU)
-                .unitPrice("20.00")
+                .unitPrice(20.00)
                 .execute()
                 .shouldSucceed();
 
         dsl.shop().placeOrder()
                 .orderNumber(ORDER_NUMBER)
                 .sku(SKU)
-                .quantity("5")
+                .quantity(5)
                 .country("US")
                 .execute()
                 .shouldSucceed()
@@ -64,8 +64,8 @@ public class E2eTest {
                 .sku(SKU)
                 .quantity(5)
                 .country("US")
-                .unitPrice("20.00")
-                .originalPrice("100.00")
+                .unitPrice(20.00)
+                .originalPrice(100.00)
                 .status(OrderStatus.PLACED)
                 .discountRateGreaterThanOrEqualToZero()
                 .discountAmountGreaterThanOrEqualToZero()
@@ -127,7 +127,7 @@ public class E2eTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithNegativeQuantity() {
         dsl.shop().placeOrder()
-                .quantity("-10")
+                .quantity(-10)
                 .execute()
                 .shouldFail()
                 .errorMessage("Quantity must be positive");
@@ -138,7 +138,7 @@ public class E2eTest {
     void shouldRejectOrderWithZeroQuantity() {
         dsl.shop().placeOrder()
                 .sku("ANOTHER-SKU-67890")
-                .quantity("0")
+                .quantity(0)
                 .execute()
                 .shouldFail()
                 .errorMessage("Quantity must be positive");
