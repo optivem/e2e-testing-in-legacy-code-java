@@ -41,14 +41,21 @@ public class E2eTest {
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrderWithCorrectOriginalPrice() {
-        dsl.erp().createProduct().sku("ABC").unitPrice(20.00).execute()
+        dsl.erp().createProduct()
+                .sku("ABC")
+                .unitPrice(20.00)
+                .execute()
                 .shouldSucceed();
 
-        dsl.shop().placeOrder().orderNumber("ORDER-1001").sku("ABC").quantity(5).execute()
+        dsl.shop().placeOrder().orderNumber("ORDER-1001")
+                .sku("ABC")
+                .quantity(5)
+                .execute()
                 .shouldSucceed();
 
         dsl.shop().viewOrder().orderNumber("ORDER-1001").execute()
-                .shouldSucceed().originalPrice(100.00);
+                .shouldSucceed()
+                .originalPrice(100.00);
     }
 
     @TestTemplate
@@ -58,21 +65,34 @@ public class E2eTest {
     @DataSource({"15.50", "4", "62.00"})
     @DataSource({"99.99", "1", "99.99"})
     void shouldPlaceOrderWithCorrectOriginalPriceParameterized(String unitPrice, String quantity, String originalPrice) {
-        dsl.erp().createProduct().sku("ABC").unitPrice(unitPrice).execute()
+        dsl.erp().createProduct()
+                .sku("ABC")
+                .unitPrice(unitPrice)
+                .execute()
                 .shouldSucceed();
 
-        dsl.shop().placeOrder().orderNumber("ORDER-1001").sku("ABC").quantity(quantity).execute()
+        dsl.shop().placeOrder()
+                .orderNumber("ORDER-1001")
+                .sku("ABC")
+                .quantity(quantity)
+                .execute()
                 .shouldSucceed();
 
-        dsl.shop().viewOrder().orderNumber("ORDER-1001").execute()
-                .shouldSucceed().originalPrice(originalPrice);
+        dsl.shop().viewOrder()
+                .orderNumber("ORDER-1001")
+                .execute()
+                .shouldSucceed()
+                .originalPrice(originalPrice);
     }
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithInvalidQuantity() {
-        dsl.shop().placeOrder().quantity("invalid-quantity").execute()
-                .shouldFail().errorMessage("Quantity must be an integer");
+        dsl.shop().placeOrder()
+                .quantity("invalid-quantity")
+                .execute()
+                .shouldFail()
+                .errorMessage("Quantity must be an integer");
     }
 
     @TestTemplate
