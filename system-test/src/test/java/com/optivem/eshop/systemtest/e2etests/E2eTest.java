@@ -38,8 +38,6 @@ public class E2eTest {
     private static final String ORDER_NUMBER = "order-number";
     private static final String SKU = "sku";
 
-    // NOTE: This was used in live session
-
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrderWithCorrectOriginalPrice() {
@@ -53,7 +51,22 @@ public class E2eTest {
                 .shouldSucceed().originalPrice(100.00);
     }
 
-    // NOTE: This was used in live session
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    @DataSource({"20.00", "5", "100.00"})
+    @DataSource({"10.00", "3", "30.00"})
+    @DataSource({"15.50", "4", "62.00"})
+    @DataSource({"99.99", "1", "99.99"})
+    void shouldPlaceOrderWithCorrectOriginalPriceParameterized(String unitPrice, String quantity, String originalPrice) {
+        dsl.erp().createProduct().sku("ABC").unitPrice(unitPrice).execute()
+                .shouldSucceed();
+
+        dsl.shop().placeOrder().orderNumber("ORDER-1001").sku("ABC").quantity(quantity).execute()
+                .shouldSucceed();
+
+        dsl.shop().viewOrder().orderNumber("ORDER-1001").execute()
+                .shouldSucceed().originalPrice(Double.parseDouble(originalPrice));
+    }
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
