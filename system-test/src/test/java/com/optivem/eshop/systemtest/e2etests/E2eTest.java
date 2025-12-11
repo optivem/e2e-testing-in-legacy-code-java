@@ -179,8 +179,7 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    @DataSource("")
-    @DataSource("   ")
+    @ArgumentsSource(EmptyArgumentsProvider.class)
     void shouldRejectOrderWithEmptySku(String sku) {
         dsl.shop().placeOrder()
                 .sku(sku)
@@ -210,13 +209,6 @@ public class E2eTest {
                 .execute()
                 .shouldFail()
                 .errorMessage("Quantity must be an integer");
-    }
-
-    private static Stream<Arguments> provideEmptyCountryValues() {
-        return Stream.of(
-                Arguments.of("", "Country must not be empty"),      // Empty string
-                Arguments.of("   ", "Country must not be empty")    // Whitespace string
-        );
     }
 
     @TestTemplate
