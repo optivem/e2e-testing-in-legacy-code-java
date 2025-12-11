@@ -5,7 +5,7 @@ import com.optivem.eshop.systemtest.e2etests.providers.EmptyArgumentsProvider;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.ChannelExtension;
 import com.optivem.eshop.systemtest.core.channels.ChannelType;
-import com.optivem.testing.channels.TestDataSource;
+import com.optivem.testing.channels.DataSource;
 import com.optivem.lang.Closer;
 import com.optivem.eshop.systemtest.core.drivers.system.commons.enums.OrderStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -63,7 +63,7 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    void shouldPlaceOrderAndCalculateOriginalPrice() {
+    void shouldPlaceOrderAndCalculateAllPrices() {
         dsl.erp().createProduct()
                 .sku(SKU)
                 .unitPrice(20.00)
@@ -179,8 +179,8 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    @TestDataSource("")
-    @TestDataSource("   ")
+    @DataSource("")
+    @DataSource("   ")
     void shouldRejectOrderWithEmptySku(String sku) {
         dsl.shop().placeOrder()
                 .sku(sku)
@@ -202,8 +202,8 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    @TestDataSource("3.5")
-    @TestDataSource("lala")
+    @DataSource("3.5")
+    @DataSource("lala")
     void shouldRejectOrderWithNonIntegerQuantity(String nonIntegerQuantity) {
         dsl.shop().placeOrder()
                 .quantity(nonIntegerQuantity)
@@ -221,13 +221,13 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    @MethodSource("provideEmptyCountryValues")
-    void shouldRejectOrderWithEmptyCountry(String emptyCountry, String expectedErrorMessage) {
+    @ArgumentsSource(EmptyArgumentsProvider.class)
+    void shouldRejectOrderWithEmptyCountry(String emptyCountry) {
         dsl.shop().placeOrder()
                 .country(emptyCountry)
                 .execute()
                 .shouldFail()
-                .errorMessage(expectedErrorMessage);
+                .errorMessage("Country must not be empty");
     }
 
     @TestTemplate
@@ -278,9 +278,9 @@ public class E2eTest {
 
     @TestTemplate
     @Channel({ChannelType.API})
-    @TestDataSource({"NON-EXISTENT-ORDER-99999", "Order NON-EXISTENT-ORDER-99999 does not exist."})
-    @TestDataSource({"NON-EXISTENT-ORDER-88888", "Order NON-EXISTENT-ORDER-88888 does not exist."})
-    @TestDataSource({"NON-EXISTENT-ORDER-77777", "Order NON-EXISTENT-ORDER-77777 does not exist."})
+    @DataSource({"NON-EXISTENT-ORDER-99999", "Order NON-EXISTENT-ORDER-99999 does not exist."})
+    @DataSource({"NON-EXISTENT-ORDER-88888", "Order NON-EXISTENT-ORDER-88888 does not exist."})
+    @DataSource({"NON-EXISTENT-ORDER-77777", "Order NON-EXISTENT-ORDER-77777 does not exist."})
     void shouldNotCancelNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         dsl.shop().cancelOrder()
                 .orderNumber(orderNumber)

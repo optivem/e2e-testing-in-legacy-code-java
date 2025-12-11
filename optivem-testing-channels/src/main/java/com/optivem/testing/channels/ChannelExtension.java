@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * When a test method is annotated with @Channel and @TestTemplate, this extension
  * creates separate test invocations for each specified channel (e.g., UI, API).
  *
- * Also supports @TestDataSource to combine channel types with inline test data.
+ * Also supports @DataSource to combine channel types with inline test data.
  */
 public class ChannelExtension implements TestTemplateInvocationContextProvider {
 
@@ -84,19 +84,19 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
                 }
             }
         } else {
-            // Check if the method has TestDataSource annotations
-            TestDataSource.Container containerAnnotation =
-                    testMethod.getAnnotation(TestDataSource.Container.class);
-            TestDataSource singleAnnotation =
-                    testMethod.getAnnotation(TestDataSource.class);
+            // Check if the method has DataSource annotations
+            DataSource.Container containerAnnotation =
+                    testMethod.getAnnotation(DataSource.Container.class);
+            DataSource singleAnnotation =
+                    testMethod.getAnnotation(DataSource.class);
 
             if (containerAnnotation != null) {
-                // Multiple @TestDataSource annotations
-                for (TestDataSource annotation : containerAnnotation.value()) {
+                // Multiple @DataSource annotations
+                for (DataSource annotation : containerAnnotation.value()) {
                     dataRows.addAll(extractArgumentsFromAnnotation(annotation, context));
                 }
             } else if (singleAnnotation != null) {
-                // Single @TestDataSource annotation
+                // Single @DataSource annotation
                 dataRows.addAll(extractArgumentsFromAnnotation(singleAnnotation, context));
             }
         }
@@ -118,9 +118,9 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
     }
 
     /**
-     * Extracts arguments from a single @TestDataSource annotation.
+     * Extracts arguments from a single @DataSource annotation.
      */
-    private List<Object[]> extractArgumentsFromAnnotation(TestDataSource annotation, ExtensionContext context) {
+    private List<Object[]> extractArgumentsFromAnnotation(DataSource annotation, ExtensionContext context) {
         List<Object[]> results = new ArrayList<>();
 
         // Use inline values
