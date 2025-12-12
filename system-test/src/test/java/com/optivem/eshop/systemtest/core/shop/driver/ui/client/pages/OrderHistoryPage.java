@@ -1,7 +1,7 @@
 package com.optivem.eshop.systemtest.core.shop.driver.ui.client.pages;
 
 import com.optivem.playwright.PageGateway;
-import com.optivem.eshop.systemtest.core.shop.dtos.enums.OrderStatus;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.enums.OrderStatus;
 
 import java.math.BigDecimal;
 

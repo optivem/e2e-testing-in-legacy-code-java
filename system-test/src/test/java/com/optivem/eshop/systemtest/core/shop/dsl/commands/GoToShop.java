@@ -1,10 +1,10 @@
-package com.optivem.eshop.systemtest.core.shop.commands;
+package com.optivem.eshop.systemtest.core.shop.dsl.commands;
 
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
 import com.optivem.testing.dsl.CommandResult;
 import com.optivem.testing.dsl.VoidVerification;
 import com.optivem.testing.dsl.Context;
-import com.optivem.eshop.systemtest.core.shop.commands.base.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.BaseShopCommand;
 
 public class GoToShop extends BaseShopCommand<Void, VoidVerification> {
     public GoToShop(ShopDriver driver, Context context) {

@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.shop.dtos;
+package com.optivem.eshop.systemtest.core.shop.driver.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

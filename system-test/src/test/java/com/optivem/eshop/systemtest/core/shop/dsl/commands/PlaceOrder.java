@@ -1,12 +1,12 @@
-package com.optivem.eshop.systemtest.core.shop.commands;
+package com.optivem.eshop.systemtest.core.shop.dsl.commands;
 
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderRequest;
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderRequest;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderResponse;
 import com.optivem.testing.dsl.CommandResult;
 import com.optivem.testing.dsl.Context;
-import com.optivem.eshop.systemtest.core.shop.commands.base.BaseShopCommand;
-import com.optivem.eshop.systemtest.core.shop.verifications.PlaceOrderVerification;
+import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.shop.dsl.verifications.PlaceOrderVerification;
 
 public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
     private String orderNumberResultAlias;

@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.erp.commands.base;
+package com.optivem.eshop.systemtest.core.erp.dsl.commands.base;
 
 import com.optivem.eshop.systemtest.core.erp.driver.ErpDriver;
 import com.optivem.testing.dsl.BaseCommand;

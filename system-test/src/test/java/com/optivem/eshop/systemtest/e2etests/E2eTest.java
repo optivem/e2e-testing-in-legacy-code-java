@@ -8,7 +8,7 @@ import com.optivem.testing.channels.ChannelExtension;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.testing.channels.DataSource;
 import com.optivem.lang.Closer;
-import com.optivem.eshop.systemtest.core.shop.dtos.enums.OrderStatus;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.enums.OrderStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;

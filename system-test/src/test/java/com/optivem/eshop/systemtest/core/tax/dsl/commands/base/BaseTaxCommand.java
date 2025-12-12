@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.tax.commands.base;
+package com.optivem.eshop.systemtest.core.tax.dsl.commands.base;
 
 import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
 import com.optivem.testing.dsl.BaseCommand;

@@ -1,11 +1,11 @@
 package com.optivem.eshop.systemtest.core.shop.driver.api;
 
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderRequest;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderRequest;
 import com.optivem.lang.Closer;
 import com.optivem.http.HttpGateway;
 import com.optivem.eshop.systemtest.core.shop.driver.api.client.ShopApiClient;
-import com.optivem.eshop.systemtest.core.shop.dtos.GetOrderResponse;
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderResponse;
 import com.optivem.results.Result;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
 
@@ -28,10 +28,7 @@ public class ShopApiDriver implements ShopDriver {
 
     @Override
     public Result<PlaceOrderResponse> placeOrder(PlaceOrderRequest request) {
-        var sku = request.getSku();
-        var quantity = request.getQuantity();
-        var country = request.getCountry();
-        return apiClient.orders().placeOrder(sku, quantity, country);
+        return apiClient.orders().placeOrder(request);
     }
 
     @Override

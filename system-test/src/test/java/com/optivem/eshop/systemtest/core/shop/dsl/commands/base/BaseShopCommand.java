@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.shop.commands.base;
+package com.optivem.eshop.systemtest.core.shop.dsl.commands.base;
 
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
 import com.optivem.testing.dsl.BaseCommand;

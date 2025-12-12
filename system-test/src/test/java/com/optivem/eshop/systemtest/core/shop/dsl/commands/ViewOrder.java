@@ -1,11 +1,11 @@
-package com.optivem.eshop.systemtest.core.shop.commands;
+package com.optivem.eshop.systemtest.core.shop.dsl.commands;
 
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
-import com.optivem.eshop.systemtest.core.shop.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.GetOrderResponse;
 import com.optivem.testing.dsl.CommandResult;
 import com.optivem.testing.dsl.Context;
-import com.optivem.eshop.systemtest.core.shop.commands.base.BaseShopCommand;
-import com.optivem.eshop.systemtest.core.shop.verifications.ViewOrderVerification;
+import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.BaseShopCommand;
+import com.optivem.eshop.systemtest.core.shop.dsl.verifications.ViewOrderVerification;
 
 public class ViewOrder extends BaseShopCommand<GetOrderResponse, ViewOrderVerification> {
     private String orderNumberResultAlias;

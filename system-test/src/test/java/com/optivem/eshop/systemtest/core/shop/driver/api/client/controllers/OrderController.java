@@ -2,9 +2,9 @@ package com.optivem.eshop.systemtest.core.shop.driver.api.client.controllers;
 
 import com.optivem.http.HttpGateway;
 import com.optivem.http.HttpUtils;
-import com.optivem.eshop.systemtest.core.shop.dtos.GetOrderResponse;
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderRequest;
-import com.optivem.eshop.systemtest.core.shop.dtos.PlaceOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderRequest;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.PlaceOrderResponse;
 import com.optivem.results.Result;
 
 public class OrderController {
@@ -17,13 +17,7 @@ public class OrderController {
         this.httpClient = httpClient;
     }
 
-    public Result<PlaceOrderResponse> placeOrder(String sku, String quantity, String country) {
-        var request = PlaceOrderRequest.builder()
-                .sku(sku)
-                .quantity(quantity)
-                .country(country)
-                .build();
-
+    public Result<PlaceOrderResponse> placeOrder(PlaceOrderRequest request) {
         var httpResponse = httpClient.post(ENDPOINT, request);
         return HttpUtils.getCreatedResultOrFailure(httpResponse, PlaceOrderResponse.class);
     }
