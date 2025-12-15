@@ -9,7 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class JsonHttpClient {
+public class JsonHttpClient<E> {
 
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
@@ -17,10 +17,12 @@ public class JsonHttpClient {
 
     private final HttpClient httpClient;
     private final String baseUrl;
+    private final Class<E> errorType;
 
-    public JsonHttpClient(HttpClient httpClient, String baseUrl) {
+    public JsonHttpClient(HttpClient httpClient, String baseUrl, Class<E> errorType) {
         this.httpClient = httpClient;
         this.baseUrl = baseUrl;
+        this.errorType = errorType;
     }
 
     public HttpResponse<String> get(String path) {
@@ -60,17 +62,17 @@ public class JsonHttpClient {
 
     // Result-based methods for fluent API
     
-    public <T> Result<T, ProblemDetailResponse> get(String path, Class<T> responseType) {
+    public <T> Result<T, E> get(String path, Class<T> responseType) {
         var httpResponse = get(path);
         return getResultOrFailure(httpResponse, responseType);
     }
 
-    public <T> Result<T, ProblemDetailResponse> post(String path, Object requestBody, Class<T> responseType) {
+    public <T> Result<T, E> post(String path, Object requestBody, Class<T> responseType) {
         var httpResponse = post(path, requestBody);
         return getResultOrFailure(httpResponse, responseType);
     }
 
-    public Result<Void, ProblemDetailResponse> post(String path, Class<Void> responseType) {
+    public Result<Void, E> post(String path, Class<Void> responseType) {
         var httpResponse = post(path);
         return getResultOrFailure(httpResponse, responseType);
     }
@@ -130,10 +132,10 @@ public class JsonHttpClient {
         return statusCode >= 200 && statusCode < 300;
     }
 
-    private <T> Result<T, ProblemDetailResponse> getResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
+    private <T> Result<T, E> getResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
         if (!isSuccessStatusCode(httpResponse)) {
-            var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
-            return Result.failure(problemDetail);
+            var error = readResponse(httpResponse, errorType);
+            return Result.failure(error);
         }
 
         if (responseType == Void.class || httpResponse.statusCode() == 204) {

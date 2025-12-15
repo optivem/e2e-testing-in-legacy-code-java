@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.core.shop.driver.dtos.requests.PlaceOrderReq
 import com.optivem.lang.Closer;
 import com.optivem.lang.Error;
 import com.optivem.http.JsonHttpClient;
+import com.optivem.http.ProblemDetailResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.api.client.ShopApiClient;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.PlaceOrderResponse;
@@ -18,7 +19,7 @@ public class ShopApiDriver implements ShopDriver {
 
     public ShopApiDriver(String baseUrl) {
         this.httpClient = HttpClient.newHttpClient();
-        var testHttpClient = new JsonHttpClient(httpClient, baseUrl);
+        var testHttpClient = new JsonHttpClient<>(httpClient, baseUrl, ProblemDetailResponse.class);
         this.apiClient = new ShopApiClient(testHttpClient);
     }
 

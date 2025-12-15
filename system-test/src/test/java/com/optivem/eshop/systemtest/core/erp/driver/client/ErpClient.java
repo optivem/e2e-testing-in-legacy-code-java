@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.erp.driver.client;
 
 import com.optivem.http.JsonHttpClient;
+import com.optivem.http.ProblemDetailResponse;
 import com.optivem.eshop.systemtest.core.erp.driver.client.controllers.HealthController;
 import com.optivem.eshop.systemtest.core.erp.driver.client.controllers.ProductController;
 
@@ -9,7 +10,7 @@ public class ErpClient {
     private final HealthController healthController;
     private final ProductController productController;
 
-    public ErpClient(JsonHttpClient httpGateway) {
+    public ErpClient(JsonHttpClient<ProblemDetailResponse> httpGateway) {
         this.healthController = new HealthController(httpGateway);
         this.productController = new ProductController(httpGateway);
     }
