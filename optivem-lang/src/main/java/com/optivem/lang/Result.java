@@ -43,5 +43,12 @@ public class Result<T, E> {
         }
         return error;
     }
+
+    public <E2> Result<T, E2> mapFailure(java.util.function.Function<E, E2> mapper) {
+        if (success) {
+            return Result.success(value);
+        }
+        return Result.failure(mapper.apply(error));
+    }
 }
 

@@ -3,13 +3,10 @@ package com.optivem.http;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.optivem.lang.Error;
 import com.optivem.lang.Result;
-import com.optivem.lang.Results;
 import org.springframework.http.HttpStatus;
 
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class HttpUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -31,23 +28,23 @@ public class HttpUtils {
         }
     }
 
-    public static <T> Result<T, Error> getOkResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
+    public static <T> Result<T, ProblemDetailResponse> getOkResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
         return getResultOrFailure(httpResponse, responseType, HttpStatus.OK);
     }
 
-    public static Result<Void, Error> getOkResultOrFailure(HttpResponse<String> httpResponse) {
+    public static Result<Void, ProblemDetailResponse> getOkResultOrFailure(HttpResponse<String> httpResponse) {
         return getResultOrFailure(httpResponse, HttpStatus.OK);
     }
 
-    public static <T> Result<T, Error> getCreatedResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
+    public static <T> Result<T, ProblemDetailResponse> getCreatedResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType) {
         return getResultOrFailure(httpResponse, responseType, HttpStatus.CREATED);
     }
 
-    public static Result<Void, Error> getCreatedResultOrFailure(HttpResponse<String> httpResponse) {
+    public static Result<Void, ProblemDetailResponse> getCreatedResultOrFailure(HttpResponse<String> httpResponse) {
         return getResultOrFailure(httpResponse, HttpStatus.CREATED);
     }
 
-    public static Result<Void, Error> getNoContentResultOrFailure(HttpResponse<String> httpResponse) {
+    public static Result<Void, ProblemDetailResponse> getNoContentResultOrFailure(HttpResponse<String> httpResponse) {
         return getResultOrFailure(httpResponse, HttpStatus.NO_CONTENT);
     }
 
@@ -63,38 +60,36 @@ public class HttpUtils {
         return httpResponse.statusCode() == statusCode.value();
     }
 
-    private static <T> Result<T, Error> getResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType, HttpStatus successStatus) {
+    private static <T> Result<T, ProblemDetailResponse> getResultOrFailure(HttpResponse<String> httpResponse, Class<T> responseType, HttpStatus successStatus) {
         var isSuccess = HttpUtils.hasStatusCode(httpResponse, successStatus);
 
         if(!isSuccess) {
-            var error = getError(httpResponse);
-            return Results.failure(error);
+            var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
+            return Result.failure(problemDetail);
         }
 
         var response = HttpUtils.readResponse(httpResponse, responseType);
-        return Results.success(response);
+        return Result.success(response);
     }
 
-    private static Result<Void, Error> getResultOrFailure(HttpResponse<String> httpResponse, HttpStatus successStatus) {
+    private static Result<Void, ProblemDetailResponse> getResultOrFailure(HttpResponse<String> httpResponse, HttpStatus successStatus) {
         var isSuccess = HttpUtils.hasStatusCode(httpResponse, successStatus);
 
         if(!isSuccess) {
-            var error = getError(httpResponse);
-            return Results.failure(error);
+            var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
+            return Result.failure(problemDetail);
         }
 
-        return Results.success();
+        return Result.success();
     }
 
-    private static Error getError(HttpResponse<String> httpResponse) {
-        var problemDetail = readResponse(httpResponse, ProblemDetailResponse.class);
-
+    public static Error convertProblemDetailToError(ProblemDetailResponse problemDetail) {
         var message = problemDetail.getDetail() != null ? problemDetail.getDetail() : "Request failed";
 
         if(problemDetail.getErrors() != null && !problemDetail.getErrors().isEmpty()) {
             var fieldErrors = problemDetail.getErrors().stream()
                     .map(e -> new Error.FieldError(e.getField(), e.getMessage(), e.getCode()))
-                    .collect(Collectors.toList());
+                    .toList();
             return Error.of(message, fieldErrors);
         }
 

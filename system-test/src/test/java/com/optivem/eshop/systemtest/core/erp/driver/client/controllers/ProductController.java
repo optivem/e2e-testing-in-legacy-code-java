@@ -19,6 +19,7 @@ public class ProductController {
     public Result<Void, Error> createProduct(CreateProductRequest request) {
         var httpResponse = httpClient.post(ENDPOINT, request);
 
-        return HttpUtils.getCreatedResultOrFailure(httpResponse);
+        return HttpUtils.getCreatedResultOrFailure(httpResponse)
+                .mapFailure(HttpUtils::convertProblemDetailToError);
     }
 }

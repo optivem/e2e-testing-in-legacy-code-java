@@ -17,7 +17,8 @@ public class HealthController {
 
     public Result<Void, Error> checkHealth() {
         var httpResponse = httpClient.get(ENDPOINT);
-        return HttpUtils.getOkResultOrFailure(httpResponse);
+        return HttpUtils.getOkResultOrFailure(httpResponse)
+                .mapFailure(HttpUtils::convertProblemDetailToError);
     }
 }
 

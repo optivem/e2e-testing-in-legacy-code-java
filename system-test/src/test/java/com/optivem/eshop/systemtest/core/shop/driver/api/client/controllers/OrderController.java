@@ -20,17 +20,20 @@ public class OrderController {
 
     public Result<PlaceOrderResponse, Error> placeOrder(PlaceOrderRequest request) {
         var httpResponse = httpClient.post(ENDPOINT, request);
-        return HttpUtils.getCreatedResultOrFailure(httpResponse, PlaceOrderResponse.class);
+        return HttpUtils.getCreatedResultOrFailure(httpResponse, PlaceOrderResponse.class)
+                .mapFailure(HttpUtils::convertProblemDetailToError);
     }
 
     public Result<GetOrderResponse, Error> viewOrder(String orderNumber) {
         var httpResponse = httpClient.get(ENDPOINT + "/" + orderNumber);
-        return HttpUtils.getOkResultOrFailure(httpResponse, GetOrderResponse.class);
+        return HttpUtils.getOkResultOrFailure(httpResponse, GetOrderResponse.class)
+                .mapFailure(HttpUtils::convertProblemDetailToError);
     }
 
     public Result<Void, Error> cancelOrder(String orderNumber) {
         var httpResponse = httpClient.post(ENDPOINT + "/" + orderNumber + "/cancel");
-        return HttpUtils.getNoContentResultOrFailure(httpResponse);
+        return HttpUtils.getNoContentResultOrFailure(httpResponse)
+                .mapFailure(HttpUtils::convertProblemDetailToError);
     }
 }
 
