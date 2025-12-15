@@ -23,19 +23,24 @@ public class JsonHttpClient<E> {
         this.baseUrl = baseUrl;
         this.errorType = errorType;
     }
-        
+
     public <T> Result<T, E> get(String path, Class<T> responseType) {
-        var httpResponse = get(path);
+        var httpResponse = doGet(path);
         return getResultOrFailure(httpResponse, responseType);
     }
 
+    public Result<Void, E> get(String path) {
+        var httpResponse = doGet(path);
+        return getResultOrFailure(httpResponse, Void.class);
+    }
+
     public <T> Result<T, E> post(String path, Object requestBody, Class<T> responseType) {
-        var httpResponse = post(path, requestBody);
+        var httpResponse = doPost(path, requestBody);
         return getResultOrFailure(httpResponse, responseType);
     }
 
     public Result<Void, E> post(String path, Class<Void> responseType) {
-        var httpResponse = post(path);
+        var httpResponse = doPost(path);
         return getResultOrFailure(httpResponse, responseType);
     }
 
@@ -49,7 +54,7 @@ public class JsonHttpClient<E> {
         }
     }
 
-    private HttpResponse<String> get(String path) {
+    private HttpResponse<String> doGet(String path) {
         var uri = getUri(path);
         var request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -59,7 +64,7 @@ public class JsonHttpClient<E> {
         return sendRequest(request);
     }
 
-    private HttpResponse<String> post(String path, Object requestBody) {
+    private HttpResponse<String> doPost(String path, Object requestBody) {
         var uri = getUri(path);
         var jsonBody = serializeRequest(requestBody);
 
@@ -72,7 +77,7 @@ public class JsonHttpClient<E> {
         return sendRequest(request);
     }
 
-    private HttpResponse<String> post(String path) {
+    private HttpResponse<String> doPost(String path) {
         var uri = getUri(path);
 
         var request = HttpRequest.newBuilder()

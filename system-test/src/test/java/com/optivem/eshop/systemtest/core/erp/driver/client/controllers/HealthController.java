@@ -17,7 +17,7 @@ public class HealthController {
     }
 
     public Result<Void, Error> checkHealth() {
-        return httpClient.get(ENDPOINT, Void.class)
+        return httpClient.get(ENDPOINT)
                 .mapFailure(ProblemDetailConverter::toError);
     }
 }
