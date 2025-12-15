@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.driver.ui.client.pages;
 
-import com.optivem.playwright.PageGateway;
+import com.optivem.playwright.PageClient;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -29,7 +29,7 @@ public class OrderHistoryPage extends BasePage {
 
     private static final String ORDER_DETAILS_HEADING_TEXT = "Order Details";
 
-    public OrderHistoryPage(PageGateway pageClient) {
+    public OrderHistoryPage(PageClient pageClient) {
         super(pageClient);
     }
 

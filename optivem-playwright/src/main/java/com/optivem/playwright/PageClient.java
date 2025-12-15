@@ -7,7 +7,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class PageGateway {
+public class PageClient {
     private final Page page;
     private final String baseUrl;
     private final int timeoutMilliseconds;
@@ -15,7 +15,7 @@ public class PageGateway {
     private static final int DEFAULT_TIMEOUT_SECONDS = 10;
     private static final int DEFAULT_TIMEOUT_MILLISECONDS = DEFAULT_TIMEOUT_SECONDS * 1000;
 
-    private PageGateway(Builder builder) {
+    private PageClient(Builder builder) {
         this.page = builder.page;
         this.baseUrl = builder.baseUrl;
         this.timeoutMilliseconds = builder.timeoutMilliseconds;
@@ -44,8 +44,8 @@ public class PageGateway {
             return this;
         }
 
-        public PageGateway build() {
-            return new PageGateway(this);
+        public PageClient build() {
+            return new PageClient(this);
         }
     }
 
@@ -138,4 +138,3 @@ public class PageGateway {
         return new Locator.WaitForOptions().setTimeout(timeoutMilliseconds);
     }
 }
-

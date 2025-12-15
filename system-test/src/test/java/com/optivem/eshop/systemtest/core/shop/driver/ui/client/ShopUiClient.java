@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.shop.driver.ui.client;
 
 import com.microsoft.playwright.*;
 import com.optivem.lang.Closer;
-import com.optivem.playwright.PageGateway;
+import com.optivem.playwright.PageClient;
 import com.optivem.eshop.systemtest.core.shop.driver.ui.client.pages.HomePage;
 import org.springframework.http.HttpStatus;
 
@@ -29,7 +29,7 @@ public class ShopUiClient implements AutoCloseable {
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
         this.context = browser.newContext();
         this.page = browser.newPage();
-        var pageClient = PageGateway.builder(page)
+        var pageClient = PageClient.builder(page)
                 .baseUrl(baseUrl)
                 .build();
         this.homePage = new HomePage(pageClient);

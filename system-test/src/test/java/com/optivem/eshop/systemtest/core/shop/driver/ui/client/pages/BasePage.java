@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.driver.ui.client.pages;
 
-import com.optivem.playwright.PageGateway;
+import com.optivem.playwright.PageClient;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public abstract class BasePage {
     private static final String ERROR_MESSAGE_SELECTOR = "[role='alert'].error .error-message";
     private static final String FIELD_ERROR_SELECTOR = "[role='alert'].error .field-error";
 
-    protected final PageGateway pageClient;
+    protected final PageClient pageClient;
 
-    public BasePage(PageGateway pageClient) {
+    public BasePage(PageClient pageClient) {
         this.pageClient = pageClient;
     }
 

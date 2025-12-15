@@ -3,7 +3,7 @@ package com.optivem.eshop.systemtest.core.shop.driver.api;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.requests.PlaceOrderRequest;
 import com.optivem.lang.Closer;
 import com.optivem.lang.Error;
-import com.optivem.http.HttpGateway;
+import com.optivem.http.JsonHttpClient;
 import com.optivem.eshop.systemtest.core.shop.driver.api.client.ShopApiClient;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.PlaceOrderResponse;
@@ -18,7 +18,7 @@ public class ShopApiDriver implements ShopDriver {
 
     public ShopApiDriver(String baseUrl) {
         this.httpClient = HttpClient.newHttpClient();
-        var testHttpClient = new HttpGateway(httpClient, baseUrl);
+        var testHttpClient = new JsonHttpClient(httpClient, baseUrl);
         this.apiClient = new ShopApiClient(testHttpClient);
     }
 

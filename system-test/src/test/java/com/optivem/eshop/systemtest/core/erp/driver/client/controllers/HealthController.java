@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.erp.driver.client.controllers;
 
-import com.optivem.http.HttpGateway;
+import com.optivem.http.JsonHttpClient;
 import com.optivem.http.HttpUtils;
 import com.optivem.lang.Error;
 import com.optivem.lang.Result;
@@ -9,9 +9,9 @@ public class HealthController {
 
     private static final String ENDPOINT = "/health";
 
-    private final HttpGateway httpClient;
+    private final JsonHttpClient httpClient;
 
-    public HealthController(HttpGateway httpClient) {
+    public HealthController(JsonHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 

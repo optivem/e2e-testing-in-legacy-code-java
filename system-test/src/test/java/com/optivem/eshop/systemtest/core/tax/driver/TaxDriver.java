@@ -2,7 +2,7 @@ package com.optivem.eshop.systemtest.core.tax.driver;
 
 import com.optivem.lang.Closer;
 import com.optivem.lang.Error;
-import com.optivem.http.HttpGateway;
+import com.optivem.http.JsonHttpClient;
 import com.optivem.eshop.systemtest.core.tax.driver.client.TaxClient;
 import com.optivem.lang.Result;
 
@@ -15,7 +15,7 @@ public class TaxDriver implements AutoCloseable {
 
     public TaxDriver(String baseUrl) {
         this.httpClient = HttpClient.newHttpClient();
-        var testHttpClient = new HttpGateway(httpClient, baseUrl);
+        var testHttpClient = new JsonHttpClient(httpClient, baseUrl);
         this.taxClient = new TaxClient(testHttpClient);
     }
 

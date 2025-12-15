@@ -1,13 +1,13 @@
 package com.optivem.eshop.systemtest.core.tax.driver.client;
 
-import com.optivem.http.HttpGateway;
+import com.optivem.http.JsonHttpClient;
 import com.optivem.eshop.systemtest.core.tax.driver.client.controllers.HealthController;
 
 public class TaxClient {
 
     private final HealthController healthController;
 
-    public TaxClient(HttpGateway httpGateway) {
+    public TaxClient(JsonHttpClient httpGateway) {
         this.healthController = new HealthController(httpGateway);
     }
 

@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.driver.api.client.controllers;
 
-import com.optivem.http.HttpGateway;
+import com.optivem.http.JsonHttpClient;
 import com.optivem.http.HttpUtils;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.requests.PlaceOrderRequest;
@@ -12,9 +12,9 @@ public class OrderController {
 
     private static final String ENDPOINT = "/api/orders";
 
-    private final HttpGateway httpClient;
+    private final JsonHttpClient httpClient;
 
-    public OrderController(HttpGateway httpClient) {
+    public OrderController(JsonHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
