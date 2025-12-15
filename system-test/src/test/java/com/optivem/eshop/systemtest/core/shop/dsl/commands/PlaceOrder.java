@@ -1,8 +1,10 @@
 package com.optivem.eshop.systemtest.core.shop.dsl.commands;
 
+import com.optivem.eshop.systemtest.core.common.dsl.ErrorFailureVerification;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.requests.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.PlaceOrderResponse;
+import com.optivem.lang.Error;
 import com.optivem.testing.dsl.UseCaseResult;
 import com.optivem.testing.dsl.UseCaseContext;
 import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.BaseShopCommand;
@@ -51,7 +53,7 @@ public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVe
     }
 
     @Override
-    public UseCaseResult<PlaceOrderResponse, PlaceOrderVerification> execute() {
+    public UseCaseResult<PlaceOrderResponse, PlaceOrderVerification, Error, ErrorFailureVerification> execute() {
         var sku = context.getParamValue(skuParamAlias);
 
         var request = PlaceOrderRequest.builder()
@@ -66,6 +68,6 @@ public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVe
             context.setResultEntry(orderNumberResultAlias, orderNumber);
         }
 
-        return new UseCaseResult<>(result, context, PlaceOrderVerification::new);
+        return new UseCaseResult<>(result, context, PlaceOrderVerification::new, ErrorFailureVerification::new);
     }
 }

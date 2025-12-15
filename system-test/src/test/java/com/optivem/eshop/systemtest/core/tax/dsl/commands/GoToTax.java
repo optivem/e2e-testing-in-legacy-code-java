@@ -1,6 +1,8 @@
 package com.optivem.eshop.systemtest.core.tax.dsl.commands;
 
+import com.optivem.eshop.systemtest.core.common.dsl.ErrorFailureVerification;
 import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
+import com.optivem.lang.Error;
 import com.optivem.testing.dsl.UseCaseResult;
 import com.optivem.testing.dsl.UseCaseVoidSuccessVerification;
 import com.optivem.testing.dsl.UseCaseContext;
@@ -12,9 +14,9 @@ public class GoToTax extends BaseTaxCommand<Void, UseCaseVoidSuccessVerification
     }
 
     @Override
-    public UseCaseResult<Void, UseCaseVoidSuccessVerification> execute() {
+    public UseCaseResult<Void, UseCaseVoidSuccessVerification, Error, ErrorFailureVerification> execute() {
         var result = driver.goToTax();
-        return new UseCaseResult<>(result, context, UseCaseVoidSuccessVerification::new);
+        return new UseCaseResult<>(result, context, UseCaseVoidSuccessVerification::new, ErrorFailureVerification::new);
     }
 }
 

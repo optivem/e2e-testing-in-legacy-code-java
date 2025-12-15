@@ -1,7 +1,9 @@
 package com.optivem.eshop.systemtest.core.shop.dsl.commands;
 
+import com.optivem.eshop.systemtest.core.common.dsl.ErrorFailureVerification;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.GetOrderResponse;
+import com.optivem.lang.Error;
 import com.optivem.testing.dsl.UseCaseResult;
 import com.optivem.testing.dsl.UseCaseContext;
 import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.BaseShopCommand;
@@ -20,12 +22,12 @@ public class ViewOrder extends BaseShopCommand<GetOrderResponse, ViewOrderVerifi
     }
 
     @Override
-    public UseCaseResult<GetOrderResponse, ViewOrderVerification> execute() {
+    public UseCaseResult<GetOrderResponse, ViewOrderVerification, Error, ErrorFailureVerification> execute() {
         var orderNumber = context.getResultValue(orderNumberResultAlias);
 
         var result = driver.viewOrder(orderNumber);
 
-        return new UseCaseResult<>(result, context, ViewOrderVerification::new);
+        return new UseCaseResult<>(result, context, ViewOrderVerification::new, ErrorFailureVerification::new);
     }
 }
 

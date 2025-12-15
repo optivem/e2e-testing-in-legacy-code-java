@@ -1,6 +1,6 @@
 package com.optivem.testing.dsl;
 
-public abstract class BaseUseCase<TDriver, TResponse, TVerification> implements UseCase<UseCaseResult<TResponse, TVerification>> {
+public abstract class BaseUseCase<TDriver, TResponse, TVerification, E, TFailureVerification extends UseCaseFailureVerification<E>> implements UseCase<UseCaseResult<TResponse, TVerification, E, TFailureVerification>> {
     protected final TDriver driver;
     protected final UseCaseContext context;
 
@@ -9,6 +9,6 @@ public abstract class BaseUseCase<TDriver, TResponse, TVerification> implements 
         this.context = context;
     }
 
-    public abstract UseCaseResult<TResponse, TVerification> execute();
+    public abstract UseCaseResult<TResponse, TVerification, E, TFailureVerification> execute();
 }
 
