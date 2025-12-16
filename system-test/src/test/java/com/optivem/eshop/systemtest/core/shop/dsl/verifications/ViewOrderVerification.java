@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("UnusedReturnValue")
 public class ViewOrderVerification extends ResponseVerification<GetOrderResponse, UseCaseContext> {
 
     public ViewOrderVerification(GetOrderResponse response, UseCaseContext context) {

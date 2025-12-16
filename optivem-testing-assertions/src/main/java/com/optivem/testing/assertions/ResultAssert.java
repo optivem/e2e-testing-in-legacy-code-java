@@ -13,7 +13,6 @@ public class ResultAssert<T, E> extends AbstractAssert<ResultAssert<T, E>, Resul
         return new ResultAssert<>(actual);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public ResultAssert<T, E> isSuccess() {
         isNotNull();
         if (!actual.isSuccess()) {
@@ -21,8 +20,7 @@ public class ResultAssert<T, E> extends AbstractAssert<ResultAssert<T, E>, Resul
         }
         return this;
     }
-
-    @SuppressWarnings("UnusedReturnValue")
+    
     public ResultAssert<T, E> isFailure() {
         isNotNull();
         if (!actual.isFailure()) {
