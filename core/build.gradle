@@ -16,10 +16,10 @@ repositories {
 }
 
 dependencies {
-    api project(':core-commons')
-    api project(':core-erp')
-    api project(':core-shop')
-    api project(':core-tax')
+    api project(':core:commons')
+    api project(':core:erp')
+    api project(':core:shop')
+    api project(':core:tax')
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'

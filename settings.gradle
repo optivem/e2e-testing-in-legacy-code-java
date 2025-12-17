@@ -8,9 +8,9 @@ include 'optivem-testing-assertions'
 include 'optivem-testing-channels'
 include 'optivem-testing-dsl'
 
-include 'core-commons'
-include 'core-erp'
-include 'core-shop'
-include 'core-tax'
 include 'core'
+include 'core:commons'
+include 'core:erp'
+include 'core:shop'
+include 'core:tax'
 
