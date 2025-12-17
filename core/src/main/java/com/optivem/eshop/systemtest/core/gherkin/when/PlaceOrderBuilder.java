@@ -7,7 +7,8 @@ public class PlaceOrderBuilder {
     private final SystemDsl app;
     private String orderNumber;
     private String sku;
-    private int quantity;
+    private String quantityString;
+    private Integer quantityInt;
 
     public PlaceOrderBuilder(SystemDsl app) {
         this.app = app;
@@ -24,18 +25,31 @@ public class PlaceOrderBuilder {
     }
 
     public PlaceOrderBuilder withQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantityInt = quantity;
+        this.quantityString = null;
+        return this;
+    }
+
+    public PlaceOrderBuilder withQuantity(String quantity) {
+        this.quantityString = quantity;
+        this.quantityInt = null;
         return this;
     }
 
     public ThenClause then() {
         // Execute the place order
-        app.shop().placeOrder()
+        var placeOrder = app.shop().placeOrder()
                 .orderNumber(orderNumber)
-                .sku(sku)
-                .quantity(quantity)
-                .execute();
+                .sku(sku);
+        
+        if (quantityString != null) {
+            placeOrder.quantity(quantityString);
+        } else if (quantityInt != null) {
+            placeOrder.quantity(quantityInt);
+        }
+        
+        var result = placeOrder.execute();
 
-        return new ThenClause(app, orderNumber);
+        return new ThenClause(app, orderNumber, result);
     }
 }

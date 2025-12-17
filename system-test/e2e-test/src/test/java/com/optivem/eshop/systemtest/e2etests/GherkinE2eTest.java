@@ -75,4 +75,22 @@ public class GherkinE2eTest {
                         .hasSku("SKU-001")
                         .hasStatus(OrderStatus.CANCELLED);
     }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    void shouldRejectOrderWithInvalidQuantity() {
+        scenario
+            .given()
+                .product()
+                    .withSku("SKU-001")
+            .when()
+                .placeOrder()
+                    .withOrderNumber("ORDER-4001")
+                    .withSku("SKU-001")
+                    .withQuantity("invalid-quantity")
+            .then()
+                .shouldFail()
+                    .errorMessage("The request contains one or more validation errors")
+                    .fieldErrorMessage("quantity", "Quantity must be an integer");
+    }
 }
