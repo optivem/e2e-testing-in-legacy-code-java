@@ -26,7 +26,7 @@ public class ShopUiClient implements AutoCloseable {
     public ShopUiClient(String baseUrl) {
         this.baseUrl = baseUrl;
         this.playwright = Playwright.create();
-        this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+        this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(100));
         this.context = browser.newContext();
         this.page = browser.newPage();
         var pageClient = PageClient.builder(page)
