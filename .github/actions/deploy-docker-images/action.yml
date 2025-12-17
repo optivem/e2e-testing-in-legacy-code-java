@@ -94,7 +94,7 @@ runs:
       working-directory: system-test
         
     - name: Run Smoke Tests
-      run: ./gradlew test --tests com.optivem.eshop.systemtest.smoketests.*
+      run: ./gradlew :smoke-test:test
       shell: bash
       working-directory: system-test
 

@@ -99,5 +99,5 @@ jobs:
       run: echo "Run External System Contract Tests"
 
     - name: Run E2E Tests
-      run: ./gradlew test --tests com.optivem.eshop.systemtest.e2etests.*
+      run: ./gradlew :e2e-test:test
       working-directory: system-test
