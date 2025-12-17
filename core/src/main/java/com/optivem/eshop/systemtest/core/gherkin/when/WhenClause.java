@@ -12,4 +12,8 @@ public class WhenClause {
     public PlaceOrderBuilder placeOrder() {
         return new PlaceOrderBuilder(app);
     }
+
+    public CancelOrderBuilder cancelOrder() {
+        return new CancelOrderBuilder(app);
+    }
 }

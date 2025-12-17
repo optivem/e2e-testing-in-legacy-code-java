@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.SystemDslFactory;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.enums.OrderStatus;
 import com.optivem.lang.Closer;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.ChannelExtension;
@@ -52,5 +53,26 @@ public class GherkinE2eTest {
                     .order("ORDER-2001")
                         .hasSku("SKU-001")
                         .hasTotalPrice(100.00);
+    }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    void shouldCancelOrder() {
+        scenario
+            .given()
+                .product()
+                    .withSku("SKU-001")
+                .and().order()
+                    .withOrderNumber("ORDER-3001")
+                    .withSku("SKU-001")
+            .when()
+                .cancelOrder()
+                    .withOrderNumber("ORDER-3001")
+            .then()
+                .shouldSucceed()
+                .and()
+                    .order("ORDER-3001")
+                        .hasSku("SKU-001")
+                        .hasStatus(OrderStatus.CANCELLED);
     }
 }

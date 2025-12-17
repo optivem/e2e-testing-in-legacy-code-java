@@ -9,6 +9,7 @@ import java.util.List;
 public class GivenClause {
     private final SystemDsl app;
     private final List<ProductBuilder> products = new ArrayList<>();
+    private final List<OrderBuilder> orders = new ArrayList<>();
 
     public GivenClause(SystemDsl app) {
         this.app = app;
@@ -20,12 +21,26 @@ public class GivenClause {
         return productBuilder;
     }
 
+    public OrderBuilder order() {
+        var orderBuilder = new OrderBuilder(this);
+        orders.add(orderBuilder);
+        return orderBuilder;
+    }
+
     public WhenClause when() {
         // Execute all product creations
         for (var product : products) {
             app.erp().createProduct()
                     .sku(product.getSku())
                     .unitPrice(product.getUnitPrice())
+                    .execute()
+                    .shouldSucceed();
+        }
+        // Execute all order placements
+        for (var order : orders) {
+            app.shop().placeOrder()
+                    .orderNumber(order.getOrderNumber())
+                    .sku(order.getSku())
                     .execute()
                     .shouldSucceed();
         }

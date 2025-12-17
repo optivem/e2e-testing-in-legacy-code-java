@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.gherkin.then;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
+import com.optivem.eshop.systemtest.core.shop.driver.dtos.enums.OrderStatus;
 
 public class OrderVerificationBuilder {
     private final SystemDsl app;
@@ -26,6 +27,15 @@ public class OrderVerificationBuilder {
                 .execute()
                 .shouldSucceed()
                 .totalPriceGreaterThanZero();
+        return this;
+    }
+
+    public OrderVerificationBuilder hasStatus(OrderStatus expectedStatus) {
+        app.shop().viewOrder()
+                .orderNumber(orderNumber)
+                .execute()
+                .shouldSucceed()
+                .status(expectedStatus);
         return this;
     }
 }
