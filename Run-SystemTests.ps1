@@ -46,11 +46,20 @@ if (-not (Test-Path $ScriptPath)) {
 
 Write-Host "Executing script from repository..." -ForegroundColor Cyan
 Set-Location "$RepoPath"
-& $ScriptPath -Mode $Mode -Rebuild:$Rebuild -Restart:$Restart -LogLines $LogLines -WorkingDirectory $WorkingDirectory -TestId $TestId
+
+& $ScriptPath -ExternalSystemMode "real" -Mode $Mode -Rebuild:$Rebuild -Restart:$Restart -LogLines $LogLines -WorkingDirectory $WorkingDirectory -TestId $TestId
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Script execution failed with exit code: $LASTEXITCODE" -ForegroundColor Red
     exit $LASTEXITCODE
 }
+
+# & $ScriptPath -ExternalSystemMode "stub" -Mode $Mode -Rebuild:$Rebuild -Restart:$Restart -LogLines $LogLines -WorkingDirectory $WorkingDirectory -TestId $TestId
+#
+# if ($LASTEXITCODE -ne 0) {
+#     Write-Host "Script execution failed with exit code: $LASTEXITCODE" -ForegroundColor Red
+#     exit $LASTEXITCODE
+# }
+
 
 Write-Host "Done!" -ForegroundColor Green
