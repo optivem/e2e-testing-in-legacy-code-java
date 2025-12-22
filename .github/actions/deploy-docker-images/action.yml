@@ -34,12 +34,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Clone Base Repository
-      run: |
-        echo "📥 Cloning base repository..."
-        git clone https://github.com/optivem/modern-acceptance-testing-in-legacy-code.git modern-acceptance-testing-in-legacy-code
-        echo "✅ Base repository cloned successfully"
-      shell: bash
+    - name: Checkout Base Repository
+      uses: actions/checkout@v4
+      with:
+        repository: optivem/modern-acceptance-testing-in-legacy-code
+        path: modern-acceptance-testing-in-legacy-code
 
     - name: Deploy System
       run: |
