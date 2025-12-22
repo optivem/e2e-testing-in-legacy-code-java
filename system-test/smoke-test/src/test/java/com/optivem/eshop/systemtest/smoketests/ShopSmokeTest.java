@@ -1,13 +1,11 @@
-package com.optivem.eshop.systemtest.smoketests.stub;
+package com.optivem.eshop.systemtest.smoketests;
 
-import com.optivem.eshop.systemtest.EnvironmentMode;
 import com.optivem.eshop.systemtest.SystemDslFactory;
-import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
-import com.optivem.testing.channels.Channel;
-import com.optivem.testing.channels.ChannelExtension;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.lang.Closer;
+import com.optivem.testing.channels.Channel;
+import com.optivem.testing.channels.ChannelExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +34,7 @@ public class ShopSmokeTest {
                 .execute()
                 .shouldSucceed();
     }
+
     @Test
     void shouldBeAbleToGoToErp() {
         app.erp().goToErp()
