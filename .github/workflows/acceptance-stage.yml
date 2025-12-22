@@ -71,13 +71,31 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Deploy System
+    - name: Deploy System (Real External Systems)
       id: deploy-system
       uses: ./.github/actions/deploy-docker-images
       with:
         environment: acceptance
         version: latest
         image-urls: ${{ needs.find-latest-images.outputs.image-digest-urls }}
+        external-system-mode: 'real'
+        frontend-url: 'http://localhost:3001/'
+        backend-url: 'http://localhost:8081/health'
+        erp-url: 'http://localhost:9001/erp/health'
+        tax-url: 'http://localhost:9001/tax/health'
+
+    - name: Deploy System (Stub External Systems)
+      id: deploy-system
+      uses: ./.github/actions/deploy-docker-images
+      with:
+        environment: acceptance
+        version: latest
+        image-urls: ${{ needs.find-latest-images.outputs.image-digest-urls }}
+        external-system-mode: 'stub'
+        frontend-url: 'http://localhost:3002/'
+        backend-url: 'http://localhost:8082/health'
+        erp-url: 'http://localhost:9002/erp/health'
+        tax-url: 'http://localhost:9002/tax/health'
 
     - name: Setup Java
       uses: actions/setup-java@v4
