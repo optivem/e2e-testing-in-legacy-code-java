@@ -1,19 +1,20 @@
-package com.optivem.eshop.systemtest.smoketests.external;
+package com.optivem.eshop.systemtest.smoketests.external.stub;
 
 import com.optivem.eshop.systemtest.SystemDslFactory;
+import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.lang.Closer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ErpSmokeTest {
+public class TaxStubSmokeTest {
 
     private SystemDsl app;
 
     @BeforeEach
     void setUp() {
-        app = SystemDslFactory.create();
+        app = SystemDslFactory.create(ExternalSystemMode.REAL);
     }
 
     @AfterEach
@@ -22,8 +23,8 @@ public class ErpSmokeTest {
     }
 
     @Test
-    void shouldBeAbleToGoToErp() {
-        app.erp().goToErp()
+    void shouldBeAbleToGoToTax() {
+        app.tax().goToTax()
                 .execute()
                 .shouldSucceed();
     }

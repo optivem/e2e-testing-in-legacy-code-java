@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.e2etests;
 
 import com.optivem.eshop.systemtest.SystemDslFactory;
+import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.e2etests.providers.EmptyArgumentsProvider;
 import com.optivem.testing.channels.Channel;
@@ -28,7 +29,7 @@ public class E2eTest {
 
     @BeforeEach
     void setUp() {
-        app = SystemDslFactory.create();
+        app = SystemDslFactory.create(ExternalSystemMode.REAL);
     }
 
     @AfterEach

@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.e2etests;
 
 import com.optivem.eshop.systemtest.SystemDslFactory;
+import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
@@ -21,7 +22,7 @@ public class GherkinE2eTest {
 
     @BeforeEach
     void setUp() {
-        app = SystemDslFactory.create();
+        app = SystemDslFactory.create(ExternalSystemMode.REAL);
         scenario = new ScenarioDsl(app);
     }
 

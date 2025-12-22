@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.smoketests;
 
 import com.optivem.eshop.systemtest.SystemDslFactory;
+import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.ChannelExtension;
