@@ -1,10 +1,16 @@
 package com.optivem.eshop.systemtest.core.erp.driver.stub;
 
 import com.optivem.eshop.systemtest.core.commons.error.Error;
+import com.optivem.eshop.systemtest.core.commons.error.ProblemDetailResponse;
 import com.optivem.eshop.systemtest.core.erp.driver.ErpDriver;
+import com.optivem.eshop.systemtest.core.erp.driver.stub.client.ErpStubClient;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.requests.ReturnsProductRequest;
+import com.optivem.http.JsonHttpClient;
+import com.optivem.lang.Closer;
 import com.optivem.lang.Result;
 import com.github.tomakehurst.wiremock.client.WireMock;
+
+import java.net.http.HttpClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
@@ -14,19 +20,25 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
  */
 public class ErpStubDriver implements ErpDriver {
 
+    private final HttpClient httpClient;
     private final WireMock wireMock;
+    private final ErpStubClient erpClient;
 
-    public ErpStubDriver(String wireMockBaseUrl) {
-        // Parse the WireMock base URL to extract host and port
-        var url = java.net.URI.create(wireMockBaseUrl);
+    public ErpStubDriver(String erpBaseUrl) {
+        // Create HTTP client for making actual health check requests
+        this.httpClient = HttpClient.newHttpClient();
+        var jsonHttpClient = new JsonHttpClient<>(httpClient, erpBaseUrl, ProblemDetailResponse.class);
+        this.erpClient = new ErpStubClient(jsonHttpClient);
+
+        // Parse the base URL to extract host and port for WireMock admin API
+        var url = java.net.URI.create(erpBaseUrl);
         this.wireMock = new WireMock(url.getHost(), url.getPort());
     }
 
     @Override
     public Result<Void, Error> goToErp() {
-        // Health check is already preconfigured in WireMock
-        // No need to set up a stub dynamically
-        return Result.success();
+        // Use the real health check endpoint (which is preconfigured in WireMock)
+        return erpClient.checkHealth();
     }
 
     @Override
@@ -58,10 +70,6 @@ public class ErpStubDriver implements ErpDriver {
 
     @Override
     public void close() throws Exception {
-        // Optionally reset stubs between tests
-        // Uncomment if you want to clean up stubs after each test
-        // if (wireMock != null) {
-        //     wireMock.resetMappings();
-        // }
+        Closer.close(httpClient);
     }
 }
