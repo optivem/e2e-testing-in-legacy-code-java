@@ -115,5 +115,5 @@ jobs:
       run: echo "Run External System Contract Tests"
 
     - name: Run E2E Tests
-      run: ./gradlew :e2e-test:test
+      run: ./gradlew :e2e-test:test -DenvironmentMode=acceptance -DexternalSystemMode=real
       working-directory: system-test
