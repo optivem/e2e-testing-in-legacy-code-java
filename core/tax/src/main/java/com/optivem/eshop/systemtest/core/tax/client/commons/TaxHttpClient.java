@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.tax.client.commons;
 
+import com.optivem.eshop.systemtest.core.tax.client.dtos.error.TaxApiErrorResponse;
 import com.optivem.http.JsonHttpClient;
 
 import java.net.http.HttpClient;

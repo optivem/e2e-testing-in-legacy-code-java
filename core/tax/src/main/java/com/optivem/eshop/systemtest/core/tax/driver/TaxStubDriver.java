@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.tax.driver;
 
-import com.optivem.eshop.systemtest.core.tax.commons.TaxError;
+import com.optivem.eshop.systemtest.core.tax.driver.dtos.error.TaxErrorResponse;
 import com.optivem.eshop.systemtest.core.tax.client.TaxStubClient;
 import com.optivem.eshop.systemtest.core.tax.client.commons.TaxHttpClient;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.GetTaxRequest;
@@ -33,12 +33,12 @@ public class TaxStubDriver implements TaxDriver {
     }
 
     @Override
-    public Result<Void, TaxError> goToTax() {
+    public Result<Void, TaxErrorResponse> goToTax() {
         return taxClient.checkHealth();
     }
 
     @Override
-    public Result<Void, TaxError> returnsTaxRate(ReturnsTaxRateRequest request) {
+    public Result<Void, TaxErrorResponse> returnsTaxRate(ReturnsTaxRateRequest request) {
         var country = request.getCountry();
         var taxRate = request.getTaxRate();
 
@@ -57,7 +57,7 @@ public class TaxStubDriver implements TaxDriver {
     }
 
     @Override
-    public Result<GetTaxResponse, TaxError> getTax(GetTaxRequest request) {
+    public Result<GetTaxResponse, TaxErrorResponse> getTax(GetTaxRequest request) {
         return taxClient.getCountry(request.getCountry())
                 .map(taxDetails -> GetTaxResponse.builder()
                         .country(taxDetails.getId())

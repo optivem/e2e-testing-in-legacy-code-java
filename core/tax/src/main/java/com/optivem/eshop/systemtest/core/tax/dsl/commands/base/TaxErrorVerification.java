@@ -1,14 +1,14 @@
 package com.optivem.eshop.systemtest.core.tax.dsl.commands.base;
 
-import com.optivem.eshop.systemtest.core.tax.commons.TaxError;
+import com.optivem.eshop.systemtest.core.tax.driver.dtos.error.TaxErrorResponse;
 import com.optivem.testing.dsl.ResponseVerification;
 import com.optivem.testing.dsl.UseCaseContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TaxErrorVerification extends ResponseVerification<TaxError, UseCaseContext> {
+public class TaxErrorVerification extends ResponseVerification<TaxErrorResponse, UseCaseContext> {
 
-    public TaxErrorVerification(TaxError error, UseCaseContext context) {
+    public TaxErrorVerification(TaxErrorResponse error, UseCaseContext context) {
         super(error, context);
     }
 
