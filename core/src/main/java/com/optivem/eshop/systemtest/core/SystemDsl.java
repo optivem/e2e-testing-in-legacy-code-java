@@ -21,13 +21,13 @@ public class SystemDsl implements Closeable {
     private ErpDsl erp;
     private TaxDsl tax;
 
-    public SystemDsl(SystemConfiguration configuration, UseCaseContext context) {
+    private SystemDsl(SystemConfiguration configuration, UseCaseContext context) {
         this.configuration = configuration;
         this.context = context;
     }
 
     public SystemDsl(SystemConfiguration configuration) {
-        this(configuration, new UseCaseContext());
+        this(configuration, new UseCaseContext(configuration.getExternalSystemMode()));
     }
 
     @Override

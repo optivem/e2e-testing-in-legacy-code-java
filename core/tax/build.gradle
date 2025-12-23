@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+    api project(':core:commons')
     api project(':libs:optivem-http')
     api project(':libs:optivem-testing-dsl')
 

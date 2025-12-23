@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetTaxRequest {
+public class ReturnsTaxRateRequest {
     private String country;
+    private String taxRate;
 }
 

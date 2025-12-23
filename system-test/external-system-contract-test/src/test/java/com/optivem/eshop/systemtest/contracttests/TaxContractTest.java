@@ -6,7 +6,13 @@ import org.junit.jupiter.api.Test;
 public class TaxContractTest extends BaseSystemTest {
     @Test
     void shouldBeAbleToGetTaxRate() {
-        app.tax().getTax()
+        app.tax().returnsTaxRate()
+                        .country("US")
+                                .taxRate(12.30)
+                .execute()
+                .shouldSucceed();
+
+        app.tax().getTaxRate()
                 .country("US")
                 .execute()
                 .shouldSucceed()

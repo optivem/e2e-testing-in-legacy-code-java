@@ -3,7 +3,7 @@ package com.optivem.eshop.systemtest.e2etests;
 import com.optivem.eshop.systemtest.BaseSystemTest;
 import com.optivem.eshop.systemtest.EnvironmentMode;
 import com.optivem.eshop.systemtest.SystemDslFactory;
-import com.optivem.eshop.systemtest.core.ExternalSystemMode;
+import com.optivem.testing.dsl.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;

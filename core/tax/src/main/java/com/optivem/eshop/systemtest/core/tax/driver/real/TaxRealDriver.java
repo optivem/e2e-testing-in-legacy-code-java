@@ -2,9 +2,10 @@ package com.optivem.eshop.systemtest.core.tax.driver.real;
 
 import com.optivem.eshop.systemtest.core.tax.commons.TaxError;
 import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
-import com.optivem.eshop.systemtest.core.tax.driver.client.TaxRealClient;
+import com.optivem.eshop.systemtest.core.tax.driver.real.client.TaxRealClient;
 import com.optivem.eshop.systemtest.core.tax.driver.client.commons.TaxHttpClient;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.requests.GetTaxRequest;
+import com.optivem.eshop.systemtest.core.tax.driver.dtos.requests.ReturnsTaxRateRequest;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.responses.GetTaxResponse;
 import com.optivem.lang.Closer;
 import com.optivem.lang.Result;
@@ -33,12 +34,17 @@ public class TaxRealDriver implements TaxDriver {
     }
 
     @Override
+    public Result<Void, TaxError> returnsTaxRate(ReturnsTaxRateRequest request) {
+        // No-op for real driver - data already exists in real service
+        return Result.success();
+    }
+
+    @Override
     public Result<GetTaxResponse, TaxError> getTax(GetTaxRequest request) {
-        return taxClient.countries().getCountry(request.getCountryRaw())
+        return taxClient.countries().getCountry(request.getCountry())
                 .map(taxDetails -> GetTaxResponse.builder()
                         .country(taxDetails.getId())
                         .taxRate(taxDetails.getTaxRate())
                         .build());
     }
 }
-

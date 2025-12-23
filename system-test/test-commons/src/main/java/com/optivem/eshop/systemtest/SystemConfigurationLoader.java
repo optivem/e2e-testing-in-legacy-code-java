@@ -1,7 +1,7 @@
 package com.optivem.eshop.systemtest;
 
-import com.optivem.eshop.systemtest.core.ExternalSystemMode;
 import com.optivem.eshop.systemtest.core.SystemConfiguration;
+import com.optivem.testing.dsl.ExternalSystemMode;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;

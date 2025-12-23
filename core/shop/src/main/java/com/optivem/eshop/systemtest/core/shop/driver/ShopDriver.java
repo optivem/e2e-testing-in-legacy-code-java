@@ -1,12 +1,13 @@
 package com.optivem.eshop.systemtest.core.shop.driver;
 
+import com.optivem.eshop.systemtest.core.commons.driver.Driver;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.GetOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.requests.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.responses.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.commons.error.Error;
 import com.optivem.lang.Result;
 
-public interface ShopDriver extends AutoCloseable {
+public interface ShopDriver extends Driver {
     Result<Void, Error> goToShop();
 
     Result<PlaceOrderResponse, Error> placeOrder(PlaceOrderRequest request);

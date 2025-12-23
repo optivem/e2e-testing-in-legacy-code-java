@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.tax.dsl.verifications;
 
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.responses.GetTaxResponse;
+import com.optivem.testing.dsl.ExternalSystemMode;
 import com.optivem.testing.dsl.ResponseVerification;
 import com.optivem.testing.dsl.UseCaseContext;
 
@@ -14,12 +15,23 @@ public class GetTaxVerification extends ResponseVerification<GetTaxResponse, Use
         super(response, context);
     }
 
-    public GetTaxVerification country(String expectedCountry) {
+    public GetTaxVerification country(String expectedCountryAliasOrValue) {
+        var expectedCountry = getExpectedCountry(expectedCountryAliasOrValue);
         var actualCountry = response.getCountry();
         assertThat(actualCountry)
-                .withFailMessage("Expected country to be '%s', but was '%s'", expectedCountry, actualCountry)
+                .withFailMessage("Expected country to be '%s', but was '%s'", expectedCountryAliasOrValue, actualCountry)
                 .isEqualTo(expectedCountry);
         return this;
+    }
+
+    private String getExpectedCountry(String expectedCountry) {
+        if(context.getExternalSystemMode() == ExternalSystemMode.STUB) {
+            return context.getParamValue(expectedCountry);
+        } else if(context.getExternalSystemMode() == ExternalSystemMode.REAL) {
+            return expectedCountry;
+        } else {
+            throw new IllegalStateException("Unsupported external system mode: " + context.getExternalSystemMode());
+        }
     }
 
     public GetTaxVerification countryFromParam(String countryParamAlias) {

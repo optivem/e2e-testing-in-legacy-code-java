@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.requests.GetTaxRequest;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.responses.GetTaxResponse;
 import com.optivem.eshop.systemtest.core.tax.dsl.verifications.GetTaxVerification;
+import com.optivem.testing.dsl.ExternalSystemMode;
 import com.optivem.testing.dsl.UseCaseContext;
 import com.optivem.eshop.systemtest.core.tax.dsl.commands.base.BaseTaxCommand;
 import com.optivem.eshop.systemtest.core.tax.dsl.commands.base.TaxUseCaseResult;
@@ -25,18 +26,25 @@ public class GetTaxRate extends BaseTaxCommand<GetTaxResponse, GetTaxVerificatio
 
     @Override
     public TaxUseCaseResult<GetTaxResponse, GetTaxVerification> execute() {
-        // Get aliased value from context for stub driver
-        var countryAliasedValue = context.getParamValue(countryValueOrAlias);
+        var country = getCountry();
 
-        // TODO: VJ: I don't know if this is the right way, or we should decide here?
         var request = GetTaxRequest.builder()
-                .countryRaw(countryValueOrAlias)  // Raw value for real driver
-                .countryAliasedValue(countryAliasedValue)  // Aliased value for stub driver
+                .country(country)
                 .build();
 
         var result = driver.getTax(request);
 
         return new TaxUseCaseResult<>(result, context, GetTaxVerification::new);
+    }
+
+    private String getCountry() {
+        if(context.getExternalSystemMode() == ExternalSystemMode.STUB) {
+            return context.getParamValue(countryValueOrAlias);
+        } else if(context.getExternalSystemMode() == ExternalSystemMode.REAL) {
+            return countryValueOrAlias;
+        } else {
+            throw new IllegalStateException("Unsupported external system mode: " + context.getExternalSystemMode());
+        }
     }
 }
 

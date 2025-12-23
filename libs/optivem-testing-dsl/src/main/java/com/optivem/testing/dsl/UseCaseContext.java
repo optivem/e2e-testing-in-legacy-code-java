@@ -5,13 +5,18 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UseCaseContext {
-
+    private final ExternalSystemMode externalSystemMode;
     private final Map<String, String> paramMap;
     private final Map<String, String> resultMap;
 
-    public UseCaseContext() {
+    public UseCaseContext(ExternalSystemMode externalSystemMode) {
+        this.externalSystemMode = externalSystemMode;
         this.paramMap = new HashMap<>();
         this.resultMap = new HashMap<>();
+    }
+
+    public ExternalSystemMode getExternalSystemMode() {
+        return externalSystemMode;
     }
 
     public String getParamValue(String alias) {

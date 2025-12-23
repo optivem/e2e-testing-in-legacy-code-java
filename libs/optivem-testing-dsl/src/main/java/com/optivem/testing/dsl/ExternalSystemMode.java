@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core;
+package com.optivem.testing.dsl;
 
 public enum ExternalSystemMode {
     STUB,

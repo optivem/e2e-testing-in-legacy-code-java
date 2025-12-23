@@ -5,12 +5,15 @@ import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
 import com.optivem.eshop.systemtest.core.tax.driver.stub.client.TaxStubClient;
 import com.optivem.eshop.systemtest.core.tax.driver.client.commons.TaxHttpClient;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.requests.GetTaxRequest;
+import com.optivem.eshop.systemtest.core.tax.driver.dtos.requests.ReturnsTaxRateRequest;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.responses.GetTaxResponse;
 import com.optivem.lang.Closer;
 import com.optivem.lang.Result;
 import com.github.tomakehurst.wiremock.client.WireMock;
 
 import java.net.http.HttpClient;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class TaxStubDriver implements TaxDriver {
 
@@ -24,7 +27,10 @@ public class TaxStubDriver implements TaxDriver {
         this.taxClient = new TaxStubClient(taxHttpClient);
 
         var url = java.net.URI.create(taxBaseUrl);
-        this.wireMock = new WireMock(url.getHost(), url.getPort());
+        var host = url.getHost();
+        var port = url.getPort();
+
+        this.wireMock = new WireMock(host, port);
     }
 
     @Override
@@ -33,8 +39,27 @@ public class TaxStubDriver implements TaxDriver {
     }
 
     @Override
+    public Result<Void, TaxError> returnsTaxRate(ReturnsTaxRateRequest request) {
+        var country = request.getCountry();
+        var taxRate = request.getTaxRate();
+
+        // Stub GET request for the tax rate
+        wireMock.register(get(urlPathEqualTo("/tax/api/countries/" + country))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(String.format(
+                                "{\"id\":\"%s\",\"countryName\":\"%s\",\"taxRate\":%s}",
+                                country, request.getCountry(), taxRate))));
+
+        // TODO: VJ: Should make Dto for request body
+
+        return Result.success();
+    }
+
+    @Override
     public Result<GetTaxResponse, TaxError> getTax(GetTaxRequest request) {
-        return taxClient.countries().getCountry(request.getCountryAliasedValue())
+        return taxClient.countries().getCountry(request.getCountry())
                 .map(taxDetails -> GetTaxResponse.builder()
                         .country(taxDetails.getId())
                         .taxRate(taxDetails.getTaxRate())
@@ -46,4 +71,3 @@ public class TaxStubDriver implements TaxDriver {
         Closer.close(httpClient);
     }
 }
-
