@@ -29,7 +29,7 @@ public class TaxRealDriver implements TaxDriver {
 
     @Override
     public Result<Void, TaxError> goToTax() {
-        return taxClient.health().checkHealth();
+        return taxClient.checkHealth();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TaxRealDriver implements TaxDriver {
 
     @Override
     public Result<GetTaxResponse, TaxError> getTax(GetTaxRequest request) {
-        return taxClient.countries().getCountry(request.getCountry())
+        return taxClient.getCountry(request.getCountry())
                 .map(taxDetails -> GetTaxResponse.builder()
                         .country(taxDetails.getId())
                         .taxRate(taxDetails.getTaxRate())
