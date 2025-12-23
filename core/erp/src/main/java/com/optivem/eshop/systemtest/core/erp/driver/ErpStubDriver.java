@@ -1,11 +1,11 @@
 package com.optivem.eshop.systemtest.core.erp.driver;
 
-import com.optivem.eshop.systemtest.core.commons.error.Error;
 import com.optivem.eshop.systemtest.core.erp.client.ErpStubClient;
 import com.optivem.eshop.systemtest.core.erp.client.dtos.ExtProductDetailsResponse;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.ReturnsProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductResponse;
+import com.optivem.eshop.systemtest.core.erp.driver.dtos.error.ErpErrorResponse;
 import com.optivem.lang.Closer;
 import com.optivem.lang.Result;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -26,7 +26,7 @@ public class ErpStubDriver extends BaseErpDriver<ErpStubClient> {
     }
 
     @Override
-    public Result<Void, Error> returnsProduct(ReturnsProductRequest request) {
+    public Result<Void, ErpErrorResponse> returnsProduct(ReturnsProductRequest request) {
         var extProductDetailsResponse = ExtProductDetailsResponse.builder()
                 .id(request.getSku())
                 .price(new BigDecimal(request.getPrice()))

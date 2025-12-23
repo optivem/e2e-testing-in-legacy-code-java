@@ -1,12 +1,13 @@
 package com.optivem.eshop.systemtest.core.erp.driver;
 
+import com.optivem.eshop.systemtest.core.erp.client.dtos.error.ExtErpErrorResponse;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.ReturnsProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductResponse;
 import com.optivem.eshop.systemtest.core.erp.client.ErpRealClient;
 import com.optivem.eshop.systemtest.core.erp.client.dtos.ExtProductDetailsRequest;
+import com.optivem.eshop.systemtest.core.erp.driver.dtos.error.ErpErrorResponse;
 import com.optivem.lang.Closer;
-import com.optivem.eshop.systemtest.core.commons.error.Error;
 import com.optivem.lang.Result;
 
 public class ErpRealDriver extends BaseErpDriver<ErpRealClient> {
@@ -21,7 +22,7 @@ public class ErpRealDriver extends BaseErpDriver<ErpRealClient> {
     }
 
     @Override
-    public Result<Void, Error> returnsProduct(ReturnsProductRequest request) {
+    public Result<Void, ErpErrorResponse> returnsProduct(ReturnsProductRequest request) {
         var createProductRequest = ExtProductDetailsRequest.builder()
                 .id(request.getSku())
                 .title(DEFAULT_TITLE)
@@ -31,7 +32,7 @@ public class ErpRealDriver extends BaseErpDriver<ErpRealClient> {
                 .price(request.getPrice())
                 .build();
 
-        return client.createProduct(createProductRequest);
+        return client.createProduct(createProductRequest).mapError(ErpErrorResponse::from);
     }
 }
 

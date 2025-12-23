@@ -1,10 +1,10 @@
 package com.optivem.eshop.systemtest.core.erp.driver;
 
-import com.optivem.eshop.systemtest.core.commons.error.Error;
 import com.optivem.eshop.systemtest.core.erp.client.BaseErpClient;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.ReturnsProductRequest;
 import com.optivem.eshop.systemtest.core.erp.driver.dtos.GetProductResponse;
+import com.optivem.eshop.systemtest.core.erp.driver.dtos.error.ErpErrorResponse;
 import com.optivem.lang.Closer;
 import com.optivem.lang.Result;
 
@@ -17,19 +17,20 @@ public abstract class BaseErpDriver<TClient extends BaseErpClient> implements Er
     }
 
     @Override
-    public Result<Void, Error> goToErp() {
-        return client.checkHealth();
+    public Result<Void, ErpErrorResponse> goToErp() {
+        return client.checkHealth().mapError(ErpErrorResponse::from);
     }
 
-    public abstract Result<Void, Error> returnsProduct(ReturnsProductRequest request);
+    public abstract Result<Void, ErpErrorResponse> returnsProduct(ReturnsProductRequest request);
 
     @Override
-    public Result<GetProductResponse, Error> getProduct(GetProductRequest request) {
+    public Result<GetProductResponse, ErpErrorResponse> getProduct(GetProductRequest request) {
         return client.getProduct(request.getSku())
                 .map(productDetails -> GetProductResponse.builder()
                         .sku(productDetails.getId())
                         .price(productDetails.getPrice())
-                        .build());
+                        .build())
+                .mapError(ErpErrorResponse::from);
     }
 
     @Override
