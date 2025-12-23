@@ -2,6 +2,7 @@ package com.optivem.eshop.systemtest.core.tax.dsl;
 
 import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
 import com.optivem.testing.dsl.UseCaseContext;
+import com.optivem.eshop.systemtest.core.tax.dsl.commands.GetTaxRate;
 import com.optivem.eshop.systemtest.core.tax.dsl.commands.GoToTax;
 import com.optivem.lang.Closer;
 
@@ -23,6 +24,10 @@ public class TaxDsl implements Closeable {
 
     public GoToTax goToTax() {
         return new GoToTax(driver, context);
+    }
+
+    public GetTaxRate getTax() {
+        return new GetTaxRate(driver, context);
     }
 }
 
