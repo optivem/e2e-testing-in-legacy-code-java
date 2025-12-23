@@ -126,7 +126,7 @@ runs:
       working-directory: system-test
         
     - name: Run Smoke Tests
-      run: ./gradlew :smoke-test:test -DenvironmentMode=${{ inputs.environment }} -DexternalSystemMode=${{ inputs.external-system-mode }}
+      run: ./gradlew :smoke-test:test -Denvironment=${{ inputs.environment }} -DexternalSystemMode=${{ inputs.external-system-mode }}
       shell: bash
       working-directory: system-test
 
