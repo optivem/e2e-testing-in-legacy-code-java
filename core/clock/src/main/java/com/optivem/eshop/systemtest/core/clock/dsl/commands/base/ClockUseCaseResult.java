@@ -1,0 +1,17 @@
+package com.optivem.eshop.systemtest.core.clock.dsl.commands.base;
+
+import com.optivem.eshop.systemtest.core.clock.driver.dtos.error.ClockErrorResponse;
+import com.optivem.lang.Result;
+import com.optivem.testing.dsl.UseCaseContext;
+import com.optivem.testing.dsl.UseCaseResult;
+
+import java.util.function.BiFunction;
+
+public class ClockUseCaseResult<TSuccessResponse, TSuccessVerification>
+        extends UseCaseResult<TSuccessResponse, ClockErrorResponse, UseCaseContext, TSuccessVerification, ClockErrorVerification> {
+    public ClockUseCaseResult(Result<TSuccessResponse, ClockErrorResponse> result, 
+                              UseCaseContext useCaseContext, 
+                              BiFunction<TSuccessResponse, UseCaseContext, TSuccessVerification> verificationFactory) {
+        super(result, useCaseContext, verificationFactory, ClockErrorVerification::new);
+    }
+}

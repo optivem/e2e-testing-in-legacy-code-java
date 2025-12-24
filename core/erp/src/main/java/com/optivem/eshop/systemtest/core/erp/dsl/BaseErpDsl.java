@@ -7,13 +7,11 @@ import com.optivem.eshop.systemtest.core.erp.dsl.commands.ReturnsProduct;
 import com.optivem.lang.Closer;
 import com.optivem.testing.dsl.UseCaseContext;
 
-import java.io.Closeable;
-
-public abstract class ErpDsl implements Closeable {
+public abstract class BaseErpDsl implements AutoCloseable {
     protected final ErpDriver driver;
     protected final UseCaseContext context;
 
-    protected ErpDsl(ErpDriver driver, UseCaseContext context) {
+    protected BaseErpDsl(ErpDriver driver, UseCaseContext context) {
         this.driver = driver;
         this.context = context;
     }

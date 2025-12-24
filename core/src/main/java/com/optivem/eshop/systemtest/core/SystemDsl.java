@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core;
 
-import com.optivem.eshop.systemtest.core.erp.dsl.ErpDsl;
+import com.optivem.eshop.systemtest.core.erp.dsl.BaseErpDsl;
 import com.optivem.eshop.systemtest.core.erp.dsl.ErpRealDsl;
 import com.optivem.eshop.systemtest.core.erp.dsl.ErpStubDsl;
 import com.optivem.eshop.systemtest.core.shop.dsl.ShopDsl;
@@ -18,7 +18,7 @@ public class SystemDsl implements Closeable {
     private final UseCaseContext context;
 
     private ShopDsl shop;
-    private ErpDsl erp;
+    private BaseErpDsl erp;
     private TaxDsl tax;
 
     private SystemDsl(SystemConfiguration configuration, UseCaseContext context) {
@@ -45,7 +45,7 @@ public class SystemDsl implements Closeable {
         return getOrCreate(shop, () -> shop = new ShopDsl(configuration.getShopUiBaseUrl(), configuration.getShopApiBaseUrl(), context));
     }
 
-    public ErpDsl erp() {
+    public BaseErpDsl erp() {
         if (erp == null) {
             erp = switch (configuration.getExternalSystemMode()) {
                 case REAL -> new ErpRealDsl(configuration.getErpBaseUrl(), context);

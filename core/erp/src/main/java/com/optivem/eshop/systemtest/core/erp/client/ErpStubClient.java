@@ -18,7 +18,6 @@ public class ErpStubClient extends BaseErpClient {
     public ErpStubClient(String baseUrl) {
         super(baseUrl);
 
-        // Parse the base URL to extract host and port for WireMock admin API
         var url = URI.create(baseUrl);
         this.wireMock = new WireMock(url.getHost(), url.getPort());
         this.wireMockClient = new JsonWireMockClient(wireMock);
