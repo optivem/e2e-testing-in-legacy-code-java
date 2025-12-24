@@ -1,9 +1,15 @@
 package com.optivem.eshop.systemtest.contracttests.tax;
 
+import com.optivem.eshop.systemtest.Environment;
 import com.optivem.testing.dsl.ExternalSystemMode;
 import org.junit.jupiter.api.Test;
 
 public class TaxStubContractTest extends BaseTaxContractTest {
+
+    @Override
+    protected Environment getFixedEnvironment() {
+        return Environment.LOCAL;
+    }
 
     @Override
     protected ExternalSystemMode getFixedExternalSystemMode() {
@@ -13,16 +19,16 @@ public class TaxStubContractTest extends BaseTaxContractTest {
     @Test
     void shouldBeAbleToGetConfiguredTaxRate() {
         app.tax().returnsTaxRate()
-                .country("US")
+                .country("LALA")
                 .taxRate(0.23)
                 .execute()
                 .shouldSucceed();
 
         app.tax().getTaxRate()
-                .country("US")
+                .country("LALA")
                 .execute()
                 .shouldSucceed()
-                .country("US")
+                .country("LALA")
                 .taxRate(0.23);
     }
 }

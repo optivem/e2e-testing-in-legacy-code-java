@@ -20,22 +20,26 @@ public class BaseSystemTest {
         scenario = new ScenarioDsl(app);
     }
 
+    @AfterEach
+    void tearDown() {
+        Closer.close(app);
+    }
+
+    protected Environment getFixedEnvironment() {
+        return null;
+    }
+
     protected ExternalSystemMode getFixedExternalSystemMode() {
         return null;
     }
 
     private SystemDsl createSystemDsl() {
-        var externalSystemMode = getFixedExternalSystemMode();
+        var fixedEnvironment = getFixedEnvironment();
+        var fixedExternalSystemMode = getFixedExternalSystemMode();
 
-        if (externalSystemMode == null) {
-            return SystemDslFactory.create();
-        }
-
-        return SystemDslFactory.create(externalSystemMode);
-    }
-
-    @AfterEach
-    void tearDown() {
-        Closer.close(app);
+        var environment = PropertyLoader.getEnvironment(fixedEnvironment);
+        var externalSystemMode = PropertyLoader.getExternalSystemMode(fixedExternalSystemMode);
+        var configuration = SystemConfigurationLoader.load(environment, externalSystemMode);
+        return new SystemDsl(configuration);
     }
 }

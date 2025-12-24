@@ -21,17 +21,24 @@ public class GetTimeVerification extends ResponseVerification<GetTimeResponse, U
         return this;
     }
 
-    public GetTimeVerification timeIsAfter(Instant instant) {
+    public GetTimeVerification time(Instant expectedTime) {
         assertThat(response.getTime())
-                .withFailMessage("Expected time %s to be after %s", response.getTime(), instant)
-                .isAfter(instant);
+                .withFailMessage("Expected time %s to be equal to %s", response.getTime(), expectedTime)
+                .isEqualTo(expectedTime);
         return this;
     }
 
-    public GetTimeVerification timeIsBefore(Instant instant) {
+    public GetTimeVerification timeIsAfter(Instant time) {
         assertThat(response.getTime())
-                .withFailMessage("Expected time %s to be before %s", response.getTime(), instant)
-                .isBefore(instant);
+                .withFailMessage("Expected time %s to be after %s", response.getTime(), time)
+                .isAfter(time);
+        return this;
+    }
+
+    public GetTimeVerification timeIsBefore(Instant time) {
+        assertThat(response.getTime())
+                .withFailMessage("Expected time %s to be before %s", response.getTime(), time)
+                .isBefore(time);
         return this;
     }
 
@@ -41,5 +48,7 @@ public class GetTimeVerification extends ResponseVerification<GetTimeResponse, U
                 .isBetween(start, end);
         return this;
     }
+
+
 }
 
