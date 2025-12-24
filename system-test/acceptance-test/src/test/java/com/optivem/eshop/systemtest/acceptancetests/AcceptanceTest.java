@@ -12,23 +12,17 @@ import java.time.Instant;
 public class AcceptanceTest extends BaseSystemTest {
 
     @Override
-    protected Environment getFixedEnvironment() {
-        return Environment.LOCAL;
-    }
-
-    @Override
     protected ExternalSystemMode getFixedExternalSystemMode() {
         return ExternalSystemMode.STUB;
     }
 
     @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
+    @Channel({ ChannelType.UI, ChannelType.API })
     void shouldPlaceOrderWithCorrectOriginalPrice() {
         app.clock().returnsTime()
-                        .time(Instant.parse("2025-12-24T10:00:00Z"))
-                                .execute()
-                                        .shouldSucceed();
-
+                .time(Instant.parse("2025-12-24T17:01:00Z"))
+                .execute()
+                .shouldSucceed();
 
         app.erp().returnsProduct()
                 .sku("SKU-123")
@@ -37,21 +31,28 @@ public class AcceptanceTest extends BaseSystemTest {
                 .shouldSucceed();
 
         app.tax().returnsTaxRate()
-                        .country("AR")
-                                .taxRate(0.05)
+                .country("GORA")
+                .taxRate(0.05)
                 .execute()
                 .shouldSucceed();
+
+        app.tax().getTaxRate()
+                .country("GORA")
+                .execute()
+                .shouldSucceed()
+                .country("GORA")
+                .taxRate(0.05);
 
         app.shop().placeOrder().orderNumber("ORDER-1001")
                 .sku("SKU-123")
                 .quantity(5)
-                .country("AR")
+                .country("GORA")
                 .execute()
                 .shouldSucceed();
 
         app.shop().viewOrder().orderNumber("ORDER-1001").execute()
                 .shouldSucceed()
                 .originalPrice(100.00)
-                .discountAmount(0.15);
+                .discountRate(0.15);
     }
 }

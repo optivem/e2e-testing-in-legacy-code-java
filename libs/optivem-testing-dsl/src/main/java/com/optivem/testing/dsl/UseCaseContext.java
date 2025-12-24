@@ -49,6 +49,14 @@ public class UseCaseContext {
         return value;
     }
 
+    public String getParamValueOrLiteral(String alias) {
+        return switch (externalSystemMode) {
+            case STUB -> getParamValue(alias);
+            case REAL -> alias;
+            default -> throw new IllegalStateException("Unsupported external system mode: " + externalSystemMode);
+        };
+    }
+
     public void setResultEntry(String alias, String value) {
         if (resultMap.containsKey(alias)) {
             throw new IllegalStateException("Alias already exists: " + alias);

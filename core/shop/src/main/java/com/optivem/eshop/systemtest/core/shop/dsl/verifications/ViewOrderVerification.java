@@ -91,6 +91,20 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
         return status(OrderStatus.valueOf(expectedStatus));
     }
 
+
+    public ViewOrderVerification discountRate(BigDecimal expectedDiscountRate) {
+        var actualDiscountRate = response.getDiscountRate();
+        assertThat(actualDiscountRate)
+                .withFailMessage("Expected discount rate to be %s, but was %s", expectedDiscountRate, actualDiscountRate)
+                .isEqualByComparingTo(expectedDiscountRate);
+        return this;
+    }
+
+
+    public ViewOrderVerification discountRate(double expectedDiscountRate) {
+        return discountRate(BigDecimal.valueOf(expectedDiscountRate));
+    }
+
     public ViewOrderVerification discountRateGreaterThanOrEqualToZero() {
         var discountRate = response.getDiscountRate();
         assertThat(discountRate)
@@ -152,6 +166,5 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
                 .isGreaterThan(BigDecimal.ZERO);
         return this;
     }
-
 }
 

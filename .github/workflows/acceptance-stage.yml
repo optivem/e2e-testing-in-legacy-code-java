@@ -109,7 +109,8 @@ jobs:
         working-directory: system-test
 
       - name: Run Acceptance Tests
-        run: echo "Run Acceptance Tests"
+        run: ./gradlew :acceptance-test:test -Denvironment=acceptance
+        working-directory: system-test
 
       - name: Run External System Contract Tests
         run: ./gradlew :external-system-contract-test:test -Denvironment=acceptance

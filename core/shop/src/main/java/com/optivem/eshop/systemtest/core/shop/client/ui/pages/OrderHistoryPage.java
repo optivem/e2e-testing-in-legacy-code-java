@@ -72,35 +72,35 @@ public class OrderHistoryPage extends BasePage {
     }
 
     public BigDecimal getUnitPrice() {
-        return pageClient.readInputMoney(UNIT_PRICE_OUTPUT_SELECTOR);
+        return readInputMoney(UNIT_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getOriginalPrice() {
-        return pageClient.readInputMoney(ORIGINAL_PRICE_OUTPUT_SELECTOR);
+        return readInputMoney(ORIGINAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getDiscountRate() {
-        return pageClient.readInputPercentage(DISCOUNT_RATE_OUTPUT_SELECTOR);
+        return readInputPercentage(DISCOUNT_RATE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getDiscountAmount() {
-        return pageClient.readInputMoney(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
+        return readInputMoney(DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getSubtotalPrice() {
-        return pageClient.readInputMoney(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
+        return readInputMoney(SUBTOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTaxRate() {
-        return pageClient.readInputPercentage(TAX_RATE_OUTPUT_SELECTOR);
+        return readInputPercentage(TAX_RATE_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTaxAmount() {
-        return pageClient.readInputMoney(TAX_AMOUNT_OUTPUT_SELECTOR);
+        return readInputMoney(TAX_AMOUNT_OUTPUT_SELECTOR);
     }
 
     public BigDecimal getTotalPrice() {
-        return pageClient.readInputMoney(TOTAL_PRICE_OUTPUT_SELECTOR);
+        return readInputMoney(TOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     public OrderStatus getStatus() {
@@ -115,6 +115,15 @@ public class OrderHistoryPage extends BasePage {
 
     public boolean isCancelButtonHidden() {
         return pageClient.isHidden(CANCEL_ORDER_OUTPUT_SELECTOR);
+    }
+
+    private BigDecimal readInputMoney(String selector) {
+        return pageClient.readInputDecimal(selector, "$");
+    }
+
+    private BigDecimal readInputPercentage(String selector) {
+        var value = pageClient.readInputDecimal(selector, "%");
+        return value.divide(BigDecimal.valueOf(100));
     }
 }
 

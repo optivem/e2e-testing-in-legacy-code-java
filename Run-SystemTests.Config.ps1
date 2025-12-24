@@ -18,6 +18,14 @@ $Config = @{
             TestReportPath = "system-test\smoke-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
 
+        # Acceptance Tests
+        @{  Id = "acceptance-local-stub";
+            Name = "Acceptance Tests (Local - Stub)";
+            Command = "& .\gradlew.bat :acceptance-test:clean :acceptance-test:test -Denvironment=local";
+            Path = "system-test";
+            TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
+            TestInstallCommands = $null; },
+
         # External System Contract Tests
         @{  Id = "contract-local-stub";
             Name = "Contract Tests (Local - Stub)";

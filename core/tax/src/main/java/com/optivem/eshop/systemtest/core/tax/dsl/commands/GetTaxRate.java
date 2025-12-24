@@ -26,7 +26,7 @@ public class GetTaxRate extends BaseTaxCommand<GetTaxResponse, GetTaxVerificatio
 
     @Override
     public TaxUseCaseResult<GetTaxResponse, GetTaxVerification> execute() {
-        var country = getCountry();
+        var country = context.getParamValueOrLiteral(countryValueOrAlias);
 
         var request = GetTaxRequest.builder()
                 .country(country)
@@ -35,16 +35,6 @@ public class GetTaxRate extends BaseTaxCommand<GetTaxResponse, GetTaxVerificatio
         var result = driver.getTaxRate(request);
 
         return new TaxUseCaseResult<>(result, context, GetTaxVerification::new);
-    }
-
-    private String getCountry() {
-        if (context.getExternalSystemMode() == ExternalSystemMode.STUB) {
-            return context.getParamValue(countryValueOrAlias);
-        } else if (context.getExternalSystemMode() == ExternalSystemMode.REAL) {
-            return countryValueOrAlias;
-        } else {
-            throw new IllegalStateException("Unsupported external system mode: " + context.getExternalSystemMode());
-        }
     }
 }
 

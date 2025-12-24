@@ -70,15 +70,16 @@ public class PageClient {
         return Integer.parseInt(inputValue);
     }
 
-    public BigDecimal readInputMoney(String selector) {
+    public BigDecimal readInputDecimal(String selector) {
         var inputValue = readInputValue(selector);
-        inputValue = inputValue.replace("$", "");
         return new BigDecimal(inputValue);
     }
 
-    public BigDecimal readInputPercentage(String selector) {
+    public BigDecimal readInputDecimal(String selector, String... remove) {
         var inputValue = readInputValue(selector);
-        inputValue = inputValue.replace("%", "");
+        for (var ch : remove) {
+            inputValue = inputValue.replace(ch, "");
+        }
         return new BigDecimal(inputValue);
     }
 

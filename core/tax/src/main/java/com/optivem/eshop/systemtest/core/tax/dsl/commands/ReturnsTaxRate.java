@@ -37,7 +37,7 @@ public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidResponseVerificatio
 
     @Override
     public TaxUseCaseResult<Void, VoidResponseVerification<UseCaseContext>> execute() {
-        var country = getCountry();
+        var country = context.getParamValueOrLiteral(countryAlias);
 
         var request = ReturnsTaxRateRequest.builder()
                 .country(country)
@@ -47,16 +47,6 @@ public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidResponseVerificatio
         var result = driver.returnsTaxRate(request);
 
         return new TaxUseCaseResult<>(result, context, VoidResponseVerification::new);
-    }
-
-    private String getCountry() {
-        if (context.getExternalSystemMode() == ExternalSystemMode.STUB) {
-            return context.getParamValue(countryAlias);
-        } else if (context.getExternalSystemMode() == ExternalSystemMode.REAL) {
-            return countryAlias;
-        } else {
-            throw new IllegalStateException("Unsupported external system mode: " + context.getExternalSystemMode());
-        }
     }
 }
 

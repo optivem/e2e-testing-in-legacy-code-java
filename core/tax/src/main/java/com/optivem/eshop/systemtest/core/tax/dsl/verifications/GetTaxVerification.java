@@ -16,22 +16,12 @@ public class GetTaxVerification extends ResponseVerification<GetTaxResponse, Use
     }
 
     public GetTaxVerification country(String expectedCountryAlias) {
-        var expectedCountry = getExpectedCountry(expectedCountryAlias);
+        var expectedCountry = context.getParamValueOrLiteral(expectedCountryAlias);
         var actualCountry = response.getCountry();
         assertThat(actualCountry)
                 .withFailMessage("Expected country to be '%s', but was '%s'", expectedCountryAlias, actualCountry)
                 .isEqualTo(expectedCountry);
         return this;
-    }
-
-    private String getExpectedCountry(String expectedCountry) {
-        if (context.getExternalSystemMode() == ExternalSystemMode.STUB) {
-            return context.getParamValue(expectedCountry);
-        } else if (context.getExternalSystemMode() == ExternalSystemMode.REAL) {
-            return expectedCountry;
-        } else {
-            throw new IllegalStateException("Unsupported external system mode: " + context.getExternalSystemMode());
-        }
     }
 
     public GetTaxVerification countryFromParam(String countryParamAlias) {
