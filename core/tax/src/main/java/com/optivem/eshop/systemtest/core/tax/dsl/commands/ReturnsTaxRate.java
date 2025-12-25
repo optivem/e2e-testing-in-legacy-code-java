@@ -4,11 +4,10 @@ import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
 import com.optivem.eshop.systemtest.core.tax.driver.dtos.ReturnsTaxRateRequest;
 import com.optivem.eshop.systemtest.core.tax.dsl.commands.base.BaseTaxCommand;
 import com.optivem.eshop.systemtest.core.tax.dsl.commands.base.TaxUseCaseResult;
-import com.optivem.testing.dsl.ExternalSystemMode;
 import com.optivem.testing.dsl.UseCaseContext;
-import com.optivem.testing.dsl.VoidResponseVerification;
+import com.optivem.testing.dsl.VoidVerification;
 
-public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidResponseVerification<UseCaseContext>> {
+public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidVerification<UseCaseContext>> {
     private static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
     private static final double DEFAULT_TAX_RATE = 0.07;
 
@@ -36,7 +35,7 @@ public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidResponseVerificatio
     }
 
     @Override
-    public TaxUseCaseResult<Void, VoidResponseVerification<UseCaseContext>> execute() {
+    public TaxUseCaseResult<Void, VoidVerification<UseCaseContext>> execute() {
         var country = context.getParamValueOrLiteral(countryAlias);
 
         var request = ReturnsTaxRateRequest.builder()
@@ -46,7 +45,7 @@ public class ReturnsTaxRate extends BaseTaxCommand<Void, VoidResponseVerificatio
 
         var result = driver.returnsTaxRate(request);
 
-        return new TaxUseCaseResult<>(result, context, VoidResponseVerification::new);
+        return new TaxUseCaseResult<>(result, context, VoidVerification::new);
     }
 }
 

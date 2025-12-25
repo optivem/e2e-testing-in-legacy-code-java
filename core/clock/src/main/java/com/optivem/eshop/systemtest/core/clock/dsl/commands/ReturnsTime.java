@@ -1,16 +1,15 @@
 package com.optivem.eshop.systemtest.core.clock.dsl.commands;
 
 import com.optivem.eshop.systemtest.core.clock.driver.ClockDriver;
-import com.optivem.eshop.systemtest.core.clock.driver.ClockStubDriver;
 import com.optivem.eshop.systemtest.core.clock.driver.dtos.ReturnsTimeRequest;
 import com.optivem.eshop.systemtest.core.clock.dsl.commands.base.BaseClockCommand;
 import com.optivem.eshop.systemtest.core.clock.dsl.commands.base.ClockUseCaseResult;
 import com.optivem.testing.dsl.UseCaseContext;
-import com.optivem.testing.dsl.VoidResponseVerification;
+import com.optivem.testing.dsl.VoidVerification;
 
 import java.time.Instant;
 
-public class ReturnsTime extends BaseClockCommand<Void, VoidResponseVerification<UseCaseContext>> {
+public class ReturnsTime extends BaseClockCommand<Void, VoidVerification<UseCaseContext>> {
 
     private static final Instant DEFAULT_TIME = Instant.parse("2025-12-24T10:00:00Z");
 
@@ -27,7 +26,7 @@ public class ReturnsTime extends BaseClockCommand<Void, VoidResponseVerification
     }
 
     @Override
-    public ClockUseCaseResult<Void, VoidResponseVerification<UseCaseContext>> execute() {
+    public ClockUseCaseResult<Void, VoidVerification<UseCaseContext>> execute() {
 
         var request = ReturnsTimeRequest.builder()
             .time(time)
@@ -38,7 +37,7 @@ public class ReturnsTime extends BaseClockCommand<Void, VoidResponseVerification
         return new ClockUseCaseResult<>(
             result,
             context,
-            VoidResponseVerification::new
+            VoidVerification::new
         );
     }
 }
