@@ -16,10 +16,14 @@ repositories {
 }
 
 dependencies {
-    api project(':dsl:system')
-    api project(':dsl:gherkin')
+    api project(':core:shop')
+    api project(':core:erp')
+    api project(':core:tax')
+    api project(':core:clock')
+
+    api project(':libs:optivem-lang')
+    api project(':libs:optivem-testing-dsl')
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
 }
-

@@ -17,7 +17,6 @@ repositories {
 
 dependencies {
     api project(':dsl:system')
-    api project(':dsl:gherkin')
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'

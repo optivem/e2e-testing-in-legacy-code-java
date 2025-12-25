@@ -10,6 +10,8 @@ include 'libs:optivem-testing-dsl'
 include 'libs:optivem-wiremock'
 
 include 'dsl'
+include 'dsl:system'
+include 'dsl:gherkin'
 
 include 'core'
 include 'core:clock'
