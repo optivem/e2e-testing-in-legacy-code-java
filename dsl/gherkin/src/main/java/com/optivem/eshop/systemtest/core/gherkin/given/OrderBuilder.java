@@ -1,11 +1,13 @@
 package com.optivem.eshop.systemtest.core.gherkin.given;
 
+import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 public class OrderBuilder {
     private final GivenClause givenClause;
     private String orderNumber;
     private String sku;
+    private int quantity;
 
     public OrderBuilder(GivenClause givenClause) {
         this.givenClause = givenClause;
@@ -18,6 +20,11 @@ public class OrderBuilder {
 
     public OrderBuilder withSku(String sku) {
         this.sku = sku;
+        return this;
+    }
+
+    public OrderBuilder withQuantity(int quantity) {
+        this.quantity = quantity;
         return this;
     }
 
@@ -36,4 +43,6 @@ public class OrderBuilder {
     String getSku() {
         return sku;
     }
+
+
 }

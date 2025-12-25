@@ -22,6 +22,7 @@ public class ViewOrderPositiveTest extends BaseE2eTest {
                 .and().order()
                 .withOrderNumber(ORDER_NUMBER)
                 .withSku(SKU)
+                .withQuantity(4)
                 .when()
                 .viewOrder()
                 .withOrderNumber(ORDER_NUMBER)
