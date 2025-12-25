@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.smoketests.v3;
+package com.optivem.eshop.systemtest.smoketests.v3.system;
 
 import com.optivem.eshop.systemtest.base.v3.BaseDriverTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,16 +6,17 @@ import org.junit.jupiter.api.Test;
 
 import static com.optivem.testing.assertions.ResultAssert.assertThatResult;
 
-public class ErpSmokeTest extends BaseDriverTest {
+public abstract class ShopBaseSmokeTest extends BaseDriverTest {
     @BeforeEach
     void setUp() {
-        setUpExternalDrivers();
+        setShopApiDriver();
     }
 
+    protected abstract void setShopApiDriver();
+
     @Test
-    void shouldBeAbleToGoToErp() {
-        var result = erpDriver.goToErp();
+    void shouldBeAbleToGoToShop() {
+        var result = shopDriver.goToShop();
         assertThatResult(result).isSuccess();
     }
 }
-

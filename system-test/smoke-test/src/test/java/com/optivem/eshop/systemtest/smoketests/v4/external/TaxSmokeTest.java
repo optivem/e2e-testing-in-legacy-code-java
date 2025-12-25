@@ -1,14 +1,14 @@
-package com.optivem.eshop.systemtest.smoketests.v4;
+package com.optivem.eshop.systemtest.smoketests.v4.external;
 
 import com.optivem.eshop.systemtest.base.v4.BaseChannelDriverTest;
 import org.junit.jupiter.api.Test;
 
 import static com.optivem.testing.assertions.ResultAssert.assertThatResult;
 
-public class ErpSmokeTest extends BaseChannelDriverTest {
+public class TaxSmokeTest extends BaseChannelDriverTest {
     @Test
-    void shouldBeAbleToGoToErp() {
-        var result = erpDriver.goToErp();
+    void shouldBeAbleToGoToTax() {
+        var result = taxDriver.goToTax();
         assertThatResult(result).isSuccess();
     }
 }

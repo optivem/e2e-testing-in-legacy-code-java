@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.smoketests.v5;
+package com.optivem.eshop.systemtest.smoketests.v5.system;
 
 import com.optivem.eshop.systemtest.base.v5.BaseSystemTest;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
