@@ -44,5 +44,7 @@ public class OrderBuilder {
         return sku;
     }
 
-
+    int getQuantity() {
+        return quantity;
+    }
 }

@@ -46,6 +46,7 @@ public class GivenClause {
             app.shop().placeOrder()
                     .orderNumber(order.getOrderNumber())
                     .sku(order.getSku())
+                    .quantity(order.getQuantity())
                     .execute()
                     .shouldSucceed();
         }
