@@ -11,18 +11,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(ChannelExtension.class)
 public class BaseScenarioDslTest extends BaseConfigurableTest {
-    protected SystemDsl app;
     protected ScenarioDsl scenario;
 
     @BeforeEach
     void setUp() {
         var configuration = loadConfiguration();
-        app = new SystemDsl(configuration);
+        var app = new SystemDsl(configuration);
         scenario = new ScenarioDsl(app);
     }
 
     @AfterEach
     void tearDown() {
-        Closer.close(app);
+        Closer.close(scenario);
     }
 }
