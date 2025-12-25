@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.smoketests;
 
-import com.optivem.eshop.systemtest.BaseSystemTest;
+import com.optivem.eshop.systemtest.base.BaseSystemTest;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.testing.channels.Channel;
 import org.junit.jupiter.api.Test;

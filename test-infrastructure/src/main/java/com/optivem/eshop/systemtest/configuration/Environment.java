@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest;
+package com.optivem.eshop.systemtest.configuration;
 
 public enum Environment {
     LOCAL,

@@ -1,5 +1,8 @@
-package com.optivem.eshop.systemtest;
+package com.optivem.eshop.systemtest.base;
 
+import com.optivem.eshop.systemtest.configuration.Environment;
+import com.optivem.eshop.systemtest.configuration.PropertyLoader;
+import com.optivem.eshop.systemtest.configuration.SystemConfigurationLoader;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.lang.Closer;

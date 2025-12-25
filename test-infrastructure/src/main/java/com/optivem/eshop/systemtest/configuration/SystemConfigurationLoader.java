@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest;
+package com.optivem.eshop.systemtest.configuration;
 
 import com.optivem.eshop.systemtest.core.SystemConfiguration;
 import com.optivem.testing.dsl.ExternalSystemMode;

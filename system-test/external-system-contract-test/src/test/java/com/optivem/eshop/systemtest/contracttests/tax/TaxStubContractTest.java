@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.contracttests.tax;
 
-import com.optivem.eshop.systemtest.Environment;
+import com.optivem.eshop.systemtest.configuration.Environment;
 import com.optivem.testing.dsl.ExternalSystemMode;
 import org.junit.jupiter.api.Test;
 
