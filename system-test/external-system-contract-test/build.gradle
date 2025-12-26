@@ -42,9 +42,14 @@ tasks.named('test') {
     systemProperty 'environment', System.getProperty('environment')
     systemProperty 'externalSystemMode', System.getProperty('externalSystemMode')
 
+    // Disable JUnit parallel execution for isolated tests
+    def includeTags = System.getProperty('includeTags')
+    if (includeTags?.contains('isolated')) {
+        systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
+    }
+
     // Enable parallel test execution at Gradle level
     // But run isolated tests sequentially to avoid interference
-    def includeTags = System.getProperty('includeTags')
     if (includeTags?.contains('isolated')) {
         maxParallelForks = 1
     } else {

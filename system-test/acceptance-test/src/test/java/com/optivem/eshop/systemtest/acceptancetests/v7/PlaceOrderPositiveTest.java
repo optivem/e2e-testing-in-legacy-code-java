@@ -101,6 +101,16 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     @Time
+    void discountRateShouldBe0percentWhenTimeBefore5pm() {
+        scenario
+                .given().clock().withTime("2025-12-24T10:02:00Z")
+                .when().placeOrder()
+                .then().order().hasDiscountRate(0);
+    }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    @Time
     void discountRateShouldBe15percentWhenTimeAfter5pm() {
         scenario
                 .given().clock().withTime("2025-12-24T17:01:00Z")
@@ -108,14 +118,6 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .then().order().hasDiscountRate(0.15);
     }
 
-    @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
-    @Time
-    void discountRateShouldBe0percentWhenTimeBefore5pm() {
-        scenario
-                .given().clock().withTime("2025-12-24T10:02:00Z")
-                .when().placeOrder()
-                .then().order().hasDiscountRate(0);
-    }
+
 }
 
