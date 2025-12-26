@@ -111,7 +111,10 @@ jobs:
         run: ./gradlew clean build -x test
 
       - name: Run Acceptance Tests
-        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DexcludeTags=isolated
+
+      - name: Run Acceptance Tests (Isolated)
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DincludeTags=isolated
 
       - name: Run External System Contract Tests
         run: ./gradlew :system-test:external-system-contract-test:test -Denvironment=acceptance

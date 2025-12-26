@@ -28,7 +28,13 @@ $Config = @{
         # Acceptance Tests
         @{  Id = "acceptance-local-stub";
             Name = "Acceptance Tests (Local - Stub)";
-            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DexcludeTags=isolated";
+            Path = ".";
+            TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
+            TestInstallCommands = $null; },
+        @{  Id = "acceptance-local-stub-isolated";
+            Name = "Acceptance Tests - Isolated (Local - Stub)";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DincludeTags=isolated";
             Path = ".";
             TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },

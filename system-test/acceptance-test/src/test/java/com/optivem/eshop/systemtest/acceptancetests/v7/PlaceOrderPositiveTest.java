@@ -7,8 +7,6 @@ import com.optivem.testing.channels.DataSource;
 import com.optivem.testing.annotations.Time;
 import org.junit.jupiter.api.TestTemplate;
 
-import java.time.Instant;
-
 public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
 
     @TestTemplate
@@ -108,6 +106,16 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .given().clock().withTime("2025-12-24T17:01:00Z")
                 .when().placeOrder()
                 .then().order().hasDiscountRate(0.15);
+    }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    @Time
+    void discountRateShouldBe0percentWhenTimeBefore5pm() {
+        scenario
+                .given().clock().withTime("2025-12-24T10:02:00Z")
+                .when().placeOrder()
+                .then().order().hasDiscountRate(0);
     }
 }
 
