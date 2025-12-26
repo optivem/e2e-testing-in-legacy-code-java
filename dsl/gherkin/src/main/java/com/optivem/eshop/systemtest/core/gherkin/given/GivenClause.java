@@ -10,15 +10,20 @@ import java.util.List;
 public class GivenClause {
     private final SystemDsl app;
     private final ScenarioDsl scenario;
-    private final List<ProductBuilder> products = new ArrayList<>();
-    private final List<OrderBuilder> orders = new ArrayList<>();
-    private final List<OrderBuilder> cancelledOrders = new ArrayList<>();
-    private final List<ClockBuilder> clocks = new ArrayList<>();
-    private final List<TaxRateBuilder> taxRates = new ArrayList<>();
+    private final List<ProductBuilder> products;
+    private final List<OrderBuilder> orders;
+    private final List<OrderBuilder> cancelledOrders;
+    private final List<ClockBuilder> clocks;
+    private final List<TaxRateBuilder> taxRates;
 
     public GivenClause(SystemDsl app, ScenarioDsl scenario) {
         this.app = app;
         this.scenario = scenario;
+        this.products = new ArrayList<>();
+        this.orders = new ArrayList<>();
+        this.cancelledOrders = new ArrayList<>();
+        this.clocks = new ArrayList<>();
+        this.taxRates = new ArrayList<>();
     }
 
     public ProductBuilder product() {
