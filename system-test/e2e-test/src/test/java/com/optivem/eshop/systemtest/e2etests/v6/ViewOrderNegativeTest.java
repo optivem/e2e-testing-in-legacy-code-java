@@ -25,7 +25,6 @@ public class ViewOrderNegativeTest extends BaseE2eTest {
     void shouldNotBeAbleToViewNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         scenario
                 .given()
-                .noProducts()
                 .when()
                 .viewOrder()
                 .withOrderNumber(orderNumber)

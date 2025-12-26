@@ -41,9 +41,5 @@ public class TaxRateBuilder {
                 .execute()
                 .shouldSucceed();
     }
-
-    String getCountry() {
-        return country;
-    }
 }
 

@@ -24,8 +24,6 @@ public class ViewOrderNegativeTest extends BaseAcceptanceTest {
     @MethodSource("provideNonExistentOrderValues")
     void shouldNotBeAbleToViewNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .viewOrder()
                 .withOrderNumber(orderNumber)

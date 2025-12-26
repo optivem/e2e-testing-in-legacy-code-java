@@ -73,8 +73,4 @@ public class OrderBuilder {
                     .shouldSucceed();
         }
     }
-
-    String getCountry() {
-        return country;
-    }
 }

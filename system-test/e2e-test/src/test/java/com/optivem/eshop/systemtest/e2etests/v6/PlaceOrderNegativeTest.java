@@ -34,8 +34,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithNonExistentSku() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withSku("NON-EXISTENT-SKU-12345")
@@ -49,8 +47,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithNegativeQuantity() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withQuantity(-10)
@@ -64,8 +60,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldRejectOrderWithZeroQuantity() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withSku("ANOTHER-SKU-67890")
@@ -81,8 +75,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @ArgumentsSource(EmptyArgumentsProvider.class)
     void shouldRejectOrderWithEmptySku(String sku) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withSku(sku)
@@ -97,8 +89,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @ArgumentsSource(EmptyArgumentsProvider.class)
     void shouldRejectOrderWithEmptyQuantity(String emptyQuantity) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withQuantity(emptyQuantity)
@@ -113,8 +103,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @ValueSource(strings = {"3.5", "lala"})
     void shouldRejectOrderWithNonIntegerQuantity(String nonIntegerQuantity) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withQuantity(nonIntegerQuantity)
@@ -129,8 +117,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @ArgumentsSource(EmptyArgumentsProvider.class)
     void shouldRejectOrderWithEmptyCountry(String emptyCountry) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withCountry(emptyCountry)
@@ -161,8 +147,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.API})
     void shouldRejectOrderWithNullQuantity() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withQuantity((String) null)
@@ -176,8 +160,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.API})
     void shouldRejectOrderWithNullSku() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withSku(null)
@@ -191,8 +173,6 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
     @Channel({ChannelType.API})
     void shouldRejectOrderWithNullCountry() {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .placeOrder()
                 .withCountry(null)

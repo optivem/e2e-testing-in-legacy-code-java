@@ -18,8 +18,6 @@ public class CancelOrderNegativeTest extends BaseE2eTest {
     @DataSource({"NON-EXISTENT-ORDER-77777", "Order NON-EXISTENT-ORDER-77777 does not exist."})
     void shouldNotCancelNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .cancelOrder()
                 .withOrderNumber(orderNumber)
@@ -37,9 +35,10 @@ public class CancelOrderNegativeTest extends BaseE2eTest {
                 .product()
                 .withSku(SKU)
                 .and()
-                .cancelledOrder()
+                .order()
                 .withOrderNumber(ORDER_NUMBER)
                 .withSku(SKU)
+                .cancelled()
                 .when()
                 .cancelOrder()
                 .withOrderNumber(ORDER_NUMBER)

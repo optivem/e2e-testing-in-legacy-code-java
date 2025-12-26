@@ -48,11 +48,6 @@ public class GivenClause {
         return taxRateBuilder;
     }
 
-    public EmptyGivenClause noProducts() {
-        // No products to create, return clause that allows .when()
-        return new EmptyGivenClause(app, scenario);
-    }
-
     public WhenClause when() {
         for (var clock : clocks) {
             clock.execute(app);

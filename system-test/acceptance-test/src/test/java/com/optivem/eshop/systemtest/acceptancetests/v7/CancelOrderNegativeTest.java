@@ -18,8 +18,6 @@ public class CancelOrderNegativeTest extends BaseAcceptanceTest {
     @DataSource({"NON-EXISTENT-ORDER-77777", "Order NON-EXISTENT-ORDER-77777 does not exist."})
     void shouldNotCancelNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         scenario
-                .given()
-                .noProducts()
                 .when()
                 .cancelOrder()
                 .withOrderNumber(orderNumber)
