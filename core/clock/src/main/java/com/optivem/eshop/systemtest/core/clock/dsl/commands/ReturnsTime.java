@@ -25,6 +25,10 @@ public class ReturnsTime extends BaseClockCommand<Void, VoidVerification<UseCase
         return this;
     }
 
+    public ReturnsTime time(String time) {
+        return time(Instant.parse(time));
+    }
+
     @Override
     public ClockUseCaseResult<Void, VoidVerification<UseCaseContext>> execute() {
 

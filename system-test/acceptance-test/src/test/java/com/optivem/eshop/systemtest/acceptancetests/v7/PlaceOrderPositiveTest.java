@@ -105,7 +105,7 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     @Time
     void discountRateShouldBe15percentWhenTimeAfter5pm() {
         scenario
-                .given().clock().withTime(Instant.parse("2025-12-24T17:01:00Z"))
+                .given().clock().withTime("2025-12-24T17:01:00Z")
                 .when().placeOrder()
                 .then().order().hasDiscountRate(0.15);
     }

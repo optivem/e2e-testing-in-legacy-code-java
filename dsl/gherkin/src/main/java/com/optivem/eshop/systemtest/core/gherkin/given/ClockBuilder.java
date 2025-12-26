@@ -4,18 +4,16 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
-import java.time.Instant;
-
 public class ClockBuilder {
     private final GivenClause givenClause;
-    private Instant time;
+    private String time;
 
     public ClockBuilder(GivenClause givenClause) {
         this.givenClause = givenClause;
         withTime(GherkinDefaults.DEFAULT_TIME);
     }
 
-    public ClockBuilder withTime(Instant time) {
+    public ClockBuilder withTime(String time) {
         this.time = time;
         return this;
     }

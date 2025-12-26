@@ -12,7 +12,7 @@ public final class GherkinDefaults {
     
     // Product defaults
     public static final String DEFAULT_SKU = "DEFAULT-SKU";
-    public static final double DEFAULT_UNIT_PRICE = 20.00;
+    public static final String DEFAULT_UNIT_PRICE = "20.00";
     
     // Order defaults
     public static final String DEFAULT_ORDER_NUMBER = "ORD-001";
@@ -21,7 +21,7 @@ public final class GherkinDefaults {
     public static final OrderStatus DEFAULT_ORDER_STATUS = OrderStatus.PLACED;
 
     // Clock defaults
-    public static final Instant DEFAULT_TIME = Instant.parse("2025-12-24T10:00:00Z");
+    public static final String DEFAULT_TIME = "2025-12-24T10:00:00Z";
     
     // Tax defaults
     public static final String DEFAULT_TAX_RATE = "0.07";

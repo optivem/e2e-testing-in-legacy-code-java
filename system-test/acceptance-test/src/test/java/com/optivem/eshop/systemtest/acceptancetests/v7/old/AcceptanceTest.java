@@ -15,7 +15,7 @@ public class AcceptanceTest extends BaseAcceptanceTest {
         scenario
                 .given()
                 .clock()
-                .withTime(Instant.parse("2025-12-24T17:01:00Z"))
+                .withTime("2025-12-24T17:01:00Z")
                 .and()
                 .product()
                 .withSku("SKU-123")
