@@ -23,13 +23,13 @@ public class ThenClause {
         this.result = result;
     }
 
-    public SuccessVerificationBuilder shouldSucceed() {
+    public SuccessVerificationBuilder<?> shouldSucceed() {
         if (result == null) {
             throw new IllegalStateException("Cannot verify success: no operation was executed");
         }
         scenario.markAsExecuted();
         var successVerification = result.shouldSucceed();
-        return new SuccessVerificationBuilder(this, successVerification);
+        return new SuccessVerificationBuilder<>(this, successVerification);
     }
 
     public FailureVerificationBuilder shouldFail() {

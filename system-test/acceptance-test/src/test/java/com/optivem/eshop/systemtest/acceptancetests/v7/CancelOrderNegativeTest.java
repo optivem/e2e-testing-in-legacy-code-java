@@ -7,9 +7,6 @@ import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.DataSource;
 import org.junit.jupiter.api.TestTemplate;
 
-import static com.optivem.eshop.systemtest.acceptancetests.commons.constants.Defaults.ORDER_NUMBER;
-import static com.optivem.eshop.systemtest.acceptancetests.commons.constants.Defaults.SKU;
-
 public class CancelOrderNegativeTest extends BaseAcceptanceTest {
 
     @TestTemplate
