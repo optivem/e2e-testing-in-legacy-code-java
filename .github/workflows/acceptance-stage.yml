@@ -106,16 +106,12 @@ jobs:
 
       - name: Make Gradle Wrapper executable
         run: chmod +x ./gradlew
-        working-directory: system-test
 
       - name: Run Acceptance Tests
-        run: ./gradlew :acceptance-test:test -Denvironment=acceptance
-        working-directory: system-test
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance
 
       - name: Run External System Contract Tests
-        run: ./gradlew :external-system-contract-test:test -Denvironment=acceptance
-        working-directory: system-test
+        run: ./gradlew :system-test:external-system-contract-test:test -Denvironment=acceptance
 
       - name: Run E2E Tests
-        run: ./gradlew :e2e-test:test -Denvironment=acceptance
-        working-directory: system-test
+        run: ./gradlew :system-test:e2e-test:test -Denvironment=acceptance

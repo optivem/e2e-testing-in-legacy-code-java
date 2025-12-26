@@ -123,11 +123,9 @@ runs:
     - name: Prepare for Smoke Tests - Make Gradle Wrapper executable
       run: chmod +x ./gradlew
       shell: bash
-      working-directory: system-test
 
     - name: Run Smoke Tests
-      run: ./gradlew :smoke-test:test -Denvironment=${{ inputs.environment }} -DexternalSystemMode=${{ inputs.external-system-mode }}
+      run: ./gradlew :system-test:smoke-test:test -Denvironment=${{ inputs.environment }} -DexternalSystemMode=${{ inputs.external-system-mode }}
       shell: bash
-      working-directory: system-test
 
 
