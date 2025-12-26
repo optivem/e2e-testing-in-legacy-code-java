@@ -1,6 +1,6 @@
 package com.optivem.testing.time;
 
-import com.optivem.testing.isolation.Isolated;
+import com.optivem.testing.annotations.Isolated;
 import org.junit.jupiter.api.Tag;
 
 import java.lang.annotation.ElementType;

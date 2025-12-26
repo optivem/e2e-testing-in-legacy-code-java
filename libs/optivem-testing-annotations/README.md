@@ -1,8 +1,12 @@
-# Isolated Test Annotation
+# Testing Annotations
+
+Common annotations for marking test characteristics and requirements.
+
+## Annotations
+
+### @Isolated
 
 The `@Isolated` annotation marks tests that require isolation from other tests due to side effects, shared state modifications, or environmental dependencies.
-
-## Use Cases
 
 - **Destructive operations**: Tests that delete all orders, clear databases, etc.
 - **Time-dependent tests**: Tests using `@Time` annotation

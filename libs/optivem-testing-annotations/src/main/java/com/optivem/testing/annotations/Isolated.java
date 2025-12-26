@@ -1,4 +1,4 @@
-package com.optivem.testing.isolation;
+package com.optivem.testing.annotations;
 
 import org.junit.jupiter.api.Tag;
 
