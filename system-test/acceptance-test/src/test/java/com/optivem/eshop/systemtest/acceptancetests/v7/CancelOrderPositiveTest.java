@@ -18,13 +18,13 @@ public class CancelOrderPositiveTest extends BaseAcceptanceTest {
                 .then().shouldSucceed();
     }
 
-    // @TestTemplate
-    // @Channel({ChannelType.UI, ChannelType.API})
-    // void shouldHaveCancelledStatusWhen() {
-    //     scenario
-    //             .given().order()
-    //             .when().cancelOrder()
-    //             .then().order().hasStatus(OrderStatus.CANCELLED);
-    // }
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    void shouldHaveCancelledStatusWhenCancelled() {
+        scenario
+                .given().order()
+                .when().cancelOrder()
+                .then().order().hasStatus(OrderStatus.CANCELLED);
+    }
 }
 
