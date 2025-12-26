@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.gherkin.given;
 
+import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 import java.time.Instant;
@@ -25,8 +26,12 @@ public class ClockBuilder {
         return givenClause.when();
     }
 
-    Instant getTime() {
-        return time;
+    void execute(SystemDsl app) {
+        var clockSetup = app.clock().returnsTime();
+        if (this.time != null) {
+            clockSetup.time(this.time);
+        }
+        clockSetup.execute().shouldSucceed();
     }
 }
 

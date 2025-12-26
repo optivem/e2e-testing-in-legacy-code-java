@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.gherkin.given;
 
+import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 public class TaxRateBuilder {
@@ -29,12 +30,16 @@ public class TaxRateBuilder {
         return givenClause.when();
     }
 
-    String getCountry() {
-        return country;
+    void execute(SystemDsl app) {
+        app.tax().returnsTaxRate()
+                .country(this.country)
+                .taxRate(this.taxRate)
+                .execute()
+                .shouldSucceed();
     }
 
-    double getTaxRate() {
-        return taxRate;
+    String getCountry() {
+        return country;
     }
 }
 

@@ -71,19 +71,12 @@ public class GivenClause {
         }
         
         for (var clock : clocks) {
-            app.clock().returnsTime()
-                    .time(clock.getTime())
-                    .execute()
-                    .shouldSucceed();
+            clock.execute(app);
         }
 
         // Execute all product creations
         for (var product : products) {
-            app.erp().returnsProduct()
-                    .sku(product.getSku())
-                    .unitPrice(product.getUnitPrice())
-                    .execute()
-                    .shouldSucceed();
+            product.execute(app);
         }
 
         var countriesInOrders = allOrders.stream()
@@ -93,11 +86,7 @@ public class GivenClause {
 
         // Execute all tax rate setups
         for (var taxRate : taxRates) {
-            app.tax().returnsTaxRate()
-                    .country(taxRate.getCountry())
-                    .taxRate(taxRate.getTaxRate())
-                    .execute()
-                    .shouldSucceed();
+            taxRate.execute(app);
         }
 
         // Ensure tax rates are set up for all countries used in orders
@@ -118,29 +107,12 @@ public class GivenClause {
 
         // Execute all order placements
         for (var order : orders) {
-            app.shop().placeOrder()
-                    .orderNumber(order.getOrderNumber())
-                    .sku(order.getSku())
-                    .quantity(order.getQuantity())
-                    .country(order.getCountry())
-                    .execute()
-                    .shouldSucceed();
+            order.execute(app);
         }
 
         // Execute all cancelled order placements and cancellations
         for (var order : cancelledOrders) {
-            app.shop().placeOrder()
-                    .orderNumber(order.getOrderNumber())
-                    .sku(order.getSku())
-                    .quantity(order.getQuantity())
-                    .country(order.getCountry())
-                    .execute()
-                    .shouldSucceed();
-
-            app.shop().cancelOrder()
-                    .orderNumber(order.getOrderNumber())
-                    .execute()
-                    .shouldSucceed();
+            order.executeAndCancel(app);
         }
 
         return new WhenClause(app, scenario);

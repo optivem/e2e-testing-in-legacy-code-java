@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.gherkin.given;
 
+import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
@@ -42,16 +43,22 @@ public class OrderBuilder {
         return givenClause.when();
     }
 
-    String getOrderNumber() {
-        return orderNumber;
+    void execute(SystemDsl app) {
+        app.shop().placeOrder()
+                .orderNumber(this.orderNumber)
+                .sku(this.sku)
+                .quantity(this.quantity)
+                .country(this.country)
+                .execute()
+                .shouldSucceed();
     }
 
-    String getSku() {
-        return sku;
-    }
-
-    int getQuantity() {
-        return quantity;
+    void executeAndCancel(SystemDsl app) {
+        execute(app);
+        app.shop().cancelOrder()
+                .orderNumber(this.orderNumber)
+                .execute()
+                .shouldSucceed();
     }
 
     String getCountry() {

@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.gherkin.given;
 
+import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 public class ProductBuilder {
@@ -34,11 +35,11 @@ public class ProductBuilder {
         return givenClause.when();
     }
 
-    String getSku() {
-        return sku;
-    }
-
-    double getUnitPrice() {
-        return unitPrice;
+    void execute(SystemDsl app) {
+        app.erp().returnsProduct()
+                .sku(this.sku)
+                .unitPrice(this.unitPrice)
+                .execute()
+                .shouldSucceed();
     }
 }
