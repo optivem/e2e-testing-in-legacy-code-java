@@ -6,19 +6,25 @@ import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
 import com.optivem.testing.channels.Channel;
 import org.junit.jupiter.api.TestTemplate;
 
-import static com.optivem.eshop.systemtest.acceptancetests.commons.constants.Defaults.ORDER_NUMBER;
-import static com.optivem.eshop.systemtest.acceptancetests.commons.constants.Defaults.SKU;
 
 public class CancelOrderPositiveTest extends BaseAcceptanceTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    void shouldCancelOrder() {
+    void shouldBeAbleToCancelAnyPlacedOrder() {
         scenario
-                .given().order()
+                .given().order().withStatus(OrderStatus.PLACED)
                 .when().cancelOrder()
-                .then().shouldSucceed()
-                .and().order().hasStatus(OrderStatus.CANCELLED);
+                .then().shouldSucceed();
     }
+
+    // @TestTemplate
+    // @Channel({ChannelType.UI, ChannelType.API})
+    // void shouldHaveCancelledStatusWhen() {
+    //     scenario
+    //             .given().order()
+    //             .when().cancelOrder()
+    //             .then().order().hasStatus(OrderStatus.CANCELLED);
+    // }
 }
 

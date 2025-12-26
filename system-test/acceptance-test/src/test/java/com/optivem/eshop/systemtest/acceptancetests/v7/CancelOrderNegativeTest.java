@@ -2,6 +2,7 @@ package com.optivem.eshop.systemtest.acceptancetests.v7;
 
 import com.optivem.eshop.systemtest.acceptancetests.v7.base.BaseAcceptanceTest;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
+import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.DataSource;
 import org.junit.jupiter.api.TestTemplate;
@@ -26,7 +27,7 @@ public class CancelOrderNegativeTest extends BaseAcceptanceTest {
     @Channel({ChannelType.API})
     void shouldNotCancelAlreadyCancelledOrder() {
         scenario
-                .given().order().cancelled()
+                .given().order().withStatus(OrderStatus.CANCELLED)
                 .when().cancelOrder()
                 .then().shouldFail().errorMessage("Order has already been cancelled");
     }

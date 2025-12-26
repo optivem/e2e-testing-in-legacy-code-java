@@ -2,6 +2,8 @@ package com.optivem.eshop.systemtest.core.gherkin;
 
 import java.time.Instant;
 
+import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
+
 /**
  * Default values for Gherkin test builders.
  * These defaults are used when test data is not explicitly specified.
@@ -16,7 +18,8 @@ public final class GherkinDefaults {
     public static final String DEFAULT_ORDER_NUMBER = "ORD-001";
     public static final String DEFAULT_QUANTITY = "1";
     public static final String DEFAULT_COUNTRY = "US";
-    
+    public static final OrderStatus DEFAULT_ORDER_STATUS = OrderStatus.PLACED;
+
     // Clock defaults
     public static final Instant DEFAULT_TIME = Instant.parse("2025-12-24T10:00:00Z");
     

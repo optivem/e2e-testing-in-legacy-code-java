@@ -2,6 +2,7 @@ package com.optivem.eshop.systemtest.core.gherkin.given;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
+import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
 
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
@@ -12,16 +13,16 @@ public class OrderBuilder {
     private String sku;
     private String quantity;
     private String country;
-    private boolean isCancelled;
+    private OrderStatus status;
 
     public OrderBuilder(GivenClause givenClause) {
         this.givenClause = givenClause;
-        this.isCancelled = false;
 
         withOrderNumber(DEFAULT_ORDER_NUMBER);
         withSku(DEFAULT_SKU);
         withQuantity(DEFAULT_QUANTITY);
         withCountry(DEFAULT_COUNTRY);
+        withStatus(DEFAULT_ORDER_STATUS);
     }
 
     public OrderBuilder withOrderNumber(String orderNumber) {
@@ -48,8 +49,8 @@ public class OrderBuilder {
         return this;
     }
 
-    public OrderBuilder cancelled() {
-        isCancelled = true;
+    public OrderBuilder withStatus(OrderStatus status) {
+        this.status = status;
         return this;
     }
 
@@ -62,17 +63,18 @@ public class OrderBuilder {
     }
 
     void execute(SystemDsl app) {
+
         app.shop().placeOrder()
-                .orderNumber(this.orderNumber)
-                .sku(this.sku)
-                .quantity(this.quantity)
-                .country(this.country)
+                .orderNumber(orderNumber)
+                .sku(sku)
+                .quantity(quantity)
+                .country(country)
                 .execute()
                 .shouldSucceed();
 
-        if(isCancelled) {
+        if(status == OrderStatus.CANCELLED) {
             app.shop().cancelOrder()
-                    .orderNumber(this.orderNumber)
+                    .orderNumber(orderNumber)
                     .execute()
                     .shouldSucceed();
         }
