@@ -45,8 +45,4 @@ public class ThenClause {
     public OrderVerificationBuilder order() {
         return order(this.orderNumber != null ? this.orderNumber : DEFAULT_ORDER_NUMBER);
     }
-
-    ThenClause withoutResult() {
-        return new ThenClause(app, scenario, orderNumber);
-    }
 }
