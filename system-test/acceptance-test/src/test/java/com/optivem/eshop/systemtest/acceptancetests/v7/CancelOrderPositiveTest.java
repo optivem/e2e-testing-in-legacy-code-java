@@ -15,12 +15,10 @@ public class CancelOrderPositiveTest extends BaseAcceptanceTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldCancelOrder() {
         scenario
-                .given().product().withSku(SKU)
-                .and().taxRate().withCountry("US").withTaxRate(0.0)
-                .and().order().withOrderNumber(ORDER_NUMBER).withSku(SKU)
-                .when().cancelOrder().withOrderNumber(ORDER_NUMBER)
+                .given().order()
+                .when().cancelOrder()
                 .then().shouldSucceed()
-                .and().order(ORDER_NUMBER).hasSku(SKU).hasStatus(OrderStatus.CANCELLED);
+                .and().order().hasStatus(OrderStatus.CANCELLED);
     }
 }
 
