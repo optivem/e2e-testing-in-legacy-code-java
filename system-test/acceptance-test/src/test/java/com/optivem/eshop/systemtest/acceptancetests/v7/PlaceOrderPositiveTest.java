@@ -15,8 +15,7 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldCalculateOriginalPrice() {
         scenario
-                .given()
-                .product().withSku("ABC").withUnitPrice(20.00)
+                .given().product().withSku("ABC").withUnitPrice(20.00)
                 .and().taxRate().withCountry("US").withTaxRate(0.0)
                 .when().placeOrder().withOrderNumber("ORDER-1001").withSku("ABC").withQuantity(5).withCountry("US")
                 .then().shouldSucceed()
@@ -27,22 +26,11 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrderWithCorrectOriginalPrice() {
         scenario
-                .given()
-                .product()
-                .withSku("ABC")
-                .withUnitPrice(20.00)
+                .given().product().withSku("ABC").withUnitPrice(20.00)
                 .and().taxRate().withCountry("US").withTaxRate(0.0)
-                .when()
-                .placeOrder()
-                .withOrderNumber("ORDER-1001")
-                .withSku("ABC")
-                .withQuantity(5)
-                .withCountry("US")
-                .then()
-                .shouldSucceed()
-                .and()
-                .order("ORDER-1001")
-                .shouldHaveOriginalPrice(100.00);
+                .when().placeOrder().withOrderNumber("ORDER-1001").withSku("ABC").withQuantity(5).withCountry("US")
+                .then().shouldSucceed()
+                .and().order("ORDER-1001").shouldHaveOriginalPrice(100.00);
     }
 
     @TestTemplate
@@ -53,55 +41,22 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     @DataSource({"99.99", "1", "99.99"})
     void shouldPlaceOrderWithCorrectOriginalPriceParameterized(String unitPrice, String quantity, String originalPrice) {
         scenario
-                .given()
-                .product()
-                .withSku("ABC")
-                .withUnitPrice(unitPrice)
+                .given().product().withSku("ABC").withUnitPrice(unitPrice)
                 .and().taxRate().withCountry("US").withTaxRate(0.0)
-                .when()
-                .placeOrder()
-                .withOrderNumber("ORDER-1001")
-                .withSku("ABC")
-                .withQuantity(quantity)
-                .withCountry("US")
-                .then()
-                .shouldSucceed()
-                .and()
-                .order("ORDER-1001")
-                .shouldHaveOriginalPrice(originalPrice);
+                .when().placeOrder().withOrderNumber("ORDER-1001").withSku("ABC").withQuantity(quantity).withCountry("US")
+                .then().shouldSucceed()
+                .and().order("ORDER-1001").shouldHaveOriginalPrice(originalPrice);
     }
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldPlaceOrder() {
         scenario
-                .given()
-                .product()
-                .withSku(SKU)
-                .withUnitPrice(20.00)
+                .given().product().withSku(SKU).withUnitPrice(20.00)
                 .and().taxRate().withCountry("US").withTaxRate(0.05)
-                .when()
-                .placeOrder()
-                .withOrderNumber(ORDER_NUMBER)
-                .withSku(SKU)
-                .withQuantity(5)
-                .withCountry("US")
-                .then()
-                .shouldSucceed()
-                .expectOrderNumberPrefix("ORD-")
-                .and()
-                .order(ORDER_NUMBER)
-                .hasSku(SKU)
-                .hasQuantity(5)
-                .hasUnitPrice(20.00)
-                .shouldHaveOriginalPrice(100.00)
-                .hasStatus(OrderStatus.PLACED)
-                .hasDiscountRateGreaterThanOrEqualToZero()
-                .hasDiscountAmountGreaterThanOrEqualToZero()
-                .hasSubtotalPriceGreaterThanZero()
-                .hasTaxRateGreaterThanOrEqualToZero()
-                .hasTaxAmountGreaterThanOrEqualToZero()
-                .hasTotalPriceGreaterThanZero();
+                .when().placeOrder().withOrderNumber(ORDER_NUMBER).withSku(SKU).withQuantity(5).withCountry("US")
+                .then().shouldSucceed().expectOrderNumberPrefix("ORD-")
+                .and().order(ORDER_NUMBER).hasSku(SKU).hasQuantity(5).hasUnitPrice(20.00).shouldHaveOriginalPrice(100.00).hasStatus(OrderStatus.PLACED).hasDiscountRateGreaterThanOrEqualToZero().hasDiscountAmountGreaterThanOrEqualToZero().hasSubtotalPriceGreaterThanZero().hasTaxRateGreaterThanOrEqualToZero().hasTaxAmountGreaterThanOrEqualToZero().hasTotalPriceGreaterThanZero();
     }
 }
 

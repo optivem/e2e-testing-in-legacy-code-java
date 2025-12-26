@@ -15,33 +15,12 @@ public class ViewOrderPositiveTest extends BaseAcceptanceTest {
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldViewPlacedOrder() {
         scenario
-                .given()
-                .product()
-                .withSku(SKU)
-                .withUnitPrice(25.00)
+                .given().product().withSku(SKU).withUnitPrice(25.00)
                 .and().taxRate().withCountry("US").withTaxRate(0.0)
-                .and().order()
-                .withOrderNumber(ORDER_NUMBER)
-                .withSku(SKU)
-                .withQuantity(4)
-                .when()
-                .viewOrder()
-                .withOrderNumber(ORDER_NUMBER)
-                .then()
-                .shouldSucceed()
-                .and()
-                .order(ORDER_NUMBER)
-                .hasSku(SKU)
-                .hasQuantity(4)
-                .hasUnitPrice(25.00)
-                .shouldHaveOriginalPrice(100.00)
-                .hasStatus(OrderStatus.PLACED)
-                .hasDiscountRateGreaterThanOrEqualToZero()
-                .hasDiscountAmountGreaterThanOrEqualToZero()
-                .hasSubtotalPriceGreaterThanZero()
-                .hasTaxRateGreaterThanOrEqualToZero()
-                .hasTaxAmountGreaterThanOrEqualToZero()
-                .hasTotalPriceGreaterThanZero();
+                .and().order().withOrderNumber(ORDER_NUMBER).withSku(SKU).withQuantity(4)
+                .when().viewOrder().withOrderNumber(ORDER_NUMBER)
+                .then().shouldSucceed()
+                .and().order(ORDER_NUMBER).hasSku(SKU).hasQuantity(4).hasUnitPrice(25.00).shouldHaveOriginalPrice(100.00).hasStatus(OrderStatus.PLACED).hasDiscountRateGreaterThanOrEqualToZero().hasDiscountAmountGreaterThanOrEqualToZero().hasSubtotalPriceGreaterThanZero().hasTaxRateGreaterThanOrEqualToZero().hasTaxAmountGreaterThanOrEqualToZero().hasTotalPriceGreaterThanZero();
     }
 }
 

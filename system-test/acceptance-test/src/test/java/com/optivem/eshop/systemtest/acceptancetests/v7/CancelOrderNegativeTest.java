@@ -18,12 +18,8 @@ public class CancelOrderNegativeTest extends BaseAcceptanceTest {
     @DataSource({"NON-EXISTENT-ORDER-77777", "Order NON-EXISTENT-ORDER-77777 does not exist."})
     void shouldNotCancelNonExistentOrder(String orderNumber, String expectedErrorMessage) {
         scenario
-                .when()
-                .cancelOrder()
-                .withOrderNumber(orderNumber)
-                .then()
-                .shouldFail()
-                .errorMessage(expectedErrorMessage);
+                .when().cancelOrder().withOrderNumber(orderNumber)
+                .then().shouldFail().errorMessage(expectedErrorMessage);
     }
 
     @TestTemplate
@@ -31,23 +27,11 @@ public class CancelOrderNegativeTest extends BaseAcceptanceTest {
     void shouldNotCancelAlreadyCancelledOrder() {
         // First, place and cancel an order
         scenario
-                .given()
-                .product()
-                .withSku(SKU)
+                .given().product().withSku(SKU)
                 .and().taxRate().withCountry("US").withTaxRate(0.0)
-                .and()
-                .order()
-                .withOrderNumber(ORDER_NUMBER)
-                .withSku(SKU)
-                .withQuantity(5)
-                .withCountry("US")
-                .cancelled()
-                .when()
-                .cancelOrder()
-                .withOrderNumber(ORDER_NUMBER)
-                .then()
-                .shouldFail()
-                .errorMessage("Order has already been cancelled");
+                .and().order().withOrderNumber(ORDER_NUMBER).withSku(SKU).withQuantity(5).withCountry("US").cancelled()
+                .when().cancelOrder().withOrderNumber(ORDER_NUMBER)
+                .then().shouldFail().errorMessage("Order has already been cancelled");
     }
 }
 
