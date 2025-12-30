@@ -60,4 +60,8 @@ public class WhenClause {
     public PublishCouponBuilder publishCoupon() {
         return new PublishCouponBuilder(app, scenario);
     }
+
+    public BrowseCouponsBuilder browseCoupons() {
+        return new BrowseCouponsBuilder(app, scenario);
+    }
 }

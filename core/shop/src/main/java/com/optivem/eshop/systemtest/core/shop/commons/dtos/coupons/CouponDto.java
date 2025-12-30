@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.Instant;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BrowseCouponsResponse {
-    private List<CouponDto> coupons;
-}
+public class CouponDto {
+    private String code;
+    private double discountRate;
+    private Instant validFrom;
+    private Instant validTo;    
+    private Integer usageLimit;    private Integer usedCount;}
