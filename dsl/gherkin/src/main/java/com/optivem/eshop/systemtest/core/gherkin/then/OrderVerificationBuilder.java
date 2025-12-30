@@ -63,18 +63,49 @@ public class OrderVerificationBuilder {
         return this;
     }
 
+    public OrderVerificationBuilder hasDiscountAmount(double expectedDiscountAmount) {
+        orderVerification.discountAmount(expectedDiscountAmount);
+        return this;
+    }
+
+    public OrderVerificationBuilder hasDiscountAmount(String expectedDiscountAmount) {
+        orderVerification.discountAmount(expectedDiscountAmount);
+        return this;
+    }
+
     public OrderVerificationBuilder hasDiscountAmountGreaterThanOrEqualToZero() {
         orderVerification.discountAmountGreaterThanOrEqualToZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasPreTaxTotalGreaterThanZero() {
-        orderVerification.preTaxTotalGreaterThanZero();
+    public OrderVerificationBuilder hasSubtotalPrice(String expectedSubtotalPrice) {
+        orderVerification.subtotalPrice(expectedSubtotalPrice);
+        return this;
+    }
+
+    public OrderVerificationBuilder hasSubtotalPriceGreaterThanZero() {
+        orderVerification.subtotalPriceGreaterThanZero();
+        return this;
+    }
+
+    public OrderVerificationBuilder hasTaxRate(double expectedTaxRate) {
+        orderVerification.taxRate(expectedTaxRate);
+        return this;
+    }
+
+    public OrderVerificationBuilder hasTaxRate(String expectedTaxRate) {
+        orderVerification.taxRate(expectedTaxRate);
         return this;
     }
 
     public OrderVerificationBuilder hasTaxRateGreaterThanOrEqualToZero() {
         orderVerification.taxRateGreaterThanOrEqualToZero();
+        return this;
+    }
+
+
+    public OrderVerificationBuilder hasTaxAmount(String expectedTaxAmount) {
+        orderVerification.taxAmount(expectedTaxAmount);
         return this;
     }
 
@@ -96,4 +127,5 @@ public class OrderVerificationBuilder {
     public OrderVerificationBuilder and() {
         return this;
     }
+
 }

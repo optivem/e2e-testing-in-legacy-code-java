@@ -5,8 +5,6 @@ import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.testing.channels.Channel;
 import org.junit.jupiter.api.TestTemplate;
 
-import java.time.Instant;
-
 public class AcceptanceTest extends BaseAcceptanceTest {
 
     @TestTemplate

@@ -1,17 +1,18 @@
 package com.optivem.eshop.systemtest.core.shop.dsl.verifications;
 
-import com.optivem.eshop.systemtest.core.shop.client.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.client.dtos.ViewOrderDetailsResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
 import com.optivem.testing.dsl.ResponseVerification;
 import com.optivem.testing.dsl.UseCaseContext;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ViewOrderVerification extends ResponseVerification<GetOrderResponse, UseCaseContext> {
+public class ViewOrderVerification extends ResponseVerification<ViewOrderDetailsResponse, UseCaseContext> {
 
-    public ViewOrderVerification(GetOrderResponse response, UseCaseContext context) {
+    public ViewOrderVerification(ViewOrderDetailsResponse response, UseCaseContext context) {
         super(response, context);
     }
 
@@ -80,6 +81,38 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
         return subtotalPrice(Double.parseDouble(expectedSubtotalPrice));
     }
 
+    public ViewOrderVerification subtotalPriceGreaterThanZero() {
+        var subtotalPrice = response.getSubtotalPrice();
+        assertThat(subtotalPrice)
+                .withFailMessage("Subtotal price should be positive, but was: %s", subtotalPrice)
+                .isGreaterThan(BigDecimal.ZERO);
+        return this;
+    }
+
+    public ViewOrderVerification basePrice(BigDecimal expectedBasePrice) {
+        var actualBasePrice = response.getBasePrice();
+        assertThat(actualBasePrice)
+                .withFailMessage("Expected base price to be %s, but was %s", expectedBasePrice, actualBasePrice)
+                .isEqualByComparingTo(expectedBasePrice);
+        return this;
+    }
+
+    public ViewOrderVerification basePrice(double expectedBasePrice) {
+        return basePrice(BigDecimal.valueOf(expectedBasePrice));
+    }
+
+    public ViewOrderVerification basePrice(String expectedBasePrice) {
+        return basePrice(new BigDecimal(expectedBasePrice));
+    }
+
+    public ViewOrderVerification basePriceGreaterThanZero() {
+        var basePrice = response.getBasePrice();
+        assertThat(basePrice)
+                .withFailMessage("Base price should be positive, but was: %s", basePrice)
+                .isGreaterThan(BigDecimal.ZERO);
+        return this;
+    }
+
     public ViewOrderVerification status(OrderStatus expectedStatus) {
         var actualStatus = response.getStatus();
         assertThat(actualStatus)
@@ -135,13 +168,26 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
         return discountAmount(BigDecimal.valueOf(expectedDiscountAmount));
     }
 
+    public ViewOrderVerification discountAmount(String expectedDiscountAmount) {
+        return discountAmount(new BigDecimal(expectedDiscountAmount));
+    }
 
-    public ViewOrderVerification preTaxTotalGreaterThanZero() {
-        var preTaxTotal = response.getPreTaxTotal();
-        assertThat(preTaxTotal)
-                .withFailMessage("Pre-tax total should be positive, but was: %s", preTaxTotal)
-                .isGreaterThan(BigDecimal.ZERO);
+
+
+    public ViewOrderVerification taxRate(BigDecimal expectedTaxRate) {
+        var actualTaxRate = response.getTaxRate();
+        assertThat(actualTaxRate)
+                .withFailMessage("Expected tax rate to be %s, but was %s", expectedTaxRate, actualTaxRate)
+                .isEqualByComparingTo(expectedTaxRate);
         return this;
+    }
+
+    public ViewOrderVerification taxRate(double expectedTaxRate) {
+        return taxRate(BigDecimal.valueOf(expectedTaxRate));
+    }
+
+    public ViewOrderVerification taxRate(String expectedTaxRate) {
+        return taxRate(new BigDecimal(expectedTaxRate));
     }
 
     public ViewOrderVerification taxRateGreaterThanOrEqualToZero() {
@@ -150,6 +196,22 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
                 .withFailMessage("Tax rate should be non-negative, but was: %s", taxRate)
                 .isGreaterThanOrEqualTo(BigDecimal.ZERO);
         return this;
+    }
+
+    public ViewOrderVerification taxAmount(BigDecimal expectedTaxAmount) {
+        var actualTaxAmount = response.getTaxAmount();
+        assertThat(actualTaxAmount)
+                .withFailMessage("Expected tax amount to be %s, but was %s", expectedTaxAmount, actualTaxAmount)
+                .isEqualByComparingTo(expectedTaxAmount);
+        return this;
+    }
+
+    public ViewOrderVerification taxAmount(double expectedTaxAmount) {
+        return taxAmount(new BigDecimal(expectedTaxAmount));
+    }
+
+    public ViewOrderVerification taxAmount(String expectedTaxAmount) {
+        return taxAmount(new BigDecimal(expectedTaxAmount));
     }
 
     public ViewOrderVerification taxAmountGreaterThanOrEqualToZero() {
@@ -173,6 +235,42 @@ public class ViewOrderVerification extends ResponseVerification<GetOrderResponse
         assertThat(actualOrderNumber)
                 .withFailMessage("Expected order number to start with '%s', but was: %s", expectedPrefix, actualOrderNumber)
                 .startsWith(expectedPrefix);
+    }
+
+    public ViewOrderVerification orderTimestamp(Instant expectedTimestamp) {
+        var actualTimestamp = response.getOrderTimestamp();
+        assertThat(actualTimestamp)
+                .withFailMessage("Expected order timestamp to be %s, but was %s", expectedTimestamp, actualTimestamp)
+                .isEqualTo(expectedTimestamp);
+        return this;
+    }
+
+    public ViewOrderVerification orderTimestamp(String expectedTimestamp) {
+        return orderTimestamp(Instant.parse(expectedTimestamp));
+    }
+
+    public ViewOrderVerification orderTimestampIsNotNull() {
+        var actualTimestamp = response.getOrderTimestamp();
+        assertThat(actualTimestamp)
+                .withFailMessage("Expected order timestamp to be set, but was null")
+                .isNotNull();
+        return this;
+    }
+
+    public ViewOrderVerification appliedCouponCode(String expectedCouponCode) {
+        var actualCouponCode = response.getAppliedCouponCode();
+        assertThat(actualCouponCode)
+                .withFailMessage("Expected applied coupon code to be '%s', but was '%s'", expectedCouponCode, actualCouponCode)
+                .isEqualTo(expectedCouponCode);
+        return this;
+    }
+
+    public ViewOrderVerification appliedCouponCodeIsNull() {
+        var actualCouponCode = response.getAppliedCouponCode();
+        assertThat(actualCouponCode)
+                .withFailMessage("Expected applied coupon code to be null, but was '%s'", actualCouponCode)
+                .isNull();
+        return this;
     }
 }
 

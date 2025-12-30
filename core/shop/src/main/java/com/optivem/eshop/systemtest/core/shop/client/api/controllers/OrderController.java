@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.client.api.controllers;
 
-import com.optivem.eshop.systemtest.core.shop.client.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.client.dtos.ViewOrderDetailsResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.error.ProblemDetailResponse;
@@ -21,8 +21,8 @@ public class OrderController {
         return httpClient.post(ENDPOINT, request, PlaceOrderResponse.class);
     }
 
-    public Result<GetOrderResponse, ProblemDetailResponse> viewOrder(String orderNumber) {
-        return httpClient.get(ENDPOINT + "/" + orderNumber, GetOrderResponse.class);
+    public Result<ViewOrderDetailsResponse, ProblemDetailResponse> viewOrder(String orderNumber) {
+        return httpClient.get(ENDPOINT + "/" + orderNumber, ViewOrderDetailsResponse.class);
     }
 
     public Result<Void, ProblemDetailResponse> cancelOrder(String orderNumber) {

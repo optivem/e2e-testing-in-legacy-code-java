@@ -41,7 +41,7 @@ public class ViewOrderPositiveTest extends BaseE2eTest {
                 .status(OrderStatus.PLACED)
                 .discountRateGreaterThanOrEqualToZero()
                 .discountAmountGreaterThanOrEqualToZero()
-                .preTaxTotalGreaterThanZero()
+                .subtotalPriceGreaterThanZero()
                 .taxRateGreaterThanOrEqualToZero()
                 .taxAmountGreaterThanOrEqualToZero()
                 .totalPriceGreaterThanZero();

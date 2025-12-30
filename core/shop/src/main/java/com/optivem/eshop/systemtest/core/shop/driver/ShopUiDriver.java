@@ -1,7 +1,7 @@
 package com.optivem.eshop.systemtest.core.shop.driver;
 
 import com.optivem.eshop.systemtest.core.shop.client.commons.Results;
-import com.optivem.eshop.systemtest.core.shop.client.dtos.GetOrderResponse;
+import com.optivem.eshop.systemtest.core.shop.client.dtos.ViewOrderDetailsResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderRequest;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
@@ -89,7 +89,7 @@ public class ShopUiDriver implements ShopDriver {
     }
 
     @Override
-    public Result<GetOrderResponse, SystemError> viewOrder(String orderNumber) {
+    public Result<ViewOrderDetailsResponse, SystemError> viewOrder(String orderNumber) {
         ensureOnOrderHistoryPage();
         orderHistoryPage.inputOrderNumber(orderNumber);
         orderHistoryPage.clickSearch();
@@ -107,24 +107,24 @@ public class ShopUiDriver implements ShopDriver {
         var quantity = orderHistoryPage.getQuantity();
         var country = orderHistoryPage.getCountry();
         var unitPrice = orderHistoryPage.getUnitPrice();
-        var subtotalPrice = orderHistoryPage.getSubtotalPrice();
+        var basePrice = orderHistoryPage.getBasePrice();
         var discountRate = orderHistoryPage.getDiscountRate();
         var discountAmount = orderHistoryPage.getDiscountAmount();
-        var preTaxTotal = orderHistoryPage.getPreTaxTotal();
+        var subtotalPrice = orderHistoryPage.getSubtotalPrice();
         var taxRate = orderHistoryPage.getTaxRate();
         var taxAmount = orderHistoryPage.getTaxAmount();
         var totalPrice = orderHistoryPage.getTotalPrice();
         var status = orderHistoryPage.getStatus();
 
-        var response = GetOrderResponse.builder()
+        var response = ViewOrderDetailsResponse.builder()
                 .orderNumber(displayOrderNumber)
                 .sku(sku)
                 .quantity(quantity)
                 .unitPrice(unitPrice)
-                .subtotalPrice(subtotalPrice)
+                .basePrice(basePrice)
                 .discountRate(discountRate)
                 .discountAmount(discountAmount)
-                .preTaxTotal(preTaxTotal)
+                .subtotalPrice(subtotalPrice)
                 .taxRate(taxRate)
                 .taxAmount(taxAmount)
                 .totalPrice(totalPrice)

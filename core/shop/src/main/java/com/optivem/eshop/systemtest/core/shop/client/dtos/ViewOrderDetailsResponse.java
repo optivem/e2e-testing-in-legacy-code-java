@@ -7,24 +7,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetOrderResponse {
+public class ViewOrderDetailsResponse {
     private String orderNumber;
+    private Instant orderTimestamp;
     private String sku;
     private int quantity;
     private BigDecimal unitPrice;
-    private BigDecimal subtotalPrice;
+    private BigDecimal basePrice;
     private BigDecimal discountRate;
     private BigDecimal discountAmount;
-    private BigDecimal preTaxTotal;
+    private BigDecimal subtotalPrice;
     private BigDecimal taxRate;
     private BigDecimal taxAmount;
     private BigDecimal totalPrice;
     private OrderStatus status;
     private String country;
+    private String appliedCouponCode;
 }
 

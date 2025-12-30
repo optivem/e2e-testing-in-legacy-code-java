@@ -91,7 +91,7 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .status(OrderStatus.PLACED)
                 .discountRateGreaterThanOrEqualToZero()
                 .discountAmountGreaterThanOrEqualToZero()
-                .preTaxTotalGreaterThanZero()
+                .subtotalPriceGreaterThanZero()
                 .taxRateGreaterThanOrEqualToZero()
                 .taxAmountGreaterThanOrEqualToZero()
                 .totalPriceGreaterThanZero();
