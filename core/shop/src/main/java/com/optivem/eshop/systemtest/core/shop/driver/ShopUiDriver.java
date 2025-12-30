@@ -193,6 +193,8 @@ public class ShopUiDriver implements ShopDriver {
 
         orderDetailsPage = orderHistoryPage.clickViewOrderDetails(orderNumber);
 
+        currentPage = Pages.ORDER_DETAILS;
+
         return Results.success();
     }
 
@@ -200,7 +202,8 @@ public class ShopUiDriver implements ShopDriver {
         NONE,
         HOME,
         NEW_ORDER,
-        ORDER_HISTORY
+        ORDER_HISTORY,
+        ORDER_DETAILS
     }
 }
 
