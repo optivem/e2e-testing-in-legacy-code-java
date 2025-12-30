@@ -1,22 +1,16 @@
 package com.optivem.eshop.systemtest.base.v4;
 
 import com.optivem.eshop.systemtest.configuration.BaseConfigurableTest;
-import com.optivem.eshop.systemtest.configuration.Environment;
-import com.optivem.eshop.systemtest.configuration.PropertyLoader;
-import com.optivem.eshop.systemtest.configuration.SystemConfigurationLoader;
 import com.optivem.eshop.systemtest.core.SystemConfiguration;
-import com.optivem.eshop.systemtest.core.erp.driver.ErpDriver;
 import com.optivem.eshop.systemtest.core.erp.driver.ErpRealDriver;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
-import com.optivem.eshop.systemtest.core.shop.driver.ShopApiDriver;
+import com.optivem.eshop.systemtest.core.shop.driver.api.ShopApiDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
-import com.optivem.eshop.systemtest.core.shop.driver.ShopUiDriver;
-import com.optivem.eshop.systemtest.core.tax.driver.TaxDriver;
+import com.optivem.eshop.systemtest.core.shop.driver.ui.ShopUiDriver;
 import com.optivem.eshop.systemtest.core.tax.driver.TaxRealDriver;
 import com.optivem.lang.Closer;
 import com.optivem.testing.channels.ChannelContext;
 import com.optivem.testing.channels.ChannelExtension;
-import com.optivem.testing.dsl.ExternalSystemMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

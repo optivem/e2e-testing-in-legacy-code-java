@@ -1,4 +1,4 @@
-package com.optivem.eshop.systemtest.core.shop.driver;
+package com.optivem.eshop.systemtest.core.shop.driver.ui;
 
 public class PageNavigator {
     private Page currentPage = Page.NONE;
