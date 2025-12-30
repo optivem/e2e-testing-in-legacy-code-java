@@ -39,29 +39,39 @@ public class CouponManagementPage extends BasePage {
     }
 
     public void inputValidFrom(String validFrom) {
-        if (validFrom != null) {
-            // Extract date from ISO 8601 format (2024-06-01T00:00:00Z -> 2024-06-01)
-            // Then convert to datetime-local format (2024-06-01T00:00) for HTML input
-            String dateOnly = validFrom.substring(0, 10); // YYYY-MM-DD
-            String datetimeValue = dateOnly + "T00:00";
-            pageClient.fill(VALID_FROM_INPUT_SELECTOR, datetimeValue);
+        var datetimeValue = getValidFromDateTimeString(validFrom);
+        pageClient.fill(VALID_FROM_INPUT_SELECTOR, datetimeValue);
+    }
+
+    private static String getValidFromDateTimeString(String validFrom) {
+        if(validFrom == null || validFrom.isEmpty()) {
+            return "";
         }
+
+        // Extract date from ISO 8601 format (2024-06-01T00:00:00Z -> 2024-06-01)
+        // Then convert to datetime-local format (2024-06-01T00:00) for HTML input
+        String dateOnly = validFrom.substring(0, 10); // YYYY-MM-DD
+        return dateOnly + "T00:00";
     }
 
     public void inputValidTo(String validTo) {
-        if (validTo != null) {
-            // Extract date from ISO 8601 format (2024-08-31T23:59:59Z -> 2024-08-31)
-            // Then convert to datetime-local format (2024-08-31T23:59) for HTML input
-            String dateOnly = validTo.substring(0, 10); // YYYY-MM-DD
-            String datetimeValue = dateOnly + "T23:59";
-            pageClient.fill(VALID_TO_INPUT_SELECTOR, datetimeValue);
+        var datetimeValue = getValidToDateTimeString(validTo);
+        pageClient.fill(VALID_TO_INPUT_SELECTOR, datetimeValue);
+    }
+
+    private static String getValidToDateTimeString(String validTo) {
+        if(validTo == null || validTo.isEmpty()) {
+            return "";
         }
+
+        // Extract date from ISO 8601 format (2024-08-31T23:59:59Z -> 2024-08-31)
+        // Then convert to datetime-local format (2024-08-31T23:59) for HTML input
+        String dateOnly = validTo.substring(0, 10); // YYYY-MM-DD
+        return dateOnly + "T23:59";
     }
 
     public void inputUsageLimit(String usageLimit) {
-        if (usageLimit != null) {
-            pageClient.fill(USAGE_LIMIT_INPUT_SELECTOR, usageLimit);
-        }
+        pageClient.fill(USAGE_LIMIT_INPUT_SELECTOR, usageLimit);
     }
 
     public void clickPublishCoupon() {

@@ -18,4 +18,19 @@ public class PublishCouponPositiveTest extends BaseAcceptanceTest {
                     .withUsageLimit(100)
                 .then().shouldSucceed();
     }
+
+    @TestTemplate
+    @Channel({ ChannelType.UI, ChannelType.API })
+    void shouldBeAbleToPublishCouponWithEmptyOptionalFields() {
+        scenario
+                .when().publishCoupon()
+                .withCouponCode("SUMMER2025")
+                .withDiscountRate(0.15)
+                .withValidFrom("")
+                .withValidTo("")
+                .withUsageLimit("")
+                .then().shouldSucceed();
+    }
+
+
 }
