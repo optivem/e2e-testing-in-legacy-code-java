@@ -1,6 +1,6 @@
 package com.optivem.eshop.systemtest.core.gherkin;
 
-import com.optivem.eshop.systemtest.core.shop.commons.dtos.enums.OrderStatus;
+import com.optivem.eshop.systemtest.core.shop.commons.dtos.orders.OrderStatus;
 
 /**
  * Default values for Gherkin test builders.

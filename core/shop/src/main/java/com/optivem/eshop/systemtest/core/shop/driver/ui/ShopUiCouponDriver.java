@@ -3,7 +3,7 @@ package com.optivem.eshop.systemtest.core.shop.driver.ui;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.BrowseCouponsRequest;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.BrowseCouponsResponse;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.PublishCouponRequest;
-import com.optivem.eshop.systemtest.core.shop.commons.dtos.error.SystemError;
+import com.optivem.eshop.systemtest.core.shop.commons.dtos.errors.SystemError;
 import com.optivem.eshop.systemtest.core.shop.driver.CouponDriver;
 import com.optivem.lang.Result;
 

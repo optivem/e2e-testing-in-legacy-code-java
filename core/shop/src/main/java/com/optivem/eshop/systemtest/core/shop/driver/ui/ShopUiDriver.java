@@ -6,7 +6,7 @@ import com.optivem.eshop.systemtest.core.shop.client.ui.pages.HomePage;
 import com.optivem.eshop.systemtest.core.shop.driver.CouponDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.OrderDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
-import com.optivem.eshop.systemtest.core.shop.commons.dtos.error.SystemError;
+import com.optivem.eshop.systemtest.core.shop.commons.dtos.errors.SystemError;
 import com.optivem.lang.Result;
 
 public class ShopUiDriver implements ShopDriver {

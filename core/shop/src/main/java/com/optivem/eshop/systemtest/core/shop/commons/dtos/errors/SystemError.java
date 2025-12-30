@@ -1,6 +1,6 @@
-package com.optivem.eshop.systemtest.core.shop.commons.dtos.error;
+package com.optivem.eshop.systemtest.core.shop.commons.dtos.errors;
 
-import com.optivem.eshop.systemtest.core.shop.client.api.dtos.error.ProblemDetailResponse;
+import com.optivem.eshop.systemtest.core.shop.client.api.dtos.errors.ProblemDetailResponse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
