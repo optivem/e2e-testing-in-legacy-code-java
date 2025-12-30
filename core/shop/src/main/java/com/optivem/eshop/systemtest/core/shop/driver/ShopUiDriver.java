@@ -8,6 +8,7 @@ import com.optivem.eshop.systemtest.core.shop.client.dtos.enums.OrderStatus;
 import com.optivem.eshop.systemtest.core.shop.client.ui.ShopUiClient;
 import com.optivem.eshop.systemtest.core.shop.client.ui.pages.HomePage;
 import com.optivem.eshop.systemtest.core.shop.client.ui.pages.NewOrderPage;
+import com.optivem.eshop.systemtest.core.shop.client.ui.pages.OrderDetailsPage;
 import com.optivem.eshop.systemtest.core.shop.client.ui.pages.OrderHistoryPage;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.error.SystemError;
 import com.optivem.lang.Result;
@@ -21,6 +22,7 @@ public class ShopUiDriver implements ShopDriver {
     private HomePage homePage;
     private NewOrderPage newOrderPage;
     private OrderHistoryPage orderHistoryPage;
+    private OrderDetailsPage orderDetailsPage;
 
     private Pages currentPage;
 
@@ -90,31 +92,32 @@ public class ShopUiDriver implements ShopDriver {
 
     @Override
     public Result<ViewOrderDetailsResponse, SystemError> viewOrder(String orderNumber) {
-        ensureOnOrderHistoryPage();
-        orderHistoryPage.inputOrderNumber(orderNumber);
-        orderHistoryPage.clickSearch();
+        var result = ensureOnOrderDetailsPage(orderNumber);
+        if(result.isFailure()) {
+            return Results.failure(result.getError());
+        }
 
-        var isSuccess = orderHistoryPage.hasOrderDetails();
+        var isSuccess = orderDetailsPage.isLoadedSuccessfully();
 
         if (!isSuccess) {
-            var errorMessages = orderHistoryPage.readErrorNotification();
+            var errorMessages = orderDetailsPage.readErrorNotification();
             var errorMessage = !errorMessages.isEmpty() ? errorMessages.get(0) : "Order not found";
             return Results.failure(errorMessage);
         }
 
-        var displayOrderNumber = orderHistoryPage.getOrderNumber();
-        var sku = orderHistoryPage.getSku();
-        var quantity = orderHistoryPage.getQuantity();
-        var country = orderHistoryPage.getCountry();
-        var unitPrice = orderHistoryPage.getUnitPrice();
-        var basePrice = orderHistoryPage.getBasePrice();
-        var discountRate = orderHistoryPage.getDiscountRate();
-        var discountAmount = orderHistoryPage.getDiscountAmount();
-        var subtotalPrice = orderHistoryPage.getSubtotalPrice();
-        var taxRate = orderHistoryPage.getTaxRate();
-        var taxAmount = orderHistoryPage.getTaxAmount();
-        var totalPrice = orderHistoryPage.getTotalPrice();
-        var status = orderHistoryPage.getStatus();
+        var displayOrderNumber = orderDetailsPage.getOrderNumber();
+        var sku = orderDetailsPage.getSku();
+        var quantity = orderDetailsPage.getQuantity();
+        var country = orderDetailsPage.getCountry();
+        var unitPrice = orderDetailsPage.getUnitPrice();
+        var basePrice = orderDetailsPage.getBasePrice();
+        var discountRate = orderDetailsPage.getDiscountRate();
+        var discountAmount = orderDetailsPage.getDiscountAmount();
+        var subtotalPrice = orderDetailsPage.getSubtotalPrice();
+        var taxRate = orderDetailsPage.getTaxRate();
+        var taxAmount = orderDetailsPage.getTaxAmount();
+        var totalPrice = orderDetailsPage.getTotalPrice();
+        var status = orderDetailsPage.getStatus();
 
         var response = ViewOrderDetailsResponse.builder()
                 .orderNumber(displayOrderNumber)
@@ -138,19 +141,19 @@ public class ShopUiDriver implements ShopDriver {
     @Override
     public Result<Void, SystemError> cancelOrder(String orderNumberAlias) {
         viewOrder(orderNumberAlias);
-        orderHistoryPage.clickCancelOrder();
+        orderDetailsPage.clickCancelOrder();
 
-        var cancellationMessage = orderHistoryPage.readSuccessNotification();
+        var cancellationMessage = orderDetailsPage.readSuccessNotification();
         if (!Objects.equals(cancellationMessage, "Order cancelled successfully!")) {
             return Results.failure("Order cancellation failed");
         }
 
-        var displayStatusAfterCancel = orderHistoryPage.getStatus();
+        var displayStatusAfterCancel = orderDetailsPage.getStatus();
         if (!Objects.equals(displayStatusAfterCancel, OrderStatus.CANCELLED)) {
             return Results.failure("Order status not updated to CANCELLED");
         }
 
-        if (!orderHistoryPage.isCancelButtonHidden()) {
+        if (!orderDetailsPage.isCancelButtonHidden()) {
             return Results.failure("Cancel button still visible");
         }
 
@@ -176,6 +179,21 @@ public class ShopUiDriver implements ShopDriver {
             orderHistoryPage = homePage.clickOrderHistory();
             currentPage = Pages.ORDER_HISTORY;
         }
+    }
+
+    private Result<Void, SystemError> ensureOnOrderDetailsPage(String orderNumber) {
+        ensureOnOrderHistoryPage();
+        orderHistoryPage.inputOrderNumber(orderNumber);
+        orderHistoryPage.clickSearch();
+
+        var isOrderListed = orderHistoryPage.isOrderListed(orderNumber);
+        if (!isOrderListed) {
+            return Results.failure("Order " + orderNumber + " does not exist.");
+        }
+
+        orderDetailsPage = orderHistoryPage.clickViewOrderDetails(orderNumber);
+
+        return Results.success();
     }
 
     private enum Pages {

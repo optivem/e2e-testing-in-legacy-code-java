@@ -14,6 +14,10 @@ public class ShopUiClient implements AutoCloseable {
     private static final String HTML_OPENING_TAG = "<html";
     private static final String HTML_CLOSING_TAG = "</html>";
 
+    // private static final boolean IS_HEADLESS = true;
+    private static final boolean IS_HEADLESS = false;
+    private static final int SLOW_MO_MS = 100;
+
     private final String baseUrl;
     private final Playwright playwright;
     private final Browser browser;
@@ -29,8 +33,8 @@ public class ShopUiClient implements AutoCloseable {
 
         // Launch browser with options for parallel test isolation
         var launchOptions = new BrowserType.LaunchOptions()
-                .setHeadless(true)
-                .setSlowMo(100);
+                .setHeadless(IS_HEADLESS)
+                .setSlowMo(SLOW_MO_MS);
 
         this.browser = playwright.chromium().launch(launchOptions);
 

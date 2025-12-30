@@ -7,6 +7,8 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class PageClient {
     // Increased default timeout for parallel test execution
     private static final int DEFAULT_TIMEOUT_SECONDS = 30;
@@ -88,6 +90,12 @@ public class PageClient {
         return locator.count() == 0;
     }
 
+    public String getAttribute(String selector, String attributeName) {
+        var locator = page.locator(selector);
+        wait(locator);
+        return locator.getAttribute(attributeName);
+    }
+
     public void waitForHidden(String selector) {
         var waitForOptions = getWaitForOptions()
                 .setState(WaitForSelectorState.HIDDEN)
@@ -114,6 +122,30 @@ public class PageClient {
     private Locator.WaitForOptions getWaitForOptions() {
         return new Locator.WaitForOptions().setTimeout(timeoutMilliseconds);
     }
+
+    public void waitForLoaded(String selector) {
+        var locator = page.locator(selector);
+        locator.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED)
+                .setTimeout(timeoutMilliseconds));
+
+        page.waitForFunction(
+                "selector => document.querySelector(selector)?.getAttribute('aria-busy') === 'false'",
+                selector,
+                new Page.WaitForFunctionOptions().setTimeout(timeoutMilliseconds)
+        );
+    }
+
+    public String getLoadState(String selector) {
+        return page.getAttribute(selector, "data-load-state");
+    }
+
+    public boolean isLoadStateSuccess(String selector) {
+        var loadState = getLoadState(selector);
+        return "success".equals(loadState);
+    }
+
+
 
     public static class Builder {
         private final Page page;

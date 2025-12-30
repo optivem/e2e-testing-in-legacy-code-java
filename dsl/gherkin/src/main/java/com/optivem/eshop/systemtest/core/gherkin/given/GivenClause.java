@@ -4,6 +4,7 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class GivenClause {
     private final ScenarioDsl scenario;
     private final List<ProductBuilder> products;
     private final List<OrderBuilder> orders;
-    private final List<ClockBuilder> clocks;
+    private ClockBuilder clock;
     private final List<TaxRateBuilder> taxRates;
 
     public GivenClause(SystemDsl app, ScenarioDsl scenario) {
@@ -20,7 +21,7 @@ public class GivenClause {
         this.scenario = scenario;
         this.products = new ArrayList<>();
         this.orders = new ArrayList<>();
-        this.clocks = new ArrayList<>();
+        this.clock = new ClockBuilder(this);
         this.taxRates = new ArrayList<>();
     }
 
@@ -37,9 +38,8 @@ public class GivenClause {
     }
 
     public ClockBuilder clock() {
-        var clockBuilder = new ClockBuilder(this);
-        clocks.add(clockBuilder);
-        return clockBuilder;
+        clock = new ClockBuilder(this);
+        return clock;
     }
 
     public TaxRateBuilder taxRate() {
@@ -49,9 +49,7 @@ public class GivenClause {
     }
 
     public WhenClause when() {
-        for (var clock : clocks) {
-            clock.execute(app);
-        }
+        clock.execute(app);
 
         // If we have orders but no products, add a default product
         if (!orders.isEmpty() && products.isEmpty()) {
