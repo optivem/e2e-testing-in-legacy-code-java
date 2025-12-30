@@ -59,7 +59,7 @@ public class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVe
                 .quantity(quantity)
                 .country(country)
                 .build();
-        var result = driver.placeOrder(request);
+        var result = driver.orders().placeOrder(request);
 
         if (result.isSuccess() && orderNumberResultAlias != null) {
             var orderNumber = result.getValue().getOrderNumber();

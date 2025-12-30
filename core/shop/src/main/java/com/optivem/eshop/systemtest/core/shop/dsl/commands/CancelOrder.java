@@ -21,7 +21,7 @@ public class CancelOrder extends BaseShopCommand<Void, VoidVerification<UseCaseC
     @Override
     public ShopUseCaseResult<Void, VoidVerification<UseCaseContext>> execute() {
         var orderNumber = context.getResultValue(orderNumberResultAlias);
-        var result = driver.cancelOrder(orderNumber);
+        var result = driver.orders().cancelOrder(orderNumber);
         return new ShopUseCaseResult<>(result, context, VoidVerification::new);
     }
 }

@@ -1,9 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.driver;
 
 import com.optivem.eshop.systemtest.core.shop.client.api.ShopApiClient;
-import com.optivem.eshop.systemtest.core.shop.client.dtos.ViewOrderDetailsResponse;
-import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderRequest;
-import com.optivem.eshop.systemtest.core.shop.client.dtos.PlaceOrderResponse;
 import com.optivem.eshop.systemtest.core.shop.client.dtos.error.ProblemDetailResponse;
 import com.optivem.eshop.systemtest.core.shop.driver.dtos.error.SystemError;
 import com.optivem.http.JsonHttpClient;
@@ -15,11 +12,15 @@ import java.net.http.HttpClient;
 public class ShopApiDriver implements ShopDriver {
     private final HttpClient httpClient;
     private final ShopApiClient apiClient;
+    private final OrderDriver orderDriver;
+    private final CouponDriver couponDriver;
 
     public ShopApiDriver(String baseUrl) {
         this.httpClient = HttpClient.newHttpClient();
         var testHttpClient = new JsonHttpClient<>(httpClient, baseUrl, ProblemDetailResponse.class);
         this.apiClient = new ShopApiClient(testHttpClient);
+        this.orderDriver = new ShopApiOrderDriver(apiClient);
+        this.couponDriver = new ShopApiCouponDriver();
     }
 
     @Override
@@ -28,18 +29,13 @@ public class ShopApiDriver implements ShopDriver {
     }
 
     @Override
-    public Result<PlaceOrderResponse, SystemError> placeOrder(PlaceOrderRequest request) {
-        return apiClient.orders().placeOrder(request).mapError(SystemError::from);
+    public OrderDriver orders() {
+        return orderDriver;
     }
 
     @Override
-    public Result<Void, SystemError> cancelOrder(String orderNumber) {
-        return apiClient.orders().cancelOrder(orderNumber).mapError(SystemError::from);
-    }
-
-    @Override
-    public Result<ViewOrderDetailsResponse, SystemError> viewOrder(String orderNumber) {
-        return apiClient.orders().viewOrder(orderNumber).mapError(SystemError::from);
+    public CouponDriver coupons() {
+        return couponDriver;
     }
 
     @Override
