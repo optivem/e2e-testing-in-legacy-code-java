@@ -20,7 +20,8 @@ public class PageNavigator {
         HOME,
         NEW_ORDER,
         ORDER_HISTORY,
-        ORDER_DETAILS
+        ORDER_DETAILS,
+        COUPON_MANAGEMENT
     }
 }
 

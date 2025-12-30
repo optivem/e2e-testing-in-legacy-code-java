@@ -7,7 +7,7 @@ import org.junit.jupiter.api.TestTemplate;
 
 public class PublishCouponPositiveTest extends BaseAcceptanceTest {
     @TestTemplate
-    @Channel(ChannelType.API)
+    @Channel({ ChannelType.UI, ChannelType.API })
     void shouldBeAbleToPublishValidCoupon() {
         scenario
                 .when().publishCoupon()

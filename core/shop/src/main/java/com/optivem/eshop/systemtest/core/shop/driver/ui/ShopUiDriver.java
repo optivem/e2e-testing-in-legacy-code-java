@@ -21,7 +21,7 @@ public class ShopUiDriver implements ShopDriver {
         this.client = new ShopUiClient(baseUrl);
         this.pageNavigator = new PageNavigator();
         this.orderDriver = new ShopUiOrderDriver(this::getHomePage, pageNavigator);
-        this.couponDriver = new ShopUiCouponDriver();
+        this.couponDriver = new ShopUiCouponDriver(this::getHomePage, pageNavigator);
     }
 
     @Override

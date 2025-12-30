@@ -1,5 +1,8 @@
 package com.optivem.eshop.systemtest.core.shop.driver.ui;
 
+import com.optivem.eshop.systemtest.core.shop.client.ui.pages.CouponManagementPage;
+import com.optivem.eshop.systemtest.core.shop.client.ui.pages.HomePage;
+import com.optivem.eshop.systemtest.core.shop.commons.Results;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.BrowseCouponsRequest;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.BrowseCouponsResponse;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.coupons.PublishCouponRequest;
@@ -7,15 +10,69 @@ import com.optivem.eshop.systemtest.core.shop.commons.dtos.errors.SystemError;
 import com.optivem.eshop.systemtest.core.shop.driver.CouponDriver;
 import com.optivem.lang.Result;
 
+import java.util.function.Supplier;
+
 public class ShopUiCouponDriver implements CouponDriver {
+    private final Supplier<HomePage> homePageSupplier;
+    private final PageNavigator pageNavigator;
+
+    private CouponManagementPage couponManagementPage;
+
+    public ShopUiCouponDriver(Supplier<HomePage> homePageSupplier, PageNavigator pageNavigator) {
+        this.homePageSupplier = homePageSupplier;
+        this.pageNavigator = pageNavigator;
+    }
+
     @Override
     public Result<Void, SystemError> publishCoupon(PublishCouponRequest request) {
-        throw new UnsupportedOperationException("UI testing for publishCoupon not implemented yet. Please use API channel for coupon testing.");
+        ensureOnCouponManagementPage();
+
+        couponManagementPage.inputCouponCode(request.getCode());
+        couponManagementPage.inputDiscountRate(request.getDiscountRate());
+        couponManagementPage.clickPublishCoupon();
+
+        var isSuccess = couponManagementPage.hasSuccessCouponNotification();
+
+        if (!isSuccess) {
+            var generalMessage = couponManagementPage.readGeneralErrorMessage();
+            var fieldErrorTexts = couponManagementPage.readFieldErrors();
+
+            if (fieldErrorTexts.isEmpty()) {
+                return Results.failure(generalMessage);
+            } else {
+                var fieldErrors = fieldErrorTexts.stream()
+                        .map(text -> {
+                            var parts = text.split(":", 2);
+                            if (parts.length == 2) {
+                                return new SystemError.FieldError(parts[0].trim(), parts[1].trim());
+                            }
+                            return new SystemError.FieldError("unknown", text);
+                        })
+                        .toList();
+
+                var error = SystemError.builder()
+                        .message(generalMessage)
+                        .fields(fieldErrors)
+                        .build();
+
+                return Results.failure(error);
+            }
+        }
+
+        return Results.success();
     }
 
     @Override
     public Result<BrowseCouponsResponse, SystemError> browseCoupons(BrowseCouponsRequest request) {
-        throw new UnsupportedOperationException("UI testing for browseCoupons not implemented yet. Please use API channel for coupon testing.");
+        throw new UnsupportedOperationException("UI testing for browseCoupons not implemented yet. Please use API channel for browsing coupons.");
+    }
+
+    private void ensureOnCouponManagementPage() {
+        if (!pageNavigator.isOnPage(PageNavigator.Page.COUPON_MANAGEMENT)) {
+            var homePage = homePageSupplier.get();
+            couponManagementPage = homePage.clickCouponManagement();
+            pageNavigator.setCurrentPage(PageNavigator.Page.COUPON_MANAGEMENT);
+        }
     }
 }
 
