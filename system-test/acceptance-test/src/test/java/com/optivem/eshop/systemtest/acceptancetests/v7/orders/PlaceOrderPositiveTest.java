@@ -5,6 +5,7 @@ import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.DataSource;
 import com.optivem.testing.annotations.Time;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 
 public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
@@ -48,6 +49,17 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .when().placeOrder()
                 .then().shouldSucceed().expectOrderNumberPrefix("ORD-")
                 .and().order().expectOrderNumberPrefix("ORD-");
+    }
+
+    @Disabled
+    @TestTemplate
+    // @Channel({ChannelType.UI, ChannelType.API})
+    @Channel(ChannelType.API)
+    void discountRateShouldBeAppliedForCoupon() {
+        scenario
+                .given().coupon().withCouponCode("SUMMER2025").withDiscountRate(0.15)
+                .when().placeOrder().withCouponCode("SUMMER2025")
+                .then().order().hasAppliedCoupon("SUMMER2025").hasDiscountRate(0.15);
     }
 
 //    @TestTemplate

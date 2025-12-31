@@ -5,38 +5,29 @@ import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
-public class ProductBuilder {
-    private final GivenClause givenClause;
+public class GivenProductBuilder extends BaseGivenBuilder {
     private String sku;
-    private double unitPrice;
+    private String unitPrice;
 
-    public ProductBuilder(GivenClause givenClause) {
-        this.givenClause = givenClause;
+    public GivenProductBuilder(GivenClause givenClause) {
+        super(givenClause);
         withSku(DEFAULT_SKU);
         withUnitPrice(DEFAULT_UNIT_PRICE);
     }
 
-    public ProductBuilder withSku(String sku) {
+    public GivenProductBuilder withSku(String sku) {
         this.sku = sku;
         return this;
     }
 
-    public ProductBuilder withUnitPrice(double unitPrice) {
+    public GivenProductBuilder withUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
         return this;
     }
 
-    public ProductBuilder withUnitPrice(String unitPrice) {
-        this.unitPrice = Double.parseDouble(unitPrice);
+    public GivenProductBuilder withUnitPrice(double unitPrice) {
+        withUnitPrice(String.valueOf(unitPrice));
         return this;
-    }
-
-    public GivenClause and() {
-        return givenClause;
-    }
-
-    public WhenClause when() {
-        return givenClause.when();
     }
 
     void execute(SystemDsl app) {

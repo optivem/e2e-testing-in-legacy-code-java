@@ -4,85 +4,111 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GivenClause {
     private final SystemDsl app;
     private final ScenarioDsl scenario;
-    private final List<ProductBuilder> products;
-    private final List<OrderBuilder> orders;
-    private ClockBuilder clock;
-    private final List<TaxRateBuilder> taxRates;
+    private final List<GivenProductBuilder> products;
+    private final List<GivenOrderBuilder> orders;
+    private GivenClockBuilder clock;
+    private final List<GivenTaxRateBuilder> taxRates;
+    private final List<GivenCouponBuilder> coupons;
 
     public GivenClause(SystemDsl app, ScenarioDsl scenario) {
         this.app = app;
         this.scenario = scenario;
         this.products = new ArrayList<>();
         this.orders = new ArrayList<>();
-        this.clock = new ClockBuilder(this);
+        this.clock = new GivenClockBuilder(this);
         this.taxRates = new ArrayList<>();
+        this.coupons = new ArrayList<>();
     }
 
-    public ProductBuilder product() {
-        var productBuilder = new ProductBuilder(this);
+    public GivenProductBuilder product() {
+        var productBuilder = new GivenProductBuilder(this);
         products.add(productBuilder);
         return productBuilder;
     }
 
-    public OrderBuilder order() {
-        var orderBuilder = new OrderBuilder(this);
+    public GivenOrderBuilder order() {
+        var orderBuilder = new GivenOrderBuilder(this);
         orders.add(orderBuilder);
         return orderBuilder;
     }
 
-    public ClockBuilder clock() {
-        clock = new ClockBuilder(this);
+    public GivenClockBuilder clock() {
+        clock = new GivenClockBuilder(this);
         return clock;
     }
 
-    public TaxRateBuilder taxRate() {
-        var taxRateBuilder = new TaxRateBuilder(this);
+    public GivenTaxRateBuilder taxRate() {
+        var taxRateBuilder = new GivenTaxRateBuilder(this);
         taxRates.add(taxRateBuilder);
         return taxRateBuilder;
     }
 
+    public GivenCouponBuilder coupon() {
+        var couponBuilder = new GivenCouponBuilder(this);
+        coupons.add(couponBuilder);
+        return couponBuilder;
+    }
+
     public WhenClause when() {
+        setupClock();
+        setupErp();
+        setupTax();
+        setupShop();
+
+        return new WhenClause(app, scenario, !products.isEmpty(), !taxRates.isEmpty());
+    }
+
+    private void setupClock() {
         clock.execute(app);
+    }
 
-        // If we have orders but no products, add a default product
+    private void setupErp() {
         if (!orders.isEmpty() && products.isEmpty()) {
-            var defaultProduct = new ProductBuilder(this);
+            var defaultProduct = new GivenProductBuilder(this);
             products.add(defaultProduct);
-        }
-
-        // If we have orders but no tax rates, add a default tax rate
-        if (!orders.isEmpty() && taxRates.isEmpty()) {
-            var defaultTaxRate = new TaxRateBuilder(this);
-            taxRates.add(defaultTaxRate);
         }
 
         for (var product : products) {
             product.execute(app);
         }
-        
+    }
+
+    private void setupTax() {
+        if (!orders.isEmpty() && taxRates.isEmpty()) {
+            var defaultTaxRate = new GivenTaxRateBuilder(this);
+            taxRates.add(defaultTaxRate);
+        }
+
         for (var taxRate : taxRates) {
             taxRate.execute(app);
         }
+    }
 
+    private void setupShop() {
+        setupCoupons();
+        setupOrders();
+    }
+
+    private void setupCoupons() {
+        if(!orders.isEmpty() && coupons.isEmpty()) {
+            var defaultCoupon = new GivenCouponBuilder(this);
+            coupons.add(defaultCoupon);
+        }
+
+        for (var coupon : coupons) {
+            coupon.execute(app);
+        }
+    }
+
+    private void setupOrders() {
         for (var order : orders) {
             order.execute(app);
         }
-
-        return new WhenClause(app, scenario, !products.isEmpty(), !taxRates.isEmpty());
-    }
-
-    public boolean hasProducts() {
-        return !products.isEmpty();
-    }
-
-    public boolean hasTaxRates() {
-        return !taxRates.isEmpty();
     }
 }

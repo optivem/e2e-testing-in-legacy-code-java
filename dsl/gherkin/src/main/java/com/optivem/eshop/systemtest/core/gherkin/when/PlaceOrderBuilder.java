@@ -14,6 +14,7 @@ public class PlaceOrderBuilder {
     private String sku;
     private String quantity;
     private String country;
+    private String couponCodeAlias;
 
     public PlaceOrderBuilder(SystemDsl app, ScenarioDsl scenario) {
         this.app = app;
@@ -23,6 +24,7 @@ public class PlaceOrderBuilder {
         withSku(DEFAULT_SKU);
         withQuantity(DEFAULT_QUANTITY);
         withCountry(DEFAULT_COUNTRY);
+        withCouponCode(EMPTY);
     }
 
     public PlaceOrderBuilder withOrderNumber(String orderNumber) {
@@ -49,12 +51,18 @@ public class PlaceOrderBuilder {
         return this;
     }
 
+    public PlaceOrderBuilder withCouponCode(String couponCodeAlias) {
+        this.couponCodeAlias = couponCodeAlias;
+        return this;
+    }
+
     public ThenClause then() {
         var result = app.shop().placeOrder()
                 .orderNumber(orderNumber)
                 .sku(sku)
                 .quantity(quantity)
                 .country(country)
+                .couponCode(couponCodeAlias)
                 .execute();
 
         return new ThenClause(app, scenario, orderNumber, result);

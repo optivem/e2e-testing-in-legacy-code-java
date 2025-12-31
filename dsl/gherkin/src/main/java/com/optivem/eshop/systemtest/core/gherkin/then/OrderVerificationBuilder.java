@@ -73,6 +73,11 @@ public class OrderVerificationBuilder {
         return this;
     }
 
+    public OrderVerificationBuilder hasAppliedCoupon(String expectedCouponCode) {
+        orderVerification.appliedCouponCode(expectedCouponCode);
+        return this;
+    }
+
     public OrderVerificationBuilder hasDiscountAmountGreaterThanOrEqualToZero() {
         orderVerification.discountAmountGreaterThanOrEqualToZero();
         return this;

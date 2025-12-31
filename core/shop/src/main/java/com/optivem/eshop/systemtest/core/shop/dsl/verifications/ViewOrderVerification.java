@@ -172,6 +172,15 @@ public class ViewOrderVerification extends ResponseVerification<ViewOrderDetails
         return discountAmount(new BigDecimal(expectedDiscountAmount));
     }
 
+    public ViewOrderVerification appliedCouponCode(String expectedCouponCodeAlias) {
+        var expectedCouponCode = context.getParamValue(expectedCouponCodeAlias);
+        var actualCouponCode = response.getAppliedCouponCode();
+        assertThat(actualCouponCode)
+                .withFailMessage("Expected applied coupon code to be '%s', but was '%s'", expectedCouponCode, actualCouponCode)
+                .isEqualTo(expectedCouponCode);
+        return this;
+    }
+
 
 
     public ViewOrderVerification taxRate(BigDecimal expectedTaxRate) {
@@ -257,13 +266,6 @@ public class ViewOrderVerification extends ResponseVerification<ViewOrderDetails
         return this;
     }
 
-    public ViewOrderVerification appliedCouponCode(String expectedCouponCode) {
-        var actualCouponCode = response.getAppliedCouponCode();
-        assertThat(actualCouponCode)
-                .withFailMessage("Expected applied coupon code to be '%s', but was '%s'", expectedCouponCode, actualCouponCode)
-                .isEqualTo(expectedCouponCode);
-        return this;
-    }
 
     public ViewOrderVerification appliedCouponCodeIsNull() {
         var actualCouponCode = response.getAppliedCouponCode();

@@ -4,26 +4,17 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults;
 import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
-public class ClockBuilder {
-    private final GivenClause givenClause;
+public class GivenClockBuilder extends BaseGivenBuilder {
     private String time;
 
-    public ClockBuilder(GivenClause givenClause) {
-        this.givenClause = givenClause;
+    public GivenClockBuilder(GivenClause givenClause) {
+        super(givenClause);
         withTime(GherkinDefaults.DEFAULT_TIME);
     }
 
-    public ClockBuilder withTime(String time) {
+    public GivenClockBuilder withTime(String time) {
         this.time = time;
         return this;
-    }
-
-    public GivenClause and() {
-        return givenClause;
-    }
-
-    public WhenClause when() {
-        return givenClause.when();
     }
 
     void execute(SystemDsl app) {

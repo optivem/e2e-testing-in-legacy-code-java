@@ -5,37 +5,28 @@ import com.optivem.eshop.systemtest.core.gherkin.when.WhenClause;
 
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
-public class TaxRateBuilder {
-    private final GivenClause givenClause;
+public class GivenTaxRateBuilder extends BaseGivenBuilder {
     private String country;
     private String taxRate;
 
-    public TaxRateBuilder(GivenClause givenClause) {
-        this.givenClause = givenClause;
+    public GivenTaxRateBuilder(GivenClause givenClause) {
+        super(givenClause);
         withCountry(DEFAULT_COUNTRY);
         withTaxRate(DEFAULT_TAX_RATE);
     }
 
-    public TaxRateBuilder withCountry(String country) {
+    public GivenTaxRateBuilder withCountry(String country) {
         this.country = country;
         return this;
     }
 
-    public TaxRateBuilder withTaxRate(String taxRate) {
+    public GivenTaxRateBuilder withTaxRate(String taxRate) {
         this.taxRate = taxRate;
         return this;
     }
 
-    public TaxRateBuilder withTaxRate(double taxRate) {
+    public GivenTaxRateBuilder withTaxRate(double taxRate) {
         return withTaxRate(String.valueOf(taxRate));
-    }
-
-    public GivenClause and() {
-        return givenClause;
-    }
-
-    public WhenClause when() {
-        return givenClause.when();
     }
 
     void execute(SystemDsl app) {

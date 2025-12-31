@@ -6,60 +6,57 @@ import com.optivem.eshop.systemtest.core.shop.commons.dtos.orders.OrderStatus;
 
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
-public class OrderBuilder {
-    private final GivenClause givenClause;
-
+public class GivenOrderBuilder extends BaseGivenBuilder {
     private String orderNumber;
     private String sku;
     private String quantity;
     private String country;
+    private String couponCodeAlias;
     private OrderStatus status;
 
-    public OrderBuilder(GivenClause givenClause) {
-        this.givenClause = givenClause;
+    public GivenOrderBuilder(GivenClause givenClause) {
+        super(givenClause);
 
         withOrderNumber(DEFAULT_ORDER_NUMBER);
         withSku(DEFAULT_SKU);
         withQuantity(DEFAULT_QUANTITY);
         withCountry(DEFAULT_COUNTRY);
+        withCouponCode(EMPTY);
         withStatus(DEFAULT_ORDER_STATUS);
     }
 
-    public OrderBuilder withOrderNumber(String orderNumber) {
+    public GivenOrderBuilder withOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
         return this;
     }
 
-    public OrderBuilder withSku(String sku) {
+    public GivenOrderBuilder withSku(String sku) {
         this.sku = sku;
         return this;
     }
 
-    public OrderBuilder withQuantity(String quantity) {
+    public GivenOrderBuilder withQuantity(String quantity) {
         this.quantity = quantity;
         return this;
     }
 
-    public OrderBuilder withQuantity(int quantity) {
+    public GivenOrderBuilder withQuantity(int quantity) {
         return withQuantity(String.valueOf(quantity));
     }
 
-    public OrderBuilder withCountry(String country) {
+    public GivenOrderBuilder withCountry(String country) {
         this.country = country;
         return this;
     }
 
-    public OrderBuilder withStatus(OrderStatus status) {
-        this.status = status;
+    public GivenOrderBuilder withCouponCode(String couponCodeAlias) {
+        this.couponCodeAlias = couponCodeAlias;
         return this;
     }
 
-    public GivenClause and() {
-        return givenClause;
-    }
-
-    public WhenClause when() {
-        return givenClause.when();
+    public GivenOrderBuilder withStatus(OrderStatus status) {
+        this.status = status;
+        return this;
     }
 
     void execute(SystemDsl app) {
@@ -69,6 +66,7 @@ public class OrderBuilder {
                 .sku(sku)
                 .quantity(quantity)
                 .country(country)
+                .couponCode(couponCodeAlias)
                 .execute()
                 .shouldSucceed();
 
