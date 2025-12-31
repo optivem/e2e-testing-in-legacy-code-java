@@ -5,6 +5,7 @@ import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.gherkin.ExecutionResult;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
+import com.optivem.eshop.systemtest.core.gherkin.given.GivenOrderBuilder;
 
 public class PlaceOrderBuilder extends BaseWhenBuilder {
     private String orderNumber;
@@ -49,6 +50,10 @@ public class PlaceOrderBuilder extends BaseWhenBuilder {
     public PlaceOrderBuilder withCouponCode(String couponCode) {
         this.couponCode = couponCode;
         return this;
+    }
+
+    public PlaceOrderBuilder withCouponCode() {
+        return withCouponCode(DEFAULT_COUPON_CODE);
     }
 
     @Override

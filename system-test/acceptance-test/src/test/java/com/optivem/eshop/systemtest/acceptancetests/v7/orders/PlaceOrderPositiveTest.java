@@ -3,10 +3,9 @@ package com.optivem.eshop.systemtest.acceptancetests.v7.orders;
 import com.optivem.eshop.systemtest.acceptancetests.v7.base.BaseAcceptanceTest;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.orders.OrderStatus;
+import com.optivem.testing.annotations.Time;
 import com.optivem.testing.channels.Channel;
 import com.optivem.testing.channels.DataSource;
-import com.optivem.testing.annotations.Time;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 
 public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
@@ -59,7 +58,7 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .given().coupon().withCouponCode("SUMMER2025").withDiscountRate(0.15)
                 .when().placeOrder().withCouponCode("SUMMER2025")
                 .then().order().hasAppliedCoupon("SUMMER2025")
-                    .hasDiscountRate(0.15);
+                .hasDiscountRate(0.15);
     }
 
     @TestTemplate
@@ -69,19 +68,31 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .when().placeOrder().withCouponCode(null)
                 .then().order().hasStatus(OrderStatus.PLACED)
                 .hasAppliedCoupon(null)
-                .hasDiscountRate(0.00);
+                .hasDiscountRate(0.00)
+                .hasDiscountAmount(0.00);
     }
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void subtotalPriceShouldBeCalculatedAsTheBasePriceMinusDiscountAmount() {
         scenario
-                .given().coupon().withCouponCode("SUMMER2025").withDiscountRate(0.15)
-                .when().placeOrder().withCouponCode("SUMMER2025")
-                .then().order().hasAppliedCoupon("SUMMER2025")
-                    .hasDiscountRate(0.15);
+                .given().coupon().withDiscountRate(0.15)
+                .and().product().withUnitPrice(20.00)
+                .when().placeOrder().withCouponCode().withQuantity(5)
+                .then().order().hasAppliedCoupon()
+                .hasDiscountRate(0.15)
+                .shouldHaveBasePrice(100.00)
+                .hasDiscountAmount(15.00)
+                .shouldHaveSubtotalPrice(85.00);
     }
 
+    /*
+
+                .given().product().withUnitPrice(20.00)
+                .when().placeOrder().withQuantity(5)
+                .then().order().shouldHaveBasePrice(100.00);
+
+     */
 
 
 //    @TestTemplate
@@ -167,7 +178,6 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
 //                .when().placeOrder().withQuantity(1)
 //                .then().order().hasTaxRate(taxRate).hasTaxAmount(expectedTaxAmount);
 //    }
-
 
 
     @TestTemplate

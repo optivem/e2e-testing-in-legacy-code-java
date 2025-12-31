@@ -4,6 +4,8 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.orders.OrderStatus;
 import com.optivem.eshop.systemtest.core.shop.dsl.verifications.ViewOrderVerification;
 
+import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.DEFAULT_COUPON_CODE;
+
 public class ThenOrderBuilder extends BaseThenBuilder {
     private final ViewOrderVerification orderVerification;
 
@@ -89,6 +91,10 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         return this;
     }
 
+    public ThenOrderBuilder hasAppliedCoupon() {
+        return hasAppliedCoupon(DEFAULT_COUPON_CODE);
+    }
+
     public ThenOrderBuilder hasDiscountAmountGreaterThanOrEqualToZero() {
         orderVerification.discountAmountGreaterThanOrEqualToZero();
         return this;
@@ -139,6 +145,4 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         orderVerification.orderNumberHasPrefix(expectedPrefix);
         return this;
     }
-
-
 }
