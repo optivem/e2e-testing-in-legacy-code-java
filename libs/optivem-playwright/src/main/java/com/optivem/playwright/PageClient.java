@@ -30,7 +30,8 @@ public class PageClient {
     public void fill(String selector, String text) {
         var input = page.locator(selector);
         wait(input);
-        input.fill(text);
+        var processedText = text == null ? "" : text;
+        input.fill(processedText);
     }
 
     public void setInputValue(String selector, String value) {

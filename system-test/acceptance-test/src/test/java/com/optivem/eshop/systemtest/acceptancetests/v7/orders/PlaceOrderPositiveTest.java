@@ -58,10 +58,21 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
         scenario
                 .given().coupon().withCouponCode("SUMMER2025").withDiscountRate(0.15)
                 .when().placeOrder().withCouponCode("SUMMER2025")
-                .then().order().hasStatus(OrderStatus.PLACED)
-                    .hasAppliedCoupon("SUMMER2025")
+                .then().order().hasAppliedCoupon("SUMMER2025")
                     .hasDiscountRate(0.15);
     }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    void discountRateShouldBeNotAppliedWhenThereIsNoCoupon() {
+        scenario
+                .when().placeOrder().withCouponCode(null)
+                .then().order().hasStatus(OrderStatus.PLACED)
+                .hasAppliedCoupon(null)
+                .hasDiscountRate(0.00);
+    }
+
+
 
 //    @TestTemplate
 //    @Time
