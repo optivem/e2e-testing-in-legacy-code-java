@@ -1,13 +1,15 @@
 package com.optivem.eshop.systemtest.core.gherkin.then;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
+import com.optivem.eshop.systemtest.core.gherkin.ExecutionResult;
 import com.optivem.eshop.systemtest.core.shop.dsl.verifications.BrowseCouponsVerification;
 
-public class ThenCouponBuilder {
+public class ThenCouponBuilder extends BaseThenBuilder {
     private final BrowseCouponsVerification verification;
     private String couponCode;
 
-    public ThenCouponBuilder(SystemDsl app) {
+    public ThenCouponBuilder(ThenClause thenClause, SystemDsl app) {
+        super(thenClause);
         // Execute browse coupons and get verification object
         this.verification = app.shop().browseCoupons()
                 .execute()

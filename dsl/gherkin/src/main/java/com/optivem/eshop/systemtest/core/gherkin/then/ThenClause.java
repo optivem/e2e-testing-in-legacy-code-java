@@ -40,11 +40,16 @@ public class ThenClause {
 
     public ThenOrderBuilder order() {
         var orderNumber = executionResult.getOrderNumber();
-        return order(orderNumber != null ? orderNumber : DEFAULT_ORDER_NUMBER);
+
+        if(orderNumber == null) {
+            throw new IllegalStateException("Cannot verify order: no order number available from the executed operation");
+        }
+
+        return order(orderNumber);
     }
 
     public ThenCouponBuilder coupon() {
         scenario.markAsExecuted();
-        return new ThenCouponBuilder(app);
+        return new ThenCouponBuilder(this, app);
     }
 }
