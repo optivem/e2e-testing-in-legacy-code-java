@@ -1,31 +1,26 @@
 package com.optivem.eshop.systemtest.core.gherkin.when;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
+import com.optivem.eshop.systemtest.core.gherkin.ExecutionResult;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
-import com.optivem.eshop.systemtest.core.gherkin.then.ThenClause;
 
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
-public class PublishCouponBuilder {
-    private final SystemDsl app;
-    private final ScenarioDsl scenario;
-
-    private String couponCodeAlias;
+public class PublishCouponBuilder extends BaseWhenBuilder {
+    private String couponCode;
     private String discountRate;
     private String validFrom;
     private String validTo;
     private String usageLimit;
 
     public PublishCouponBuilder(SystemDsl app, ScenarioDsl scenario) {
-        this.app = app;
-        this.scenario = scenario;
-
+        super(app, scenario);
         withCouponCode(DEFAULT_COUPON_CODE);
         withDiscountRate(DEFAULT_DISCOUNT_RATE);
     }
 
-    public PublishCouponBuilder withCouponCode(String couponCodeAlias) {
-        this.couponCodeAlias = couponCodeAlias;
+    public PublishCouponBuilder withCouponCode(String couponCode) {
+        this.couponCode = couponCode;
         return this;
     }
 
@@ -57,15 +52,19 @@ public class PublishCouponBuilder {
         return withUsageLimit(String.valueOf(usageLimit));
     }
 
-    public ThenClause then() {
+    @Override
+    protected ExecutionResult execute(SystemDsl app) {
         var result = app.shop().publishCoupon()
-                .couponCode(couponCodeAlias)
+                .couponCode(couponCode)
                 .discountRate(discountRate)
                 .validFrom(validFrom)
                 .validTo(validTo)
                 .usageLimit(usageLimit)
                 .execute();
-        return new ThenClause(app, scenario, null, result);
+
+        return ExecutionResult.builder(result)
+                .couponCode(couponCode)
+                .build();
     }
 }
 

@@ -4,133 +4,129 @@ import com.optivem.eshop.systemtest.core.SystemDsl;
 import com.optivem.eshop.systemtest.core.shop.commons.dtos.orders.OrderStatus;
 import com.optivem.eshop.systemtest.core.shop.dsl.verifications.ViewOrderVerification;
 
-public class OrderVerificationBuilder {
+public class ThenOrderBuilder extends BaseThenBuilder {
     private final ViewOrderVerification orderVerification;
 
-    public OrderVerificationBuilder(SystemDsl app, String orderNumber) {
+    public ThenOrderBuilder(ThenClause thenClause, SystemDsl app, String orderNumber) {
+        super(thenClause);
         this.orderVerification = app.shop().viewOrder()
                 .orderNumber(orderNumber)
                 .execute()
                 .shouldSucceed();
     }
 
-    public OrderVerificationBuilder hasSku(String expectedSku) {
+    public ThenOrderBuilder hasSku(String expectedSku) {
         orderVerification.sku(expectedSku);
         return this;
     }
 
-    public OrderVerificationBuilder hasQuantity(int expectedQuantity) {
+    public ThenOrderBuilder hasQuantity(int expectedQuantity) {
         orderVerification.quantity(expectedQuantity);
         return this;
     }
 
-    public OrderVerificationBuilder hasCountry(String expectedCountry) {
+    public ThenOrderBuilder hasCountry(String expectedCountry) {
         orderVerification.country(expectedCountry);
         return this;
     }
 
-    public OrderVerificationBuilder hasUnitPrice(double expectedUnitPrice) {
+    public ThenOrderBuilder hasUnitPrice(double expectedUnitPrice) {
         orderVerification.unitPrice(expectedUnitPrice);
         return this;
     }
 
-    public OrderVerificationBuilder shouldHaveSubtotalPrice(double expectedSubtotalPrice) {
+    public ThenOrderBuilder shouldHaveSubtotalPrice(double expectedSubtotalPrice) {
         orderVerification.subtotalPrice(expectedSubtotalPrice);
         return this;
     }
 
-    public OrderVerificationBuilder shouldHaveSubtotalPrice(String expectedSubtotalPrice) {
+    public ThenOrderBuilder shouldHaveSubtotalPrice(String expectedSubtotalPrice) {
         return shouldHaveSubtotalPrice(Double.parseDouble(expectedSubtotalPrice));
     }
 
-    public OrderVerificationBuilder hasTotalPrice(double expectedTotalPrice) {
+    public ThenOrderBuilder hasTotalPrice(double expectedTotalPrice) {
         orderVerification.totalPriceGreaterThanZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasStatus(OrderStatus expectedStatus) {
+    public ThenOrderBuilder hasStatus(OrderStatus expectedStatus) {
         orderVerification.status(expectedStatus);
         return this;
     }
 
-    public OrderVerificationBuilder hasDiscountRateGreaterThanOrEqualToZero() {
+    public ThenOrderBuilder hasDiscountRateGreaterThanOrEqualToZero() {
         orderVerification.discountRateGreaterThanOrEqualToZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasDiscountRate(double expectedDiscountRate) {
+    public ThenOrderBuilder hasDiscountRate(double expectedDiscountRate) {
         orderVerification.discountRate(expectedDiscountRate);
         return this;
     }
 
-    public OrderVerificationBuilder hasDiscountAmount(double expectedDiscountAmount) {
+    public ThenOrderBuilder hasDiscountAmount(double expectedDiscountAmount) {
         orderVerification.discountAmount(expectedDiscountAmount);
         return this;
     }
 
-    public OrderVerificationBuilder hasDiscountAmount(String expectedDiscountAmount) {
+    public ThenOrderBuilder hasDiscountAmount(String expectedDiscountAmount) {
         orderVerification.discountAmount(expectedDiscountAmount);
         return this;
     }
 
-    public OrderVerificationBuilder hasAppliedCoupon(String expectedCouponCode) {
+    public ThenOrderBuilder hasAppliedCoupon(String expectedCouponCode) {
         orderVerification.appliedCouponCode(expectedCouponCode);
         return this;
     }
 
-    public OrderVerificationBuilder hasDiscountAmountGreaterThanOrEqualToZero() {
+    public ThenOrderBuilder hasDiscountAmountGreaterThanOrEqualToZero() {
         orderVerification.discountAmountGreaterThanOrEqualToZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasSubtotalPrice(String expectedSubtotalPrice) {
+    public ThenOrderBuilder hasSubtotalPrice(String expectedSubtotalPrice) {
         orderVerification.subtotalPrice(expectedSubtotalPrice);
         return this;
     }
 
-    public OrderVerificationBuilder hasSubtotalPriceGreaterThanZero() {
+    public ThenOrderBuilder hasSubtotalPriceGreaterThanZero() {
         orderVerification.subtotalPriceGreaterThanZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasTaxRate(double expectedTaxRate) {
+    public ThenOrderBuilder hasTaxRate(double expectedTaxRate) {
         orderVerification.taxRate(expectedTaxRate);
         return this;
     }
 
-    public OrderVerificationBuilder hasTaxRate(String expectedTaxRate) {
+    public ThenOrderBuilder hasTaxRate(String expectedTaxRate) {
         orderVerification.taxRate(expectedTaxRate);
         return this;
     }
 
-    public OrderVerificationBuilder hasTaxRateGreaterThanOrEqualToZero() {
+    public ThenOrderBuilder hasTaxRateGreaterThanOrEqualToZero() {
         orderVerification.taxRateGreaterThanOrEqualToZero();
         return this;
     }
 
 
-    public OrderVerificationBuilder hasTaxAmount(String expectedTaxAmount) {
+    public ThenOrderBuilder hasTaxAmount(String expectedTaxAmount) {
         orderVerification.taxAmount(expectedTaxAmount);
         return this;
     }
 
-    public OrderVerificationBuilder hasTaxAmountGreaterThanOrEqualToZero() {
+    public ThenOrderBuilder hasTaxAmountGreaterThanOrEqualToZero() {
         orderVerification.taxAmountGreaterThanOrEqualToZero();
         return this;
     }
 
-    public OrderVerificationBuilder hasTotalPriceGreaterThanZero() {
+    public ThenOrderBuilder hasTotalPriceGreaterThanZero() {
         orderVerification.totalPriceGreaterThanZero();
         return this;
     }
 
-    public OrderVerificationBuilder expectOrderNumberPrefix(String expectedPrefix) {
+    public ThenOrderBuilder expectOrderNumberPrefix(String expectedPrefix) {
         orderVerification.orderNumberHasPrefix(expectedPrefix);
         return this;
     }
-
-    public OrderVerificationBuilder and() {
-        return this;
-    }
-
 }

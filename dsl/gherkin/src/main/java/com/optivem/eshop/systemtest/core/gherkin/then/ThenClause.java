@@ -1,6 +1,7 @@
 package com.optivem.eshop.systemtest.core.gherkin.then;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
+import com.optivem.eshop.systemtest.core.gherkin.ExecutionResult;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
 import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.ShopUseCaseResult;
 
@@ -9,45 +10,41 @@ import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.DEFAULT_
 public class ThenClause {
     private final SystemDsl app;
     private final ScenarioDsl scenario;
-    private final String orderNumber;
-    private final ShopUseCaseResult<?, ?> result;
+    private final ExecutionResult executionResult;
 
-    public ThenClause(SystemDsl app, ScenarioDsl scenario, String orderNumber) {
-        this(app, scenario, orderNumber, null);
-    }
 
-    public ThenClause(SystemDsl app, ScenarioDsl scenario, String orderNumber, ShopUseCaseResult<?, ?> result) {
+    public ThenClause(SystemDsl app, ScenarioDsl scenario, ExecutionResult executionResult) {
         this.app = app;
         this.scenario = scenario;
-        this.orderNumber = orderNumber;
-        this.result = result;
+        this.executionResult = executionResult;
     }
 
-    public SuccessVerificationBuilder<?> shouldSucceed() {
-        if (result == null) {
+    public ThenSuccessBuilder<?> shouldSucceed() {
+        if (executionResult == null) {
             throw new IllegalStateException("Cannot verify success: no operation was executed");
         }
         scenario.markAsExecuted();
-        var successVerification = result.shouldSucceed();
-        return new SuccessVerificationBuilder<>(this, successVerification);
+        var successVerification = executionResult.getResult().shouldSucceed();
+        return new ThenSuccessBuilder<>(this, successVerification);
     }
 
-    public FailureVerificationBuilder shouldFail() {
+    public ThenFailureBuilder shouldFail() {
         scenario.markAsExecuted();
-        return new FailureVerificationBuilder(this, result);
+        return new ThenFailureBuilder(this, executionResult.getResult());
     }
 
-    public OrderVerificationBuilder order(String orderNumber) {
+    public ThenOrderBuilder order(String orderNumber) {
         scenario.markAsExecuted();
-        return new OrderVerificationBuilder(app, orderNumber);
+        return new ThenOrderBuilder(this, app, orderNumber);
     }
 
-    public OrderVerificationBuilder order() {
-        return order(this.orderNumber != null ? this.orderNumber : DEFAULT_ORDER_NUMBER);
+    public ThenOrderBuilder order() {
+        var orderNumber = executionResult.getOrderNumber();
+        return order(orderNumber != null ? orderNumber : DEFAULT_ORDER_NUMBER);
     }
 
-    public CouponVerificationBuilder coupon() {
+    public ThenCouponBuilder coupon() {
         scenario.markAsExecuted();
-        return new CouponVerificationBuilder(app);
+        return new ThenCouponBuilder(app);
     }
 }

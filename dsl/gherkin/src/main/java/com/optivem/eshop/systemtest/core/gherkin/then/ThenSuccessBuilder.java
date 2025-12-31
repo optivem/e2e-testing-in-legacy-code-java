@@ -5,16 +5,15 @@ import com.optivem.eshop.systemtest.core.shop.dsl.verifications.ViewOrderVerific
 import com.optivem.testing.dsl.ResponseVerification;
 import com.optivem.testing.dsl.UseCaseContext;
 
-public class SuccessVerificationBuilder<TVerification extends ResponseVerification<?, UseCaseContext>> {
-    private final ThenClause thenClause;
+public class ThenSuccessBuilder<TVerification extends ResponseVerification<?, UseCaseContext>> extends BaseThenBuilder {
     private final TVerification successVerification;
 
-    public SuccessVerificationBuilder(ThenClause thenClause, TVerification successVerification) {
-        this.thenClause = thenClause;
+    public ThenSuccessBuilder(ThenClause thenClause, TVerification successVerification) {
+        super(thenClause);
         this.successVerification = successVerification;
     }
 
-    public SuccessVerificationBuilder<TVerification> expectOrderNumberPrefix(String prefix) {
+    public ThenSuccessBuilder<TVerification> expectOrderNumberPrefix(String prefix) {
         if (successVerification instanceof PlaceOrderVerification verification) {
             verification.orderNumberStartsWith(prefix);
         } else if(successVerification instanceof ViewOrderVerification verification) {
@@ -24,9 +23,5 @@ public class SuccessVerificationBuilder<TVerification extends ResponseVerificati
         }
 
         return this;
-    }
-
-    public ThenClause and() {
-        return thenClause;
     }
 }

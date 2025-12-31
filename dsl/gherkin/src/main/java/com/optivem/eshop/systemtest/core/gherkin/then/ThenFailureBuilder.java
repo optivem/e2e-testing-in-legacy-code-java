@@ -3,29 +3,24 @@ package com.optivem.eshop.systemtest.core.gherkin.then;
 import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.ErrorFailureVerification;
 import com.optivem.eshop.systemtest.core.shop.dsl.commands.base.ShopUseCaseResult;
 
-public class FailureVerificationBuilder {
-    private final ThenClause thenClause;
+public class ThenFailureBuilder extends BaseThenBuilder {
     private final ErrorFailureVerification failureVerification;
 
-    public FailureVerificationBuilder(ThenClause thenClause, ShopUseCaseResult<?, ?> result) {
+    public ThenFailureBuilder(ThenClause thenClause, ShopUseCaseResult<?, ?> result) {
+        super(thenClause);
         if (result == null) {
             throw new IllegalStateException("Cannot verify failure: no operation was executed");
         }
-        this.thenClause = thenClause;
         this.failureVerification = result.shouldFail();
     }
 
-    public FailureVerificationBuilder errorMessage(String expectedMessage) {
+    public ThenFailureBuilder errorMessage(String expectedMessage) {
         failureVerification.errorMessage(expectedMessage);
         return this;
     }
 
-    public FailureVerificationBuilder fieldErrorMessage(String expectedField, String expectedMessage) {
+    public ThenFailureBuilder fieldErrorMessage(String expectedField, String expectedMessage) {
         failureVerification.fieldErrorMessage(expectedField, expectedMessage);
         return this;
-    }
-
-    public ThenClause and() {
-        return thenClause;
     }
 }

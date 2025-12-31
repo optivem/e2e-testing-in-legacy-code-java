@@ -3,23 +3,18 @@ package com.optivem.eshop.systemtest.core.gherkin.when;
 import static com.optivem.eshop.systemtest.core.gherkin.GherkinDefaults.*;
 
 import com.optivem.eshop.systemtest.core.SystemDsl;
+import com.optivem.eshop.systemtest.core.gherkin.ExecutionResult;
 import com.optivem.eshop.systemtest.core.gherkin.ScenarioDsl;
-import com.optivem.eshop.systemtest.core.gherkin.then.ThenClause;
 
-public class PlaceOrderBuilder {
-    private final SystemDsl app;
-    private final ScenarioDsl scenario;
-
+public class PlaceOrderBuilder extends BaseWhenBuilder {
     private String orderNumber;
     private String sku;
     private String quantity;
     private String country;
-    private String couponCodeAlias;
+    private String couponCode;
 
     public PlaceOrderBuilder(SystemDsl app, ScenarioDsl scenario) {
-        this.app = app;
-        this.scenario = scenario;
-        
+        super(app, scenario);
         withOrderNumber(DEFAULT_ORDER_NUMBER);
         withSku(DEFAULT_SKU);
         withQuantity(DEFAULT_QUANTITY);
@@ -51,20 +46,24 @@ public class PlaceOrderBuilder {
         return this;
     }
 
-    public PlaceOrderBuilder withCouponCode(String couponCodeAlias) {
-        this.couponCodeAlias = couponCodeAlias;
+    public PlaceOrderBuilder withCouponCode(String couponCode) {
+        this.couponCode = couponCode;
         return this;
     }
 
-    public ThenClause then() {
+    @Override
+    protected ExecutionResult execute(SystemDsl app) {
         var result = app.shop().placeOrder()
                 .orderNumber(orderNumber)
                 .sku(sku)
                 .quantity(quantity)
                 .country(country)
-                .couponCode(couponCodeAlias)
+                .couponCode(couponCode)
                 .execute();
 
-        return new ThenClause(app, scenario, orderNumber, result);
+        return ExecutionResult.builder(result)
+                .orderNumber(orderNumber)
+                .couponCode(couponCode)
+                .build();
     }
 }
