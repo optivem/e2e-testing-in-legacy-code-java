@@ -10,7 +10,6 @@ public class ThenCouponBuilder extends BaseThenBuilder {
 
     public ThenCouponBuilder(ThenClause thenClause, SystemDsl app) {
         super(thenClause);
-        // Execute browse coupons and get verification object
         this.verification = app.shop().browseCoupons()
                 .execute()
                 .shouldSucceed();

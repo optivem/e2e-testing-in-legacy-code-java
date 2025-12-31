@@ -37,23 +37,23 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         return this;
     }
 
-    public ThenOrderBuilder shouldHaveBasePrice(double expectedBasePrice) {
+    public ThenOrderBuilder hasBasePrice(double expectedBasePrice) {
         orderVerification.basePrice(expectedBasePrice);
         return this;
     }
 
-    public ThenOrderBuilder shouldHaveBasePrice(String basePrice) {
+    public ThenOrderBuilder hasBasePrice(String basePrice) {
         orderVerification.basePrice(basePrice);
         return this;
     }
 
-    public ThenOrderBuilder shouldHaveSubtotalPrice(double expectedSubtotalPrice) {
+    public ThenOrderBuilder hasSubtotalPrice(double expectedSubtotalPrice) {
         orderVerification.subtotalPrice(expectedSubtotalPrice);
         return this;
     }
 
-    public ThenOrderBuilder shouldHaveSubtotalPrice(String expectedSubtotalPrice) {
-        return shouldHaveSubtotalPrice(Double.parseDouble(expectedSubtotalPrice));
+    public ThenOrderBuilder hasSubtotalPrice(String expectedSubtotalPrice) {
+        return hasSubtotalPrice(Double.parseDouble(expectedSubtotalPrice));
     }
 
     public ThenOrderBuilder hasTotalPrice(double expectedTotalPrice) {
@@ -100,10 +100,6 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         return this;
     }
 
-    public ThenOrderBuilder hasSubtotalPrice(String expectedSubtotalPrice) {
-        orderVerification.subtotalPrice(expectedSubtotalPrice);
-        return this;
-    }
 
     public ThenOrderBuilder hasSubtotalPriceGreaterThanZero() {
         orderVerification.subtotalPriceGreaterThanZero();
@@ -141,7 +137,7 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         return this;
     }
 
-    public ThenOrderBuilder expectOrderNumberPrefix(String expectedPrefix) {
+    public ThenOrderBuilder hasOrderNumberPrefix(String expectedPrefix) {
         orderVerification.orderNumberHasPrefix(expectedPrefix);
         return this;
     }

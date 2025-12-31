@@ -32,9 +32,10 @@ public class AcceptanceTest extends BaseAcceptanceTest {
                 .shouldSucceed()
                 .and()
                 .order("ORDER-1001")
-                .shouldHaveSubtotalPrice(100.00);
+                .hasSubtotalPrice(100.00);
                 // TODO: VJ: Need independence for controlling time
                 // .hasDiscountRate(0.15);
     }
 }
+
 

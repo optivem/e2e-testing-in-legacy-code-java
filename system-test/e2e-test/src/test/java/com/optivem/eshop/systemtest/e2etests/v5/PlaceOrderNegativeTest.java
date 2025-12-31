@@ -155,3 +155,4 @@ public class PlaceOrderNegativeTest extends BaseE2eTest {
                 .fieldErrorMessage("country", "Country must not be empty");
     }
 }
+

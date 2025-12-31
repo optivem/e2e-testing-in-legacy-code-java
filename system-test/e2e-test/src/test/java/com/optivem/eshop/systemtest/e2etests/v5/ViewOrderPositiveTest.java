@@ -47,3 +47,4 @@ public class ViewOrderPositiveTest extends BaseE2eTest {
                 .totalPriceGreaterThanZero();
     }
 }
+

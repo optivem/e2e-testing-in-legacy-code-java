@@ -18,7 +18,7 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .given().product().withSku("ABC").withUnitPrice(20.00)
                 .when().placeOrder().withOrderNumber("ORDER-1001").withSku("ABC").withQuantity(5)
                 .then().shouldSucceed()
-                .and().order("ORDER-1001").shouldHaveSubtotalPrice(100.00);
+                .and().order("ORDER-1001").hasSubtotalPrice(100.00);
     }
 
     @TestTemplate
@@ -38,7 +38,7 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .shouldSucceed()
                 .and()
                 .order("ORDER-1001")
-                .shouldHaveSubtotalPrice(100.00);
+                .hasSubtotalPrice(100.00);
     }
 
     @TestTemplate
@@ -62,7 +62,7 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .shouldSucceed()
                 .and()
                 .order("ORDER-1001")
-                .shouldHaveSubtotalPrice(subtotalPrice);
+                .hasSubtotalPrice(subtotalPrice);
     }
 
     @TestTemplate
@@ -81,14 +81,14 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .withCountry("US")
                 .then()
                 .shouldSucceed()
-                .expectOrderNumberPrefix("ORD-")
+                .hasOrderNumberPrefix("ORD-")
                 .and()
                 .order(ORDER_NUMBER)
                 .hasSku(SKU)
                 .hasQuantity(5)
                 .hasCountry("US")
                 .hasUnitPrice(20.00)
-                .shouldHaveSubtotalPrice(100.00)
+                .hasSubtotalPrice(100.00)
                 .hasStatus(OrderStatus.PLACED)
                 .hasDiscountRateGreaterThanOrEqualToZero()
                 .hasDiscountAmountGreaterThanOrEqualToZero()
@@ -98,4 +98,5 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .hasTotalPriceGreaterThanZero();
     }
 }
+
 

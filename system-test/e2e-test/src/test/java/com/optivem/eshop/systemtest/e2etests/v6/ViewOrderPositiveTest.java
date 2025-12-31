@@ -34,7 +34,7 @@ public class ViewOrderPositiveTest extends BaseE2eTest {
                 .hasQuantity(4)
                 .hasCountry("US")
                 .hasUnitPrice(25.00)
-                .shouldHaveSubtotalPrice(100.00)
+                .hasSubtotalPrice(100.00)
                 .hasStatus(OrderStatus.PLACED)
                 .hasDiscountRateGreaterThanOrEqualToZero()
                 .hasDiscountAmountGreaterThanOrEqualToZero()
@@ -44,4 +44,5 @@ public class ViewOrderPositiveTest extends BaseE2eTest {
                 .hasTotalPriceGreaterThanZero();
     }
 }
+
 

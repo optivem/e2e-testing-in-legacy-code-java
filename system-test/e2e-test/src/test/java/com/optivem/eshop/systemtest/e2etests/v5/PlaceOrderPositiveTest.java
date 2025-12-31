@@ -97,3 +97,4 @@ public class PlaceOrderPositiveTest extends BaseE2eTest {
                 .totalPriceGreaterThanZero();
     }
 }
+

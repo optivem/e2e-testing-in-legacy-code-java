@@ -13,13 +13,13 @@ public class ThenSuccessBuilder<TVerification extends ResponseVerification<?, Us
         this.successVerification = successVerification;
     }
 
-    public ThenSuccessBuilder<TVerification> expectOrderNumberPrefix(String prefix) {
+    public ThenSuccessBuilder<TVerification> hasOrderNumberPrefix(String prefix) {
         if (successVerification instanceof PlaceOrderVerification verification) {
             verification.orderNumberStartsWith(prefix);
         } else if(successVerification instanceof ViewOrderVerification verification) {
             verification.orderNumberHasPrefix(prefix);
         } else {
-            throw new IllegalStateException("expectOrderNumberPrefix is not supported for this verification type");
+            throw new IllegalStateException("hasOrderNumberPrefix is not supported for this verification type");
         }
 
         return this;
