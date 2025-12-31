@@ -111,39 +111,18 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
 
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
-    @DataSource({"UK", "0.09", "50.00", "4.50"})
-    @DataSource({"US", "0.20", "100.00", "20.00"})
-    void taxAmountShouldBeProductOfTaxRateAndBasePrice(String country, String taxRate, String basePrice, String expectedTaxAmount) {
+    @DataSource({"UK", "0.09", "50.00", "4.50", "54.50"})
+    @DataSource({"US", "0.20", "100.00", "20.00", "120.00"})
+    void totalPriceShouldBeSubtotalPricePlusTaxAmount(String country, String taxRate, String subtotalPrice, String expectedTaxAmount, String expectedTotalPrice) {
         scenario
                 .given().taxRate().withCountry(country).withTaxRate(taxRate)
-                .and().product().withUnitPrice(basePrice)
+                .and().product().withUnitPrice(subtotalPrice)
                 .when().placeOrder().withCountry(country).withQuantity(1)
                 .then().order().hasTaxRate(taxRate)
-                .hasBasePrice(basePrice)
-                .hasTaxAmount(expectedTaxAmount);
+                .hasSubtotalPrice(subtotalPrice)
+                .hasTaxAmount(expectedTaxAmount)
+                .hasTotalPrice(expectedTotalPrice);
     }
-
-
-
-
-
-    @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
-    void taxAmountShouldBeGreaterThanOrEqualToZero() {
-        scenario
-                .when().placeOrder()
-                .then().order().hasTaxAmountGreaterThanOrEqualToZero();
-    }
-
-    @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
-    void totalPriceShouldBeGreaterThanOrEqualToZero() {
-        scenario
-                .when().placeOrder()
-                .then().order().hasTotalPriceGreaterThanZero();
-    }
-
-
 }
 
 

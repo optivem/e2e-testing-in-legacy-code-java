@@ -132,6 +132,12 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         return this;
     }
 
+
+    public ThenOrderBuilder hasTotalPrice(String expectedTotalPrice) {
+        orderVerification.totalPrice(expectedTotalPrice);
+        return this;
+    }
+
     public ThenOrderBuilder hasTotalPriceGreaterThanZero() {
         orderVerification.totalPriceGreaterThanZero();
         return this;
@@ -141,4 +147,5 @@ public class ThenOrderBuilder extends BaseThenBuilder {
         orderVerification.orderNumberHasPrefix(expectedPrefix);
         return this;
     }
+
 }

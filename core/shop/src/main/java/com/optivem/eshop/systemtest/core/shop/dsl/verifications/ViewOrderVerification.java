@@ -231,6 +231,22 @@ public class ViewOrderVerification extends ResponseVerification<ViewOrderDetails
         return this;
     }
 
+    public ViewOrderVerification totalPrice(BigDecimal expectedTotalPrice) {
+        var totalPrice = response.getTotalPrice();
+        assertThat(totalPrice)
+                .withFailMessage("Expected total price to be %s, but was %s", expectedTotalPrice, totalPrice)
+                .isEqualTo(expectedTotalPrice);
+        return this;
+    }
+
+    public ViewOrderVerification totalPrice(double expectedTotalPrice) {
+        return totalPrice(BigDecimal.valueOf(expectedTotalPrice));
+    }
+
+    public ViewOrderVerification totalPrice(String expectedTotalPrice) {
+        return totalPrice(new BigDecimal(expectedTotalPrice));
+    }
+
     public ViewOrderVerification totalPriceGreaterThanZero() {
         var totalPrice = response.getTotalPrice();
         assertThat(totalPrice)
