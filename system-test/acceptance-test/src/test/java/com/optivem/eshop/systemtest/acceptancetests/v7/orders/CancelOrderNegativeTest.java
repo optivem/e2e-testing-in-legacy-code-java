@@ -36,7 +36,6 @@ public class CancelOrderNegativeTest extends BaseAcceptanceTest {
         scenario
                 .when().cancelOrder().withOrderNumber(null)
                 .then().shouldFail().errorMessage("Order null does not exist.");
-        // TODO: VJ: Error message: "Order number is missing"
     }
 
     @TestTemplate

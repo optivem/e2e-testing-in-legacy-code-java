@@ -22,6 +22,8 @@ public class ShopUiClient implements AutoCloseable {
     private static final boolean IS_HEADLESS = getHeadlessMode();
     private static final int SLOW_MO_MS = 100;
 
+    private static final boolean DEFAULT_HEADLESS = true;
+
     private static boolean getHeadlessMode() {
         // Check system property first (e.g., -Dheadless=false)
         String systemProperty = System.getProperty("headless");
@@ -41,7 +43,7 @@ public class ShopUiClient implements AutoCloseable {
         }
 
         // Default to true (headless) for safety
-        return true;
+        return DEFAULT_HEADLESS;
     }
 
     private static boolean isRunningInCI() {

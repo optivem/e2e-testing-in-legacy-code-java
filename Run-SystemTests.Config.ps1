@@ -12,13 +12,13 @@ $Config = @{
     Tests = @(
 
         # Smoke Tests
-        @{  Id = "smoke-local-stub";
+        @{  Id = "smoke-stub";
             Name = "Smoke Tests (Local - Stub)";
             Command = "& .\gradlew.bat :system-test:smoke-test:test -Denvironment=local -DexternalSystemMode=stub";
             Path = ".";
             TestReportPath = "system-test\smoke-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
-        @{  Id = "smoke-local-real";
+        @{  Id = "smoke-real";
             Name = "Smoke Tests (Local - Real)";
             Command = "& .\gradlew.bat :system-test:smoke-test:test -Denvironment=local -DexternalSystemMode=real";
             Path = ".";
@@ -26,13 +26,13 @@ $Config = @{
             TestInstallCommands = $null; },
 
         # Acceptance Tests
-        @{  Id = "acceptance-local-stub";
+        @{  Id = "acceptance";
             Name = "Acceptance Tests (Local - Stub)";
             Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DexcludeTags=isolated";
             Path = ".";
             TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
-        @{  Id = "acceptance-local-stub-isolated";
+        @{  Id = "acceptance-isolated";
             Name = "Acceptance Tests - Isolated (Local - Stub)";
             Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DincludeTags=isolated";
             Path = ".";
@@ -40,9 +40,15 @@ $Config = @{
             TestInstallCommands = $null; },
 
         # External System Contract Tests
-        @{  Id = "contract-local-stub";
+        @{  Id = "contract-stub";
             Name = "Contract Tests (Local - Stub)";
-            Command = "& .\gradlew.bat :system-test:external-system-contract-test:test -Denvironment=local";
+            Command = "& .\gradlew.bat :system-test:external-system-contract-test:test -Denvironment=local -DexternalSystemMode=stub";
+            Path = ".";
+            TestReportPath = "system-test\external-system-contract-test\build\reports\tests\test\index.html"
+            TestInstallCommands = $null; },
+        @{  Id = "contract-real";
+            Name = "Contract Tests (Local - Real)";
+            Command = "& .\gradlew.bat :system-test:external-system-contract-test:test -Denvironment=local -DexternalSystemMode=real";
             Path = ".";
             TestReportPath = "system-test\external-system-contract-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },

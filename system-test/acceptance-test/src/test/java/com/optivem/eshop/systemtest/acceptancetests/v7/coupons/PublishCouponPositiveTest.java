@@ -46,15 +46,5 @@ public class PublishCouponPositiveTest extends BaseAcceptanceTest {
     }
 
 
-    // TODO: Add tests
-    /*
-
-cannotPublishCouponWithZeroOrNegativeDiscount
-cannotPublishCouponWithValidToInThePast
-cannotPublishCouponWithDuplicateCouponCode
-cannotPublishCouponWithZeroOrNegativeUsageLimit
-
-     */
-
 
 }

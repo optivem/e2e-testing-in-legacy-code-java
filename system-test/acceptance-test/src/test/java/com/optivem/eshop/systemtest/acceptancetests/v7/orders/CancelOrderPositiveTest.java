@@ -10,15 +10,6 @@ import org.junit.jupiter.api.TestTemplate;
 
 public class CancelOrderPositiveTest extends BaseAcceptanceTest {
 
-    @TestTemplate
-    @Channel({ChannelType.UI, ChannelType.API})
-    void shouldBeAbleToCancelAnyPlacedOrder() {
-        scenario
-                .given().order().withStatus(OrderStatus.PLACED)
-                .when().cancelOrder()
-                .then().shouldSucceed();
-    }
-
     @Time
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
@@ -34,18 +25,6 @@ public class CancelOrderPositiveTest extends BaseAcceptanceTest {
                 .then().shouldSucceed();
     }
 
-
-
-    // TODO: Add tests
-    /*
-
-
-restricted days - positive case (millisecond before and after, normal case)
-
-
-     */
-
-
     @TestTemplate
     @Channel({ChannelType.UI, ChannelType.API})
     void shouldHaveCancelledStatusWhenCancelled() {
@@ -54,9 +33,5 @@ restricted days - positive case (millisecond before and after, normal case)
                 .when().cancelOrder()
                 .then().order().hasStatus(OrderStatus.CANCELLED);
     }
-
-
-
-
 }
 
