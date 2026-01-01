@@ -12,18 +12,26 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith({ChannelExtension.class, BrowserLifecycleExtension.class})
 public class BaseScenarioDslTest extends BaseConfigurableTest {
-    protected SystemDsl app;
+    protected SystemDsl setupDsl;  // API for fast setup
+    protected SystemDsl testDsl;   // UI/API for actual test
     protected ScenarioDsl scenario;
 
     @BeforeEach
     void setUp() {
         var configuration = loadConfiguration();
-        app = new SystemDsl(configuration);
-        scenario = new ScenarioDsl(app);
+        
+        // Setup DSL always uses API for fast test data creation
+        setupDsl = SystemDsl.forChannel(configuration, "API");
+        
+        // Test DSL uses the channel specified by the test (UI or API)
+        testDsl = new SystemDsl(configuration);
+        
+        scenario = new ScenarioDsl(setupDsl, testDsl);
     }
 
     @AfterEach
     void tearDown() {
-        Closer.close(app);
+        Closer.close(testDsl);
+        Closer.close(setupDsl);
     }
 }
