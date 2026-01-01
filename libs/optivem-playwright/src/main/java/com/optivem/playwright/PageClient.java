@@ -58,6 +58,13 @@ public class PageClient {
         return locator.allTextContents();
     }
 
+    public List<String> readAllTextContentsWithoutWait(String selector) {
+        // Use this when the selector intentionally matches multiple elements (e.g., table cells)
+        // to avoid Playwright's strict mode violation
+        var locator = page.locator(selector);
+        return locator.allTextContents();
+    }
+
     public boolean exists(String selector) {
         var locator = page.locator(selector);
         try {

@@ -32,5 +32,10 @@ public class ThenCouponBuilder extends BaseThenBuilder {
         verification.couponHasUsageLimit(couponCode, usageLimit);
         return this;
     }
+
+    public ThenCouponBuilder hasUsedCount(int expectedUsedCount) {
+        verification.couponHasUsedCount(couponCode, expectedUsedCount);
+        return this;
+    }
 }
 

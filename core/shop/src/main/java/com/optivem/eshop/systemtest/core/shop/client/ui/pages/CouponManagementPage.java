@@ -18,13 +18,6 @@ public class CouponManagementPage extends BasePage {
     
     // Selectors for browsing coupons
     private static final String COUPONS_TABLE_SELECTOR = "[aria-label=\"Coupons Table\"]";
-    private static final String COUPON_ROW_SELECTOR = "[aria-label=\"Coupon Row\"]";
-    private static final String COUPON_CODE_CELL_SELECTOR = "[aria-label=\"Coupon Code Cell\"]";
-    private static final String DISCOUNT_RATE_CELL_SELECTOR = "[aria-label=\"Discount Rate Cell\"]";
-    private static final String VALID_FROM_CELL_SELECTOR = "[aria-label=\"Valid From Cell\"]";
-    private static final String VALID_TO_CELL_SELECTOR = "[aria-label=\"Valid To Cell\"]";
-    private static final String USAGE_LIMIT_CELL_SELECTOR = "[aria-label=\"Usage Limit Cell\"]";
-    private static final String USED_COUNT_CELL_SELECTOR = "[aria-label=\"Used Count Cell\"]";
 
     public CouponManagementPage(PageClient pageClient) {
         super(pageClient);
@@ -92,19 +85,72 @@ public class CouponManagementPage extends BasePage {
         }
         
         var coupons = new ArrayList<CouponDto>();
-        var rows = pageClient.readAllTextContents(COUPON_ROW_SELECTOR);
-        
-        // If we can't parse individual cells, return empty list
-        // This allows the test to pass even if the UI structure is different
-        if (rows.isEmpty()) {
-            return coupons;
+
+        // Use readAllTextContentsWithoutWait to avoid strict mode violations
+        // These selectors intentionally match multiple elements (one per table row)
+        var codes = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(1)");
+        var discountRates = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(2)");
+        var validFroms = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(3)");
+        var validTos = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(4)");
+        var usageLimits = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(5)");
+        var usedCounts = pageClient.readAllTextContentsWithoutWait("#couponTableBody tr td:nth-child(6)");
+
+        var rowCount = codes.size();
+
+        // Build coupon objects from the collected data
+        for (int i = 0; i < rowCount; i++) {
+            var code = codes.get(i).trim();
+            var discountRateText = discountRates.get(i).trim().replace("%", "");
+            var validFromText = validFroms.get(i).trim();
+            var validToText = validTos.get(i).trim();
+            var usageLimitText = usageLimits.get(i).trim();
+            var usedCountText = usedCounts.get(i).trim();
+
+            var coupon = CouponDto.builder()
+                    .code(code)
+                    .discountRate(parseDiscountRate(discountRateText))
+                    .validFrom(parseInstant(validFromText))
+                    .validTo(parseInstant(validToText))
+                    .usageLimit(parseUsageLimit(usageLimitText))
+                    .usedCount(Integer.parseInt(usedCountText))
+                    .build();
+
+            coupons.add(coupon);
         }
-        
-        // For each row, try to read the cells
-        // Note: This is a simplified implementation that assumes the table structure
-        // In a real scenario, you'd need to parse the actual HTML structure
-        
+
         return coupons;
+    }
+
+    private double parseDiscountRate(String text) {
+        try {
+            return Double.parseDouble(text) / 100.0; // Convert percentage to decimal
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
+    private Instant parseInstant(String text) {
+        if (text == null || text.equalsIgnoreCase("Immediate") || text.equalsIgnoreCase("Never") || text.isEmpty()) {
+            return null;
+        }
+        try {
+            // Try to parse as ISO format first
+            return Instant.parse(text);
+        } catch (Exception e) {
+            // If it fails, return null (UI might show formatted date)
+            return null;
+        }
+    }
+
+    private Integer parseUsageLimit(String text) {
+        if (text == null || text.equalsIgnoreCase("Unlimited") || text.isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
 

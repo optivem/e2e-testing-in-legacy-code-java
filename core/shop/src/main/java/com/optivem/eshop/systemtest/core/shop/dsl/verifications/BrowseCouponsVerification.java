@@ -46,11 +46,23 @@ public class BrowseCouponsVerification extends ResponseVerification<BrowseCoupon
     public BrowseCouponsVerification couponHasUsageLimit(String couponCodeAlias, int expectedUsageLimit) {
         var coupon = findCouponByCode(couponCodeAlias);
 
-        Integer actualUsageLimit = coupon.getUsageLimit();
+        var actualUsageLimit = coupon.getUsageLimit();
         if (actualUsageLimit == null || actualUsageLimit != expectedUsageLimit) {
             throw new AssertionError(String.format(
                     "Expected coupon '%s' to have usage limit %d, but was %d",
                     couponCodeAlias, expectedUsageLimit, actualUsageLimit));
+        }
+        return this;
+    }
+
+    public BrowseCouponsVerification couponHasUsedCount(String couponCode, int expectedUsedCount) {
+        var coupon = findCouponByCode(couponCode);
+
+        var actualUsedCount = coupon.getUsedCount();
+        if (actualUsedCount != expectedUsedCount) {
+            throw new AssertionError(String.format(
+                    "Expected coupon '%s' to have used count %d, but was %d",
+                    couponCode, expectedUsedCount, actualUsedCount));
         }
         return this;
     }
@@ -72,4 +84,5 @@ public class BrowseCouponsVerification extends ResponseVerification<BrowseCoupon
                                         .map(CouponDto::getCode)
                                         .toList())));
     }
+
 }

@@ -123,6 +123,29 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
                 .hasTaxAmount(expectedTaxAmount)
                 .hasTotalPrice(expectedTotalPrice);
     }
+
+    @TestTemplate
+    @Channel({ChannelType.UI, ChannelType.API})
+    void couponUsageCountHasBeenIncrementedAfterItsBeenUsed() {
+        scenario
+                .given().coupon().withCouponCode("SUMMER2025")
+                .when().placeOrder().withCouponCode("SUMMER2025")
+                .then().coupon("SUMMER2025").hasUsedCount(1);
+    }
+
+
+    // TODO: Add tests
+    /*
+
+cannotCancelOrderWhereOrderNumberIsMissing (API)
+cannotCancelNonExistentOrder
+cannotCancelAnOrderThatWasAlreadyCancelled
+restricted days - positive case (millisecond before and after, normal case)
+cannotPlaceOrderWithInvalidCoupon
+cannotPlaceOrderWithExpiredCoupon (time is before valid from, or after valid to)
+cannotPlaceOrderWithCouponThatHasExceededUsageLimit
+
+     */
 }
 
 
