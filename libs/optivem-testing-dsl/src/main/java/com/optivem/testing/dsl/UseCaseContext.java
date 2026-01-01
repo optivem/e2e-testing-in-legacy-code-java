@@ -78,7 +78,9 @@ public class UseCaseContext {
     }
 
     public String getResultValue(String alias) {
-        ensureAliasNotNullBlank(alias);
+        if(isNullOrBlank(alias)) {
+            return alias;
+        }
 
         var value = resultMap.get(alias);
         if (value == null) {

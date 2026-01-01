@@ -137,9 +137,7 @@ public class PlaceOrderPositiveTest extends BaseAcceptanceTest {
     // TODO: Add tests
     /*
 
-cannotCancelOrderWhereOrderNumberIsMissing (API)
-cannotCancelNonExistentOrder
-cannotCancelAnOrderThatWasAlreadyCancelled
+
 restricted days - positive case (millisecond before and after, normal case)
 cannotPlaceOrderWithInvalidCoupon
 cannotPlaceOrderWithExpiredCoupon (time is before valid from, or after valid to)
