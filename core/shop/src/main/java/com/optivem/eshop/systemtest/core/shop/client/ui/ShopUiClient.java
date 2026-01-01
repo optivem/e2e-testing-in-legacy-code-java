@@ -22,7 +22,7 @@ public class ShopUiClient implements AutoCloseable {
     private static final boolean IS_HEADLESS = getHeadlessMode();
     private static final int SLOW_MO_MS = 100;
 
-    private static final boolean DEFAULT_HEADLESS = true;
+    private static final boolean DEFAULT_HEADLESS = false;
 
     private static boolean getHeadlessMode() {
         // Check system property first (e.g., -Dheadless=false)

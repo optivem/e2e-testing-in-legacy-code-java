@@ -32,6 +32,19 @@ public class ChannelExtension implements TestTemplateInvocationContextProvider {
         Channel channelAnnotation = testMethod.getAnnotation(Channel.class);
         String[] channels = channelAnnotation.value();
 
+        // Filter channels based on system property if set
+        String channelFilter = System.getProperty("channel");
+        if (channelFilter != null && !channelFilter.isEmpty()) {
+            channels = Arrays.stream(channels)
+                    .filter(channel -> channel.equalsIgnoreCase(channelFilter))
+                    .toArray(String[]::new);
+            
+            // If no channels match the filter, return empty stream to skip this test
+            if (channels.length == 0) {
+                return Stream.empty();
+            }
+        }
+
         List<Object[]> dataRows = new ArrayList<>();
 
         // Check if the method has @ArgumentsSource annotation

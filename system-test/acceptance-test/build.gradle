@@ -41,6 +41,7 @@ tasks.named('test') {
     // Pass system properties from command line to test JVM
     systemProperty 'environment', System.getProperty('environment')
     systemProperty 'externalSystemMode', System.getProperty('externalSystemMode')
+    systemProperty 'channel', System.getProperty('channel')
 
     // Disable JUnit parallel execution for isolated tests
     def includeTags = System.getProperty('includeTags')

@@ -110,14 +110,26 @@ jobs:
       - name: Build Project
         run: ./gradlew clean compileJava compileTestJava
 
-      - name: Run Acceptance Tests
-        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DexcludeTags=isolated
+      - name: Run Acceptance Tests - API Channel
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DexcludeTags=isolated -Dchannel=API
 
-      - name: Run Acceptance Tests (Isolated)
-        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DincludeTags=isolated
+      - name: Run Acceptance Tests - UI Channel
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DexcludeTags=isolated -Dchannel=UI
 
-      - name: Run External System Contract Tests
-        run: ./gradlew :system-test:external-system-contract-test:test -Denvironment=acceptance
+      - name: Run Acceptance Tests (Isolated) - API Channel
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DincludeTags=isolated -Dchannel=API
 
-      - name: Run E2E Tests
-        run: ./gradlew :system-test:e2e-test:test -Denvironment=acceptance
+      - name: Run Acceptance Tests (Isolated) - UI Channel
+        run: ./gradlew :system-test:acceptance-test:test -Denvironment=acceptance -DincludeTags=isolated -Dchannel=UI
+
+      - name: Run External System Contract Tests (Stubbed External Systems)
+        run: ./gradlew :system-test:external-system-contract-test:test -Denvironment=acceptance -DexternalSystemMode=stub
+
+      - name: Run External System Contract Tests (Real External Systems)
+        run: ./gradlew :system-test:external-system-contract-test:test -Denvironment=acceptance -DexternalSystemMode=real
+
+      - name: Run E2E Tests - API Channel
+        run: ./gradlew :system-test:e2e-test:test -Denvironment=acceptance -Dchannel=API
+
+      - name: Run E2E Tests - UI Channel
+        run: ./gradlew :system-test:e2e-test:test -Denvironment=acceptance -Dchannel=UI

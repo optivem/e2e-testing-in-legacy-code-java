@@ -13,41 +13,53 @@ $Config = @{
 
         # Smoke Tests
         @{  Id = "smoke-stub";
-            Name = "Smoke Tests (Local - Stub)";
+            Name = "Smoke Tests - Stubbed External Systems";
             Command = "& .\gradlew.bat :system-test:smoke-test:test -Denvironment=local -DexternalSystemMode=stub";
             Path = ".";
             TestReportPath = "system-test\smoke-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
         @{  Id = "smoke-real";
-            Name = "Smoke Tests (Local - Real)";
+            Name = "Smoke Tests - Real External Systems";
             Command = "& .\gradlew.bat :system-test:smoke-test:test -Denvironment=local -DexternalSystemMode=real";
             Path = ".";
             TestReportPath = "system-test\smoke-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
 
         # Acceptance Tests
-        @{  Id = "acceptance";
-            Name = "Acceptance Tests (Local - Stub)";
-            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DexcludeTags=isolated";
+        @{  Id = "acceptance-api";
+            Name = "Acceptance Tests - Channel: API";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DexcludeTags=isolated -Dchannel=API";
             Path = ".";
             TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
-        @{  Id = "acceptance-isolated";
-            Name = "Acceptance Tests - Isolated (Local - Stub)";
-            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DincludeTags=isolated";
+        @{  Id = "acceptance-ui";
+            Name = "Acceptance Tests - Channel: UI";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DexcludeTags=isolated -Dchannel=UI";
+            Path = ".";
+            TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
+            TestInstallCommands = $null; },
+        @{  Id = "acceptance-isolated-api";
+            Name = "Acceptance Tests - Isolated - Channel: API";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DincludeTags=isolated -Dchannel=API";
+            Path = ".";
+            TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
+            TestInstallCommands = $null; },
+        @{  Id = "acceptance-isolated-ui";
+            Name = "Acceptance Tests - Isolated - Channel: UI";
+            Command = "& .\gradlew.bat :system-test:acceptance-test:test -Denvironment=local -DincludeTags=isolated -Dchannel=UI";
             Path = ".";
             TestReportPath = "system-test\acceptance-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
 
         # External System Contract Tests
         @{  Id = "contract-stub";
-            Name = "Contract Tests (Local - Stub)";
+            Name = "Contract Tests - Stubbed External Systems";
             Command = "& .\gradlew.bat :system-test:external-system-contract-test:test -Denvironment=local -DexternalSystemMode=stub";
             Path = ".";
             TestReportPath = "system-test\external-system-contract-test\build\reports\tests\test\index.html"
             TestInstallCommands = $null; },
         @{  Id = "contract-real";
-            Name = "Contract Tests (Local - Real)";
+            Name = "Contract Tests - Real External Systems";
             Command = "& .\gradlew.bat :system-test:external-system-contract-test:test -Denvironment=local -DexternalSystemMode=real";
             Path = ".";
             TestReportPath = "system-test\external-system-contract-test\build\reports\tests\test\index.html"
@@ -55,9 +67,9 @@ $Config = @{
 
         # E2E Tests
         @{ 
-            Id = "e2e-local-real";
-            Name = "E2E Tests (Local - Real)";
-            Command = "& .\gradlew.bat :system-test:e2e-test:test -Denvironment=local";
+            Id = "e2e-api";
+            Name = "E2E Tests - Channel: API";
+            Command = "& .\gradlew.bat :system-test:e2e-test:test -Denvironment=local -Dchannel=API";
             Path = ".";
             TestReportPath = "system-test\e2e-test\build\reports\tests\test\index.html";
             TestInstallCommands = $null; }
