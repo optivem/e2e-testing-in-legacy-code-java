@@ -1,6 +1,5 @@
 package com.optivem.eshop.systemtest.core;
 
-import com.microsoft.playwright.Browser;
 import com.optivem.eshop.systemtest.core.clock.dsl.ClockDsl;
 import com.optivem.eshop.systemtest.core.erp.dsl.ErpDsl;
 import com.optivem.eshop.systemtest.core.shop.dsl.ShopDsl;
@@ -14,21 +13,19 @@ import java.util.function.Supplier;
 public class SystemDsl implements Closeable {
     private final SystemConfiguration configuration;
     private final UseCaseContext context;
-    private final Browser browser; // Shared browser from test class
 
     private ShopDsl shop;
     private ErpDsl erp;
     private TaxDsl tax;
     private ClockDsl clock;
 
-    private SystemDsl(SystemConfiguration configuration, UseCaseContext context, Browser browser) {
+    private SystemDsl(SystemConfiguration configuration, UseCaseContext context) {
         this.configuration = configuration;
         this.context = context;
-        this.browser = browser;
     }
 
-    public SystemDsl(SystemConfiguration configuration, Browser browser) {
-        this(configuration, new UseCaseContext(configuration.getExternalSystemMode()), browser);
+    public SystemDsl(SystemConfiguration configuration) {
+        this(configuration, new UseCaseContext(configuration.getExternalSystemMode()));
     }
 
     @Override
@@ -40,7 +37,7 @@ public class SystemDsl implements Closeable {
     }
 
     public ShopDsl shop() {
-        return getOrCreate(shop, () -> shop = new ShopDsl(configuration.getShopUiBaseUrl(), configuration.getShopApiBaseUrl(), context, browser));
+        return getOrCreate(shop, () -> shop = new ShopDsl(configuration.getShopUiBaseUrl(), configuration.getShopApiBaseUrl(), context));
     }
 
     public ErpDsl erp() {
