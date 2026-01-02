@@ -17,7 +17,7 @@ public class BrowserLifecycleExtension implements BeforeAllCallback, AfterAllCal
     
     private static final boolean IS_HEADLESS = getHeadlessMode();
     private static final int SLOW_MO_MS = 100;
-    private static final boolean DEFAULT_HEADLESS = false;
+    private static final boolean DEFAULT_HEADLESS = true;
 
     private static boolean getHeadlessMode() {
         String systemProperty = System.getProperty("headless");
