@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.dsl;
 
+import com.microsoft.playwright.Browser;
 import com.optivem.eshop.systemtest.core.shop.ChannelType;
 import com.optivem.eshop.systemtest.core.shop.driver.api.ShopApiDriver;
 import com.optivem.eshop.systemtest.core.shop.driver.ShopDriver;
@@ -20,15 +21,15 @@ public class ShopDsl implements Closeable {
     private final ShopDriver driver;
     private final UseCaseContext context;
 
-    public ShopDsl(String uiBaseUrl, String apiBaseUrl, UseCaseContext context) {
-        this.driver = createDriver(uiBaseUrl, apiBaseUrl);
+    public ShopDsl(String uiBaseUrl, String apiBaseUrl, UseCaseContext context, Browser browser) {
+        this.driver = createDriver(uiBaseUrl, apiBaseUrl, browser);
         this.context = context;
     }
 
-    private static ShopDriver createDriver(String uiBaseUrl, String apiBaseUrl) {
+    private static ShopDriver createDriver(String uiBaseUrl, String apiBaseUrl, Browser browser) {
         var channel = ChannelContext.get();
         if (ChannelType.UI.equals(channel)) {
-            return new ShopUiDriver(uiBaseUrl);
+            return new ShopUiDriver(uiBaseUrl, browser);
         } else if (ChannelType.API.equals(channel)) {
             return new ShopApiDriver(apiBaseUrl);
         } else {

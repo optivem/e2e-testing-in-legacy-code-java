@@ -1,5 +1,8 @@
 package com.optivem.eshop.systemtest.base.v4;
 
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Playwright;
 import com.optivem.eshop.systemtest.configuration.BaseConfigurableTest;
 import com.optivem.eshop.systemtest.core.SystemConfiguration;
 import com.optivem.eshop.systemtest.core.erp.driver.ErpRealDriver;
@@ -11,15 +14,30 @@ import com.optivem.eshop.systemtest.core.tax.driver.TaxRealDriver;
 import com.optivem.lang.Closer;
 import com.optivem.testing.channels.ChannelContext;
 import com.optivem.testing.channels.ChannelExtension;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(ChannelExtension.class)
 public class BaseChannelDriverTest extends BaseConfigurableTest {
+    private Playwright playwright;
+    private Browser browser;
+    
     protected ShopDriver shopDriver;
     protected ErpRealDriver erpDriver;
     protected TaxRealDriver taxDriver;
+
+    @BeforeAll
+    void launchBrowser() {
+        playwright = Playwright.create();
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+    }
+
+    @AfterAll
+    void closeBrowser() {
+        Closer.close(browser);
+        Closer.close(playwright);
+    }
 
     @BeforeEach
     void setUp() {
@@ -45,7 +63,7 @@ public class BaseChannelDriverTest extends BaseConfigurableTest {
         }
 
         if (ChannelType.UI.equals(channel)) {
-            return new ShopUiDriver(configuration.getShopUiBaseUrl());
+            return new ShopUiDriver(configuration.getShopUiBaseUrl(), browser);
         } else if (ChannelType.API.equals(channel)) {
             return new ShopApiDriver(configuration.getShopApiBaseUrl());
         } else {

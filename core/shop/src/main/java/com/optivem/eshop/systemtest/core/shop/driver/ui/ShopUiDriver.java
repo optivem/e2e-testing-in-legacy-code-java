@@ -1,5 +1,6 @@
 package com.optivem.eshop.systemtest.core.shop.driver.ui;
 
+import com.microsoft.playwright.Browser;
 import com.optivem.eshop.systemtest.core.shop.commons.Results;
 import com.optivem.eshop.systemtest.core.shop.client.ui.ShopUiClient;
 import com.optivem.eshop.systemtest.core.shop.client.ui.pages.HomePage;
@@ -17,9 +18,9 @@ public class ShopUiDriver implements ShopDriver {
 
     private HomePage homePage;
 
-    public ShopUiDriver(String baseUrl) {
+    public ShopUiDriver(String baseUrl, Browser browser) {
         long start = System.currentTimeMillis();
-        this.client = new ShopUiClient(baseUrl);
+        this.client = new ShopUiClient(baseUrl, browser);
         System.out.println("[PERF] ShopUiDriver - ShopUiClient creation took " + (System.currentTimeMillis() - start) + "ms");
         this.pageNavigator = new PageNavigator();
         this.orderDriver = new ShopUiOrderDriver(this::getHomePage, pageNavigator);
