@@ -5,15 +5,28 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
 import org.junit.jupiter.api.extension.*;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * JVM-wide browser pooling that works across multiple classloaders.
- * Uses System properties to store browser references that survive classloader boundaries.
+ * Proper JUnit 5 extension that manages browser lifecycle.
+ * Creates one browser per worker thread (for parallel execution safety).
+ * Uses ThreadLocal to make browser accessible to code without ExtensionContext.
+ * 
+ * Usage in test class:
+ * @ExtendWith(BrowserLifecycleExtension.class)
+ * 
+ * Usage in code:
+ * Browser browser = BrowserLifecycleExtension.getBrowser();
  */
-public class BrowserLifecycleExtension implements BeforeAllCallback, AfterAllCallback {
+public class BrowserLifecycleExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
     
-    // JVM-wide storage keys (survive across classloaders)
-    private static final String BROWSER_POOL_KEY_PREFIX = "optivem.playwright.browser.";
-    private static final String PLAYWRIGHT_POOL_KEY_PREFIX = "optivem.playwright.instance.";
+    // One browser per worker thread for parallel execution safety
+    private static final Map<Long, BrowserResource> BROWSERS_BY_THREAD = new ConcurrentHashMap<>();
+    private static final ThreadLocal<Browser> THREAD_LOCAL_BROWSER = new ThreadLocal<>();
+    
+    private static final AtomicInteger ACTIVE_TEST_CLASSES = new AtomicInteger(0);
     
     private static final boolean IS_HEADLESS = getHeadlessMode();
     private static final int SLOW_MO_MS = 100;
@@ -50,48 +63,110 @@ public class BrowserLifecycleExtension implements BeforeAllCallback, AfterAllCal
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        // Extension registered but lifecycle managed by static methods
+        int count = ACTIVE_TEST_CLASSES.incrementAndGet();
+        long threadId = Thread.currentThread().getId();
+        System.out.println("[BROWSER] Test class starting on thread " + threadId + ", active classes: " + count);
     }
 
     @Override
     public void afterAll(ExtensionContext context) {
-        // Don't close browsers - they're shared across all test classes
+        int count = ACTIVE_TEST_CLASSES.decrementAndGet();
+        long threadId = Thread.currentThread().getId();
+        System.out.println("[BROWSER] Test class finished on thread " + threadId + ", active classes: " + count);
+        
+        // Clean up all browsers when last test class finishes
+        if (count == 0) {
+            System.out.println("[BROWSER] Cleaning up all browsers");
+            BROWSERS_BY_THREAD.values().forEach(BrowserResource::close);
+            BROWSERS_BY_THREAD.clear();
+        }
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext context) {
+        long threadId = Thread.currentThread().getId();
+        
+        // Create browser for this thread if not already exists (lazy initialization)
+        BROWSERS_BY_THREAD.computeIfAbsent(threadId, id -> new BrowserResource(id));
+        
+        // Set browser in ThreadLocal for this test
+        Browser browser = getBrowser();
+        THREAD_LOCAL_BROWSER.set(browser);
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) {
+        // Clean up ThreadLocal
+        THREAD_LOCAL_BROWSER.remove();
     }
 
     /**
-     * Public API: Get browser for current thread from JVM-wide pool
+     * Get browser for current thread.
+     * 
+     * @return Browser instance for current thread
+     * @throws IllegalStateException if called outside test context
      */
     public static Browser getBrowser() {
-        Thread currentThread = Thread.currentThread();
-        String threadKey = currentThread.getName();
-        
-        String browserKey = BROWSER_POOL_KEY_PREFIX + threadKey;
-        String playwrightKey = PLAYWRIGHT_POOL_KEY_PREFIX + threadKey;
-        
-        // Try to get existing browser from System properties  
-        Object browserObj = System.getProperties().get(browserKey);
-        if (browserObj instanceof Browser) {
-            return (Browser) browserObj;
+        Browser browser = THREAD_LOCAL_BROWSER.get();
+        if (browser != null) {
+            return browser;
         }
         
-        // Cache miss - create new browser
-        Playwright playwright;
-        Object playwrightObj = System.getProperties().get(playwrightKey);
-        if (playwrightObj instanceof Playwright) {
-            playwright = (Playwright) playwrightObj;
-        } else {
-            playwright = Playwright.create();
-            System.getProperties().put(playwrightKey, playwright);
+        // Fallback: get from thread map
+        long threadId = Thread.currentThread().getId();
+        BrowserResource resource = BROWSERS_BY_THREAD.get(threadId);
+        if (resource != null) {
+            return resource.getBrowser();
         }
-
-        // Launch browser
-        var launchOptions = new BrowserType.LaunchOptions()
-                .setHeadless(IS_HEADLESS)
-                .setSlowMo(SLOW_MO_MS);
-
-        Browser browser = playwright.chromium().launch(launchOptions);
-        System.getProperties().put(browserKey, browser);
         
-        return browser;
+        throw new IllegalStateException(
+            "Browser not available. Ensure @ExtendWith(BrowserLifecycleExtension.class) is present on test class."
+        );
+    }
+
+    /**
+     * Resource wrapper that manages browser lifecycle.
+     */
+    private static class BrowserResource {
+        private final long threadId;
+        private final Playwright playwright;
+        private final Browser browser;
+        
+        public BrowserResource(long threadId) {
+            this.threadId = threadId;
+            long start = System.currentTimeMillis();
+            
+            this.playwright = Playwright.create();
+            
+            var launchOptions = new BrowserType.LaunchOptions()
+                    .setHeadless(IS_HEADLESS)
+                    .setSlowMo(SLOW_MO_MS);
+
+            this.browser = playwright.chromium().launch(launchOptions);
+            
+            System.out.println("[PERF] Browser creation for thread " + threadId + " took " + (System.currentTimeMillis() - start) + "ms");
+        }
+        
+        public Browser getBrowser() {
+            return browser;
+        }
+        
+        public void close() {
+            System.out.println("[CLEANUP] Closing browser for thread " + threadId);
+            if (browser != null) {
+                try {
+                    browser.close();
+                } catch (Exception e) {
+                    System.err.println("[WARN] Error closing browser: " + e.getMessage());
+                }
+            }
+            if (playwright != null) {
+                try {
+                    playwright.close();
+                } catch (Exception e) {
+                    System.err.println("[WARN] Error closing playwright: " + e.getMessage());
+                }
+            }
+        }
     }
 }
